@@ -7,7 +7,7 @@ COPY ./ /app
 RUN mvn clen install -DskipTests
 
 #build image docker
-FROM openjdk:11-jdl-alpine
+FROM openjdk:17-jdk-alpine
 COPY --from=build /app/targer/*jar app.jar
 
 ENV PORT 8080
