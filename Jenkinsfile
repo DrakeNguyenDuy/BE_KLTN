@@ -1,59 +1,24 @@
-
-pipeline{
-    agent {
-        label 'MVN3'
-    }
-    stages{
-        stage('clone'){
-            steps{
-                git url: 'https://github.com/tarunkumarpendem/shopizer.git',
-                    branch: 'master'
-            }
+/* groovylint-disable CompileStatic, NoDef, UnnecessaryCatchBlock, VariableName, VariableTypeRequired */
+node {
+    /* groovylint-disable-next-line NoDef, UnusedVariable */
+    def WORKSPACE = '/var/lib/jenkins/workspace/BE-VSV'
+    /* groovylint-disable-next-line UnusedVariable */
+    def dockerImageTag = "springboot-deploy${env.VERSION_NUMVER}"
+    try {
+        stage('clone repo') {
+            git url: 'https://github.com/DrakeNguyenDuy/BE_KLTN',
+            credentialsId:"DrakeNguyenDuy",
+            branch: 'main'
         }
-        stage ('build') {
-            steps {
-               sh 'mvn clean package'
-           }
+        stage('build docker') {
+           dockerImage = docker.build("springboot-deploy:${env.VERSION_NUMBER}")
         }
-        stage('Build the Code') {
-            steps {
-                withSonarQubeEnv('sonarcloud') {
-                    sh script: 'mvn clean package sonar:sonar'
-                }
-            }
-        stage('archiving-artifacts'){
-            steps{
-                archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false
-            }
+         stage('deploy docker') {
+           echo "Docker image tag name: ${dockerImageTag}"
+           sh "docker stop springboot-deploy || true && docker rm springboot-deploy || true"
+           sh "docker run --name springboot-deploy -dp 8091:8080 springboot-deploy:${env.VERSION_NUMBER}"
         }
-        stage('junit_reports'){
-            steps{
-                junit '**/surefire-reports/*.xml'
-            }
-        }
-    }    
-
-pipeline {
-    agent {label 'OPENJDK-11-JDK'}
-    triggers {
-        pollSCM('0 17 * * *')
-    }
-    stages {
-        stage('vcs') {
-            steps {
-                git branch: 'release', url: 'https://github.com/longflewtinku/shopizer.git'         
-            }
-        }
-        stage('merge') {
-            steps {
-                sh 'git checkout devops'
-                sh 'git merge release --no-ff'
-            }
-        }
-        stage('build') {
-            steps {
-                sh 'mvn clean install'
-            }
-        }
+    }catch (e) {
+        throw e
     }
 }
