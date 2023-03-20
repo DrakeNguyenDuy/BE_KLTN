@@ -1,17 +1,13 @@
-/* groovylint-disable CompileStatic, NoDef, UnnecessaryCatchBlock, VariableName, VariableTypeRequired */
-node {
-    /* groovylint-disable-next-line NoDef, UnusedVariable */
-    def WORKSPACE = '/var/lib/jenkins/workspace/BE-VSV'
-    /* groovylint-disable-next-line UnusedVariable */
-    def dockerImageTag = "springboot-deploy${env.VERSION_NUMVER}"
-    stage('Load functions') {      // Define the function files will be used
+pipeline {
+	agent any
+    stages {
+		stage ('Load functions') {      // Define the function files will be used
             steps {
                 script {
-                    emailFunction = load 'Email/emailFunction.groovy'
+                    emailFunction = load "Email/emailFunction.groovy"
                 }
             }
-    }
-    try {
+        }
         stage('clone repo') {
             git url: 'https://github.com/DrakeNguyenDuy/BE_KLTN',
             credentialsId:'DrakeNguyenDuy',
@@ -25,13 +21,11 @@ node {
             sh 'docker stop springboot-deploy || true && docker rm springboot-deploy || true'
             sh "docker run --name springboot-deploy -dp 8091:8080 springboot-deploy:${env.VERSION_NUMBER}"
         }
-    }catch (e) {
-        throw e
     }
-    post('Send e-mail') {          // Stage for send an email
+	post ('Send e-mail') {          // Stage for send an email
         always {
                 script {
-                    emailFunction.emailSendingnoattachment('ndlong28@gmail.com')       // Define the emails address should be received the mail
+                    emailFunction.emailSendingnoattachment("ndlong28@gmail.com")       // Define the emails address should be received the mail
                 }
         }
     }
