@@ -14,7 +14,7 @@ FROM openjdk:17-jdk-alpine
 
 # COPY --chown=root:root --from=build /opt/app/target/*.jar app.jar
 
-COPY --chown=root:root /opt/app /opt/app/target/*.jar app.jar
+COPY --chown=root:root target/ /opt/app/target/*.jar app.jar
 
 ENV PORT 8080
 EXPOSE $PORT
