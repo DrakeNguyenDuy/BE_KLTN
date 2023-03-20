@@ -9,17 +9,23 @@ pipeline {
             }
         }
         stage('clone repo') {
-            git url: 'https://github.com/DrakeNguyenDuy/BE_KLTN',
-            credentialsId:'DrakeNguyenDuy',
-            branch: 'main'
+             steps {
+                    git url: 'https://github.com/DrakeNguyenDuy/BE_KLTN',
+                    credentialsId:'DrakeNguyenDuy',
+                    branch: 'main'
+             }
         }
         stage('build docker') {
-            dockerImage = docker.build("springboot-deploy:${env.VERSION_NUMBER}")
+             steps {
+                    dockerImage = docker.build("springboot-deploy:${env.VERSION_NUMBER}")
+             }
         }
         stage('deploy docker') {
-            echo "Docker image tag name: ${dockerImageTag}"
-            sh 'docker stop springboot-deploy || true && docker rm springboot-deploy || true'
-            sh "docker run --name springboot-deploy -dp 8091:8080 springboot-deploy:${env.VERSION_NUMBER}"
+            steps {
+                echo "Docker image tag name: ${dockerImageTag}"
+                sh 'docker stop springboot-deploy || true && docker rm springboot-deploy || true'
+                sh "docker run --name springboot-deploy -dp 8091:8080 springboot-deploy:${env.VERSION_NUMBER}"
+            }
         }
     }
 	post ('Send e-mail') {          // Stage for send an email
