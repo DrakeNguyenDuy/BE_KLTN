@@ -8,9 +8,9 @@ COPY ./ /opt/app
 RUN mvn clean install package -DskipTests
 
 #build image docker
-FROM openjdk:17-jdk-alpine
-COPY --from=build /opt/app/target/*jar app.jar
+# FROM openjdk:17-jdk-alpine
+# COPY --from=build /opt/app/target/*jar app.jar
 
-ENV PORT 8080
-EXPOSE $PORT
-ENTRYPOINT ["java", "-jar", "-Xmx1024M", "-Dserver.port=${PORT}", "app.jar"]
+# ENV PORT 8080
+# EXPOSE $PORT
+# ENTRYPOINT ["java", "-jar", "-Xmx1024M", "-Dserver.port=${PORT}", "app.jar"]
