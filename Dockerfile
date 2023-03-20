@@ -2,14 +2,14 @@
 FROM maven:3.8.3-openjdk-17 as build
 
 #build stage
-WORKDIR /app
-COPY ./ /app
+WORKDIR /opt/app
+COPY ./ /opt/app
 # RUN mvn clen install -DskipTests (flag to skip all tests)
 RUN mvn clean install -DskipTests
 
 #build image docker
 FROM openjdk:17-jdk-alpine
-COPY --from=build /app/targer/*jar app.jar
+COPY --from=build /opt/app/target/*jar app.jar
 
 ENV PORT 8080
 EXPOSE $PORT
