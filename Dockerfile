@@ -2,8 +2,8 @@
 FROM maven:3.8.3-openjdk-17 as build
 
 #build stage
-WORKDIR ./
-# COPY ./ /opt/app
+WORKDIR /opt/app
+COPY ./ /opt/app
 # RUN mvn clen install -DskipTests (flag to skip all tests)
 RUN mvn clean install package -DskipTests
 
