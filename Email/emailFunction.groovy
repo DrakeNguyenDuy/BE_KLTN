@@ -1,3 +1,7 @@
+/* groovylint-disable-next-line NoDef, UnusedVariable */
+def WORKSPACE = '/var/lib/jenkins/workspace/BE-VSV'
+/* groovylint-disable-next-line UnusedVariable */
+def dockerImageTag = "springboot-deploy${env.VERSION_NUMVER}"
 def emailSendingattachment (String recipients) {
   emailext (
     subject: "#Status: ${currentBuild.currentResult} #Job: ${env.JOB_NAME} #Build Number: ${env.BUILD_NUMBER}",                      
