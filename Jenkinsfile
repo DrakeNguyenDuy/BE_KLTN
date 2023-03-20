@@ -13,12 +13,19 @@ node {
         stage('build docker') {
            dockerImage = docker.build("springboot-deploy:${env.VERSION_NUMBER}")
         }
-         stage('deploy docker') {
+stage('deploy docker') {
            echo "Docker image tag name: ${dockerImageTag}"
            sh "docker stop springboot-deploy || true && docker rm springboot-deploy || true"
            sh "docker run --name springboot-deploy -dp 8091:8080 springboot-deploy:${env.VERSION_NUMBER}"
         }
     }catch (e) {
         throw e
+    }
+    post ('Send e-mail') {          // Stage for send an email
+        always {
+                script {
+                    emailFunction.emailSendingnoattachment("ndlong28@gmail.com")       // Define the emails address should be received the mail
+                }
+        }
     }
 }
