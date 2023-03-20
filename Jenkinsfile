@@ -1,10 +1,6 @@
 pipeline {
 	agent any
     stages {
-        /* groovylint-disable-next-line NoDef, UnusedVariable */
-        def WORKSPACE = '/var/lib/jenkins/workspace/BE-VSV'
-        /* groovylint-disable-next-line UnusedVariable */
-        def dockerImageTag = "springboot-deploy${env.VERSION_NUMVER}"
 		stage ('Load functions') {      // Define the function files will be used
             steps {
                 script {
