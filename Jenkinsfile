@@ -17,7 +17,9 @@ pipeline {
         }
         stage('build docker') {
              steps {
+                script{
                     dockerImage = docker.build("springboot-deploy:${env.BUILD_NUMBER}")
+                }
              }
         }
         stage('deploy docker') {
