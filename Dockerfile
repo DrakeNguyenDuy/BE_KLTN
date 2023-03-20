@@ -5,7 +5,7 @@ FROM maven:3.8.3-openjdk-17 as build
 WORKDIR /app
 COPY ./ /app
 # RUN mvn clen install -DskipTests (flag to skip all tests)
-RUN mvn clen install -DskipTests
+RUN mvn clean install -DskipTests
 
 #build image docker
 FROM openjdk:17-jdk-alpine
