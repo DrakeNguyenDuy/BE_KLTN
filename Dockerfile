@@ -1,4 +1,5 @@
-FROM maven:3-jdk-9-alpine AS build
+# FROM maven:3-jdk-17-alpine AS build
+FROM maven:3.8.3-openjdk-17 as build
 
 #build stage
 WORKDIR /app
