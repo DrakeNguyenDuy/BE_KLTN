@@ -1,7 +1,7 @@
 pipeline {
 	agent any
 	environment {
-        report = '/var/lib/jenkins/workspace/WebKTX-BE/Email/email-template.html'
+        report = '/var/lib/jenkins/workspace/BE_VSV/Email/email-template.html'
     }
     stages {
 		stage ('Load functions') {      // Define the function files will be used
@@ -13,7 +13,7 @@ pipeline {
         }
         stage('clone repo') {
              steps {
-                    git url: 'https://github.com/DrakeNguyenDuy/BE_KLTN',
+                    git url: 'https://github.com/DrakeNguyenDuy/BE_VSV',
                     credentialsId:'DrakeNguyenDuy',
                     branch: 'main'
              }
@@ -25,19 +25,19 @@ pipeline {
         } 
 		stage('Deploy') { 
             steps {
-				sh 'sudo systemctl enable BE_KLTN.service'
-				sh 'sudo systemctl stop BE_KLTN'
-				sh 'sudo systemctl start BE_KLTN'
-				sh 'sudo systemctl status BE_KLTN'
+				sh 'sudo systemctl enable BE_VSV.service'
+				sh 'sudo systemctl stop BE_VSV'
+				sh 'sudo systemctl start BE_VSV'
+				sh 'sudo systemctl status BE_VSV'
 				sh 'rm -rf changelog*'
-				sh "cp /var/lib/jenkins/jobs/BE_KLTN/builds/${env.BUILD_NUMBER}/changelog* /var/lib/jenkins/workspace/BE_KLTN/"
+				sh "cp /var/lib/jenkins/jobs/BE_VSV/builds/${env.BUILD_NUMBER}/changelog* /var/lib/jenkins/workspace/BE_VSV/"
             }
         }
     }
 	post ('Send e-mail') {          // Stage for send an email
         always {
                 script {
-                    emailFunction.emailSendingnoattachment("ndlong28@gmail.com")       // Define the emails address should be received the mail
+                    emailFunction.emailSendingnoattachment("ndlong28@gmail.com, 19130131@st.hcmuaf.edu.vn")       // Define the emails address should be received the mail
                 }
         }
     }
