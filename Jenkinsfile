@@ -13,7 +13,7 @@ pipeline {
         }
         stage('clone repo') {
              steps {
-                    git url: 'https://github.com/DrakeNguyenDuy/BE_VSV',
+                    git url: 'https://github.com/DrakeNguyenDuy/BE_KLTN',
                     credentialsId:'DrakeNguyenDuy',
                     branch: 'main'
              }
