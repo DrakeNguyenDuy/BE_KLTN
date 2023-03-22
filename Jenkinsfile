@@ -1,7 +1,7 @@
 pipeline {
 	agent any
 	environment {
-        report = '/var/lib/jenkins/workspace/BE_VSV/Email/email-template.html'
+        report = '/var/lib/jenkins/workspace/BE-VSV/Email/email-template.html'
     }
     stages {
 		stage ('Load functions') {      // Define the function files will be used
@@ -25,12 +25,12 @@ pipeline {
         } 
 		stage('Deploy') { 
             steps {
-				sh 'sudo systemctl enable BE_VSV.service'
-				sh 'sudo systemctl stop BE_VSV'
-				sh 'sudo systemctl start BE_VSV'
-				sh 'sudo systemctl status BE_VSV'
+				sh 'sudo systemctl enable BE-VSV.service'
+				sh 'sudo systemctl stop BE-VSV'
+				sh 'sudo systemctl start BE-VSV'
+				sh 'sudo systemctl status BE-VSV'
 				sh 'rm -rf changelog*'
-				sh "cp /var/lib/jenkins/jobs/BE_VSV/builds/${env.BUILD_NUMBER}/changelog* /var/lib/jenkins/workspace/BE_VSV/"
+				sh "cp /var/lib/jenkins/jobs/BE-VSV/builds/${env.BUILD_NUMBER}/changelog* /var/lib/jenkins/workspace/BE-VSV/"
             }
         }
     }
