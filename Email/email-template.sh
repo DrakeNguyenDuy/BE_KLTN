@@ -39,7 +39,7 @@ th, td {
 
 <p>Enviroment: <span style="color:rgba(29, 0, 192, 0.87)">CI/CD Ubuntu Server</span></p>
 
-<p>Project Name: <span style="color:rgb(29, 0, 192, 0.87)">Co May Dorm Management - Front End</span></p>
+<p>Project Name: <span style="color:rgb(29, 0, 192, 0.87)">2GUYS Management - Back End</span></p>
 
 <p><b>Build Status: </b><span style="color:$COLOR"><b>$BUILD_STATUS</b></span></p>
 
@@ -49,18 +49,18 @@ th, td {
 <p>
 	<ul>
 		<li>Date and Time: $BUILD_TIMESTAMP</li>
-		<li>Environment: <b>Co May Dorm Management</b></li>
+		<li>Environment: <b>2GUYS Management</b></li>
 		<li>Any request to server: Yes</li>
 		<li>Which server to access: <b>CMD environment servers</b></li> 
 		<li>How long the deployment takes (if there are code changes): 5 mins (after receiving this email)</li>
-		<li>Who will take charge on the deployment: <b>DUNG NGUYEN</b></li>
+		<li>Who will take charge on the deployment: <b>NGUYEN DUY LONG</b></li>
 		<li>Please follow change log by attach file</li>
 	</ul>
 </p>
 
  <footer>
   <h3><span style="color:blue">DON'T REPLY THIS EMAIL!</span></h3>
-  <p><span>Contact for support: </span><a href="mailto:nguyenminhdungtd98@gmail.com">Nguyen Minh Dung</a></p>
+  <p><span>Contact for support: </span><a href="mailto:ndlong28@gmail.com">Nguyen Duy Long</a></p>
   <p>Thanks team!!!</p>
  </footer>
 

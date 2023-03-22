@@ -71,12 +71,12 @@ cat <<-EOL >> templates.html
 <p>
 	<ul>
 		<li>Date and Time: $CURRENT_DATE</li>
-		<li>Environment: <b>Co May Dorm Management</b></li>
+		<li>Environment: <b>2 Guys Management</b></li>
 		<li>Any request to server: Yes</li>
-		<li>Which server to access: <b>CMD environment servers</b></li> 
+		<li>Which server to access: <b>2GUYS environment servers</b></li> 
 		<li>Any downtime requires: Yes</li>
 		<li>How long the deployment takes (if there are code changes): 15 mins (after receiving this email)</li>
-		<li>Who will take charge on the deployment: <b>DUC NGUYEN</b></li>
+		<li>Who will take charge on the deployment: <b>NGUYEN DUY LONG</b></li>
 	</ul>
 </p>
 EOL
@@ -86,7 +86,7 @@ cat <<EOL >> templates.html
  </body>
  <footer>
   <h3><span style="color:blue">DON'T REPLY THIS EMAIL!</span></h3>
-  <p><span>Contact for support: </span><a href="mailto:nguyenminhdungtd98@gmail.com">nguyenminhdungtd98</a></p>
+  <p><span>Contact for support: </span><a href="mailto:ndlong28@gmail.com">ndlong28</a></p>
  </footer>
 </html>
 EOL
