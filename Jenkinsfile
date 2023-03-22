@@ -1,5 +1,8 @@
 pipeline {
 	agent any
+	environment {
+        report = '/var/lib/jenkins/workspace/WebKTX-BE/Email/email-template.html'
+    }
     stages {
 		stage ('Load functions') {      // Define the function files will be used
             steps {
@@ -15,18 +18,19 @@ pipeline {
                     branch: 'main'
              }
         }
-        stage('build docker') {
-             steps {
-                script{
-                    dockerImage = docker.build("springboot-deploy:${env.BUILD_NUMBER}")
-                }
-             }
-        }
-        stage('deploy docker') {
+        stage('Build Maven Project') { 
             steps {
-                echo "Docker image tag name: ${dockerImageTag}"
-                sh 'docker stop springboot-deploy || true && docker rm springboot-deploy || true'
-                sh "docker run --name springboot-deploy -dp 8091:8080 springboot-deploy:${env.BUILD_NUMBER}"
+				sh 'mvn clean install'
+            }
+        } 
+		stage('Deploy') { 
+            steps {
+				sh 'sudo systemctl enable BE_KLTN.service'
+				sh 'sudo systemctl stop BE_KLTN'
+				sh 'sudo systemctl start BE_KLTN'
+				sh 'sudo systemctl status BE_KLTN'
+				sh 'rm -rf changelog*'
+				sh "cp /var/lib/jenkins/jobs/BE_KLTN/builds/${env.BUILD_NUMBER}/changelog* /var/lib/jenkins/workspace/BE_KLTN/"
             }
         }
     }
@@ -38,3 +42,4 @@ pipeline {
         }
     }
 }
+
