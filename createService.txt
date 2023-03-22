@@ -1,0 +1,31 @@
+sudo nano /etc/systemd/system/BE_KLTN.service
+
+
+[Unit]
+Description=My Webapp Java REST Service
+[Service]
+User=root
+# The configuration file application.properties should be here:
+
+#change this to your workspace
+WorkingDirectory=/var/lib/jenkins/workspace
+
+#path to executable.
+#executable is a bash script which calls jar file
+ExecStart=java -jar /var/lib/jenkins/workspace/BE_KLTN/sm-shop/src/target/shopizer.jar
+
+SuccessExitStatus=143
+TimeoutStopSec=20
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable BE_KLTN.service
+sudo systemctl stop BE_KLTN
+sudo systemctl start BE_KLTN
+sudo systemctl status BE_KLTN
