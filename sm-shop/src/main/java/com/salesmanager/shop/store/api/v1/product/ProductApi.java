@@ -227,7 +227,11 @@ public class ProductApi {
 		// Start Category handling
 		List<Long> categoryIds = new ArrayList<Long>();
 		if (slug != null) {
+<<<<<<< HEAD
 			Category categoryBySlug = categoryService.getBySeUrl(merchantStore, slug);
+=======
+			Category categoryBySlug = categoryService.getBySeUrl(merchantStore, slug, language);
+>>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 			categoryIds.add(categoryBySlug.getId());
 		}
 		if (category != null) {
@@ -291,6 +295,10 @@ public class ProductApi {
 
 	/**
 	 * API for getting a product
+<<<<<<< HEAD
+=======
+	 * Removed in 3.2.5 in favor of /product/sku
+>>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 	 *
 	 * @param id
 	 * @param lang     ?lang=fr|en|...
@@ -300,7 +308,12 @@ public class ProductApi {
 	 *                   <p>
 	 *                   /api/product/123
 	 */
+<<<<<<< HEAD
 	@RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
+=======
+   
+	@RequestMapping(value = {"/product/{id}","/products/{id}"}, method = RequestMethod.GET)
+>>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 	@ApiOperation(httpMethod = "GET", value = "Get a product by id", notes = "For administration and shop purpose. Specifying ?merchant is required otherwise it falls back to DEFAULT")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Single product found", response = ReadableProduct.class) })
@@ -319,6 +332,10 @@ public class ProductApi {
 
 		return product;
 	}
+<<<<<<< HEAD
+=======
+	**/
+>>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 
 	/**
 	 * Price calculation
@@ -356,7 +373,11 @@ public class ProductApi {
 	 *                   <p>
 	 *                   /api/product/123
 	 */
+<<<<<<< HEAD
 	@RequestMapping(value = { "/product/slug/{friendlyUrl}",
+=======
+	@RequestMapping(value = { "/product/{friendlyUrl}",
+>>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 			"/product/friendly/{friendlyUrl}" }, method = RequestMethod.GET)
 	@ApiOperation(httpMethod = "GET", value = "Get a product by friendlyUrl (slug)", notes = "For administration and shop purpose. Specifying ?merchant is "
 			+ "required otherwise it falls back to DEFAULT")

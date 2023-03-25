@@ -378,6 +378,7 @@ public class ProductManagementAPIIntegrationTest extends ServicesTestSupport {
 
 	}
 
+<<<<<<< HEAD
 	@Test
 	@Ignore
 	public void deleteProduct() throws Exception {
@@ -389,6 +390,8 @@ public class ProductManagementAPIIntegrationTest extends ServicesTestSupport {
 				+ testProductID, HttpMethod.DELETE, httpEntity, ReadableProduct.class);
 		System.out.println("Product " + testProductID + " Deleted.");
 	}
+=======
+>>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 
 	/** private helper methods **/
 	public byte[] extractBytes(final File imgPath) throws Exception {
