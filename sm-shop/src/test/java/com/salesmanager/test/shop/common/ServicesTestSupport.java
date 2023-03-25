@@ -115,8 +115,6 @@ public class ServicesTestSupport {
 		return newCategory;
 
 	}
-<<<<<<< HEAD
-=======
 	
 	protected PersistableCategory category(String code, String name) {
 
@@ -136,7 +134,7 @@ public class ServicesTestSupport {
 		return newCategory;
 
 	}
->>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
+
 
 	protected PersistableProduct product(String code) {
 
@@ -228,11 +226,8 @@ public class ServicesTestSupport {
 
 		final HttpEntity<String> httpEntity = new HttpEntity<>(getHeader());
 
-<<<<<<< HEAD
-		String apiUrl = "/api/v1/product/" + response.getBody().getId();
-=======
+
 		String apiUrl = "/api/v2/product/" + code;
->>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 
 		ResponseEntity<ReadableProduct> readableProduct = testRestTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity,
 				ReadableProduct.class);

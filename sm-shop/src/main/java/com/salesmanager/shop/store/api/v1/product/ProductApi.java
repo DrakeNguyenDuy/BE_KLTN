@@ -94,6 +94,7 @@ public class ProductApi {
 
 	/**
 	 * Create product
+	 * 
 	 * @param product
 	 * @param merchantStore
 	 * @param language
@@ -101,7 +102,7 @@ public class ProductApi {
 	 */
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = { "/private/product", "/auth/products" }, // private
-																			// for
+																		// for
 			// adding
 			// products
 			method = RequestMethod.POST)
@@ -109,7 +110,7 @@ public class ProductApi {
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
 	public @ResponseBody Entity create(@Valid @RequestBody PersistableProduct product,
 			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
-	
+
 		Long id = productCommonFacade.saveProduct(merchantStore, product, language);
 		Entity returnEntity = new Entity();
 		returnEntity.setId(id);
@@ -122,9 +123,8 @@ public class ProductApi {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
 	@ApiOperation(httpMethod = "PUT", value = "Update product", notes = "", produces = "application/json", response = PersistableProduct.class)
-	public void update(@PathVariable Long id,
-			@Valid @RequestBody PersistableProduct product, @ApiIgnore MerchantStore merchantStore,
-			HttpServletRequest request, HttpServletResponse response) {
+	public void update(@PathVariable Long id, @Valid @RequestBody PersistableProduct product,
+			@ApiIgnore MerchantStore merchantStore, HttpServletRequest request, HttpServletResponse response) {
 
 		try {
 			// Make sure we have consistency in this request
@@ -132,8 +132,7 @@ public class ProductApi {
 				response.sendError(400, "Error url id does not match object id");
 			}
 
-			productCommonFacade.saveProduct(merchantStore, product,
-					merchantStore.getDefaultLanguage());
+			productCommonFacade.saveProduct(merchantStore, product, merchantStore.getDefaultLanguage());
 		} catch (Exception e) {
 			LOGGER.error("Error while updating product", e);
 			try {
@@ -150,12 +149,8 @@ public class ProductApi {
 	@ApiOperation(httpMethod = "PATCH", value = "Update product inventory", notes = "Updates product inventory", produces = "application/json", response = Void.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "string", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "string", defaultValue = "en") })
-	public void update(
-			@PathVariable Long id,
-			@Valid @RequestBody
-			LightPersistableProduct product,
-			@ApiIgnore MerchantStore merchantStore,
-			@ApiIgnore Language language) {
+	public void update(@PathVariable Long id, @Valid @RequestBody LightPersistableProduct product,
+			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
 		productCommonFacade.update(id, product, merchantStore, language);
 		return;
 
@@ -171,11 +166,10 @@ public class ProductApi {
 	}
 
 	/**
-	 * List products
-	 * Filtering product lists based on product option and option value ?category=1
-	 * &manufacturer=2 &type=... &lang=en|fr NOT REQUIRED, will use request language
-	 * &start=0 NOT REQUIRED, can be used for pagination &count=10 NOT REQUIRED, can
-	 * be used to limit item count
+	 * List products Filtering product lists based on product option and option
+	 * value ?category=1 &manufacturer=2 &type=... &lang=en|fr NOT REQUIRED, will
+	 * use request language &start=0 NOT REQUIRED, can be used for pagination
+	 * &count=10 NOT REQUIRED, can be used to limit item count
 	 *
 	 * @param request
 	 * @param response
@@ -186,8 +180,7 @@ public class ProductApi {
 	@ResponseBody
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public ReadableProductList list(
-			@RequestParam(value = "lang", required = false) String lang,
+	public ReadableProductList list(@RequestParam(value = "lang", required = false) String lang,
 			@RequestParam(value = "category", required = false) Long category,
 			@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "sku", required = false) String sku,
@@ -227,11 +220,7 @@ public class ProductApi {
 		// Start Category handling
 		List<Long> categoryIds = new ArrayList<Long>();
 		if (slug != null) {
-<<<<<<< HEAD
-			Category categoryBySlug = categoryService.getBySeUrl(merchantStore, slug);
-=======
 			Category categoryBySlug = categoryService.getBySeUrl(merchantStore, slug, language);
->>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 			categoryIds.add(categoryBySlug.getId());
 		}
 		if (category != null) {
@@ -294,11 +283,8 @@ public class ProductApi {
 	}
 
 	/**
-	 * API for getting a product
-<<<<<<< HEAD
-=======
-	 * Removed in 3.2.5 in favor of /product/sku
->>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
+	 * API for getting a product <<<<<<< HEAD ======= Removed in 3.2.5 in favor of
+	 * /product/sku >>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 	 *
 	 * @param id
 	 * @param lang     ?lang=fr|en|...
@@ -308,12 +294,7 @@ public class ProductApi {
 	 *                   <p>
 	 *                   /api/product/123
 	 */
-<<<<<<< HEAD
-	@RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
-=======
-   
-	@RequestMapping(value = {"/product/{id}","/products/{id}"}, method = RequestMethod.GET)
->>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
+	@RequestMapping(value = { "/product/{id}", "/products/{id}" }, method = RequestMethod.GET)
 	@ApiOperation(httpMethod = "GET", value = "Get a product by id", notes = "For administration and shop purpose. Specifying ?merchant is required otherwise it falls back to DEFAULT")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Single product found", response = ReadableProduct.class) })
@@ -332,13 +313,10 @@ public class ProductApi {
 
 		return product;
 	}
-<<<<<<< HEAD
-=======
-	**/
->>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 
 	/**
 	 * Price calculation
+	 * 
 	 * @param id
 	 * @param variants
 	 * @param merchantStore
@@ -346,21 +324,27 @@ public class ProductApi {
 	 * @return
 	 */
 	/**
-	@RequestMapping(value = "/product/{id}/price", method = RequestMethod.POST)
-	@ApiOperation(httpMethod = "POST", value = "Calculate product price with variants", notes = "Product price calculation from variants")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Price calculated", response = ReadableProductPrice.class) })
-	@ResponseBody
-	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
-			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public ReadableProductPrice price(@PathVariable final Long id,
-			@RequestBody ProductPriceRequest variants,
-			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
-
-		return productFacade.getProductPrice(id, variants, merchantStore, language);
-
-	}
-	**/
+	 * @RequestMapping(value = "/product/{id}/price", method = RequestMethod.POST)
+	 * @ApiOperation(httpMethod = "POST", value = "Calculate product price with
+	 *                          variants", notes = "Product price calculation from
+	 *                          variants")
+	 * @ApiResponses(value = {
+	 * @ApiResponse(code = 200, message = "Price calculated", response =
+	 *                   ReadableProductPrice.class) })
+	 * @ResponseBody
+	 * @ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String",
+	 *                      defaultValue = "DEFAULT"),
+	 * @ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+	 *                        public ReadableProductPrice price(@PathVariable final
+	 *                        Long id,
+	 * @RequestBody ProductPriceRequest variants,
+	 * @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
+	 * 
+	 *            return productFacade.getProductPrice(id, variants, merchantStore,
+	 *            language);
+	 * 
+	 *            }
+	 **/
 
 	/**
 	 * API for getting a product
@@ -373,12 +357,7 @@ public class ProductApi {
 	 *                   <p>
 	 *                   /api/product/123
 	 */
-<<<<<<< HEAD
-	@RequestMapping(value = { "/product/slug/{friendlyUrl}",
-=======
-	@RequestMapping(value = { "/product/{friendlyUrl}",
->>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
-			"/product/friendly/{friendlyUrl}" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/product/{friendlyUrl}", "/product/friendly/{friendlyUrl}" }, method = RequestMethod.GET)
 	@ApiOperation(httpMethod = "GET", value = "Get a product by friendlyUrl (slug)", notes = "For administration and shop purpose. Specifying ?merchant is "
 			+ "required otherwise it falls back to DEFAULT")
 	@ApiResponses(value = {
@@ -412,12 +391,12 @@ public class ProductApi {
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
-	@RequestMapping(value = { "/private/product/{productId}/category/{categoryId}"}, method = RequestMethod.POST)
+	@RequestMapping(value = { "/private/product/{productId}/category/{categoryId}" }, method = RequestMethod.POST)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public void addProductToCategory(@PathVariable Long productId,
-			@PathVariable Long categoryId, @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
-			HttpServletResponse response) throws Exception {
+	public void addProductToCategory(@PathVariable Long productId, @PathVariable Long categoryId,
+			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language, HttpServletResponse response)
+			throws Exception {
 
 		try {
 			// get the product
@@ -454,8 +433,8 @@ public class ProductApi {
 	@RequestMapping(value = { "/private/product/{productId}/category/{categoryId}" }, method = RequestMethod.DELETE)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public void removeProductFromCategory(@PathVariable Long productId,
-			@PathVariable Long categoryId, @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
+	public void removeProductFromCategory(@PathVariable Long productId, @PathVariable Long categoryId,
+			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
 
 		try {
 			Product product = productService.getById(productId);

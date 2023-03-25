@@ -71,11 +71,7 @@ public interface CategoryService extends SalesManagerEntityService<Long, Categor
 	
 	Category getById(MerchantStore store, Long id) throws ServiceException;
 
-<<<<<<< HEAD
-	Category getBySeUrl(MerchantStore store, String seUrl);
-=======
 	Category getBySeUrl(MerchantStore store, String seUrl, Language language);
->>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 
 	List<Category> listByParent(Category category, Language language);
 
