@@ -140,9 +140,11 @@ public class ProductFacadeV2Impl implements ProductFacade {
 		List<ProductVariant> instances = productVariantService.getByProductId(store, product, language);
 		
 		//the above get all possible images
-		List<ReadableProductVariant> readableInstances = instances.stream().map(p -> this.productVariant(p, store, language)).collect(Collectors.toList());
-		readableProduct.setVariants(readableInstances);
 		
+//		Long hide some lines here
+//		List<ReadableProductVariant> readableInstances = instances.stream().map(p -> this.productVariant(p, store, language)).collect(Collectors.toList());
+//		readableProduct.setVariants(readableInstances);
+//		end
 		return readableProduct;
 		
 	}

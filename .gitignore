@@ -27,6 +27,10 @@ sm-shop/.project
 **/.settings
 **/.classpath
 */sm-shop/src/main/resources/*
+<<<<<<< HEAD
+=======
+sm-shop/src/main/resources/database.properties
+>>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243
 .DS_Store
 
 .mvnw/*.jar

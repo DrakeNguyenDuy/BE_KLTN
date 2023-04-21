@@ -129,13 +129,18 @@ public class ReadableProductPopulator extends
 			specifications.setWidth(source.getProductWidth());
 			target.setProductSpecifications(specifications);
 
-			target.setPreOrder(source.isPreOrder());
+//			Long hide some lines here (21/4/2023)
+//			target.setPreOrder(source.isPreOrder());
+//			end
+			
 			target.setRefSku(source.getRefSku());
 			target.setSortOrder(source.getSortOrder());
 
-			if(source.getType() != null) {
-				target.setType(this.type(source.getType(), language));
-			}
+			//Long hide some lines here (21/04/2023)
+//			if(source.getType() != null) {
+//				target.setType(this.type(source.getType(), language));
+//			}
+			//end
 
 			if(source.getOwner() != null) {
 				RentalOwner owner = new RentalOwner();
@@ -176,11 +181,13 @@ public class ReadableProductPopulator extends
 /*			if(source.getProductReviewCount()!=null) {
 				target.setRatingCount(source.getProductReviewCount().intValue());
 			}*/
-			if(description!=null) {
-			    com.salesmanager.shop.model.catalog.product.ProductDescription tragetDescription = populateDescription(description);
-				target.setDescription(tragetDescription);
-
-			}
+			//Long hide some linds here
+//			if(description!=null) {
+//			    com.salesmanager.shop.model.catalog.product.ProductDescription tragetDescription = populateDescription(description);
+//				target.setDescription(tragetDescription);
+//
+//			}
+			//end
 
 			if(source.getManufacturer()!=null) {
 				ManufacturerDescription manufacturer = source.getManufacturer().getDescriptions().iterator().next();
@@ -243,27 +250,30 @@ public class ReadableProductPopulator extends
 				imageList = imageList.stream()
 				.sorted(Comparator.comparingInt(ReadableImage::getOrder))
 				.collect(Collectors.toList());
-				
-				target
-				.setImages(imageList);
+				//Long hide some lines here (21/4/2023)
+//				target
+//				.setImages(imageList);
+				//end
 			}
 
-			if(!CollectionUtils.isEmpty(source.getCategories())) {
-
-				ReadableCategoryPopulator categoryPopulator = new ReadableCategoryPopulator();
-				List<ReadableCategory> categoryList = new ArrayList<ReadableCategory>();
-
-				for(Category category : source.getCategories()) {
-
-					ReadableCategory readableCategory = new ReadableCategory();
-					categoryPopulator.populate(category, readableCategory, store, language);
-					categoryList.add(readableCategory);
-
-				}
-
-				target.setCategories(categoryList);
-
-			}
+			//Long hide some lines here(21/4/2023)
+//			if(!CollectionUtils.isEmpty(source.getCategories())) {
+//
+//				ReadableCategoryPopulator categoryPopulator = new ReadableCategoryPopulator();
+//				List<ReadableCategory> categoryList = new ArrayList<ReadableCategory>();
+//
+//				for(Category category : source.getCategories()) {
+//
+//					ReadableCategory readableCategory = new ReadableCategory();
+//					categoryPopulator.populate(category, readableCategory, store, language);
+//					categoryList.add(readableCategory);
+//
+//				}
+//
+//				target.setCategories(categoryList);
+//
+//			}
+//			end
 
 			if(!CollectionUtils.isEmpty(source.getAttributes())) {
 
@@ -402,8 +412,10 @@ public class ReadableProductPopulator extends
 								//if(attr!=null) {
 								//	attr.getAttributeValues().add(attrValue);
 								//}
-								target.getProperties().add(property);
-
+								
+								//Long hide some lines here
+//								target.getProperties().add(property);
+								//end
 
 							} else {//selectable option
 
@@ -464,11 +476,12 @@ public class ReadableProductPopulator extends
 
 					}
 
-				if(selectableOptions != null) {
-					List<ReadableProductOption> options = new ArrayList<ReadableProductOption>(selectableOptions.values());
-					target.setOptions(options);
-				}
-
+				//Long hide some lines here
+//				if(selectableOptions != null) {
+//					List<ReadableProductOption> options = new ArrayList<ReadableProductOption>(selectableOptions.values());
+//					target.setOptions(options);
+//				}
+				//end
 
 			}
 
@@ -516,16 +529,20 @@ public class ReadableProductPopulator extends
 				target.setPrice(price.getFinalPrice());
 				target.setOriginalPrice(pricingService.getDisplayAmount(price.getOriginalPrice(), store));
 
-				if(price.isDiscounted()) {
-					target.setDiscounted(true);
-				}
+				//Long hide some lines here
+//				if(price.isDiscounted()) {
+//					target.setDiscounted(true);
+//				}
+				//end
 
 				//price appender
 				if(availability != null) {
 					Set<ProductPrice> prices = availability.getPrices();
 					if(!CollectionUtils.isEmpty(prices)) {
 						ReadableProductPrice readableProductPrice = new ReadableProductPrice();
-						readableProductPrice.setDiscounted(target.isDiscounted());
+						//Long hide some lines here
+						//readableProductPrice.setDiscounted(target.isDiscounted());
+						//end
 						readableProductPrice.setFinalPrice(target.getFinalPrice());
 						readableProductPrice.setOriginalPrice(target.getOriginalPrice());
 

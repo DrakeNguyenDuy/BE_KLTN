@@ -960,8 +960,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	    entityList.setTotalCount(count.intValue());
 
 		q = RepositoryHelper.paginateQuery(q, count, entityList, criteria);
-
-
 		@SuppressWarnings("unchecked")
 		List<Product> products = q.getResultList();
 		productList.setProducts(products);
@@ -1241,5 +1239,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		}
 		
 	}
+//	//long thêm
+//
+//	public ProductList listProdc(MerchantStore store, Language language, ProductCriteria criteria) {
 
 }

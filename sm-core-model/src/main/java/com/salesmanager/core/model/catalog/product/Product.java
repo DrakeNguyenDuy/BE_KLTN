@@ -1,8 +1,10 @@
 package com.salesmanager.core.model.catalog.product;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -43,25 +45,20 @@ import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
+import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import com.salesmanager.core.model.skill.SkillDescription;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
-
 
 @Entity
 @EntityListeners(value = AuditListener.class)
-@Table(name = "PRODUCT", uniqueConstraints=
-@UniqueConstraint(columnNames = {"MERCHANT_ID", "SKU"}))
+@Table(name = "PRODUCT", uniqueConstraints = @UniqueConstraint(columnNames = { "MERCHANT_ID", "SKU" }))
 public class Product extends SalesManagerEntity<Long, Product> implements Auditable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "PRODUCT_ID", unique=true, nullable=false)
-	@TableGenerator(
-		 name = "TABLE_GEN", 
-		 table = "SM_SEQUENCER", 
-		 pkColumnName = "SEQ_NAME", 
-		 valueColumnName = "SEQ_COUNT", 
-		 pkColumnValue = "PRODUCT_SEQ_NEXT_VAL")
+	@Column(name = "PRODUCT_ID", unique = true, nullable = false)
+	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_SEQ_NEXT_VAL")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	private Long id;
 
@@ -70,24 +67,29 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private Set<ProductDescription> descriptions = new HashSet<ProductDescription>();
-	
+
 	/**
 	 * Inventory
 	 */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="product")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private Set<ProductAvailability> availabilities = new HashSet<ProductAvailability>();
 
 	/**
-	 * Attributes of a product
-	 * Decorates the product with additional properties
+	 * Attributes of a product Decorates the product with additional properties
 	 */
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private Set<ProductAttribute> attributes = new HashSet<ProductAttribute>();
-	
+
 	/**
 	 * Default product images
 	 */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "product")//cascade is set to remove because product save requires logic to create physical image first and then save the image id in the database, cannot be done in cascade
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "product") // cascade is set to remove
+																							// because product save
+																							// requires logic to create
+																							// physical image first and
+																							// then save the image id in
+																							// the database, cannot be
+																							// done in cascade
 	private Set<ProductImage> images = new HashSet<ProductImage>();
 
 	/**
@@ -97,64 +99,65 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	private Set<ProductRelationship> relationships = new HashSet<ProductRelationship>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MERCHANT_ID", nullable=false)
+	@JoinColumn(name = "MERCHANT_ID", nullable = false)
 	private MerchantStore merchantStore;
+
+	// Long add some lines here (21/4/2023)
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "SKILL_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_SKILL"))
+	private Set<SkillDescription> skillDescriptions = new HashSet<SkillDescription>();
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "LOCATION_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_LOCATION"))
+	private Set<LocationDescription> locationDescriptions = new HashSet<LocationDescription>();
+	//end
 	
 	/**
 	 * Product to category
 	 */
-	@ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.REFRESH})
-	@JoinTable(name = "PRODUCT_CATEGORY", joinColumns = { 
-			@JoinColumn(name = "PRODUCT_ID", nullable = false, updatable = false) }
-			, 
-			inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID", 
-					nullable = false, updatable = false) }
-	)
-	@Cascade({
-		org.hibernate.annotations.CascadeType.DETACH,
-		org.hibernate.annotations.CascadeType.LOCK,
-		org.hibernate.annotations.CascadeType.REFRESH,
-		org.hibernate.annotations.CascadeType.REPLICATE
-		
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinTable(name = "PRODUCT_CATEGORY", joinColumns = {
+			@JoinColumn(name = "PRODUCT_ID", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "CATEGORY_ID", nullable = false, updatable = false) })
+	@Cascade({ org.hibernate.annotations.CascadeType.DETACH, org.hibernate.annotations.CascadeType.LOCK,
+			org.hibernate.annotations.CascadeType.REFRESH, org.hibernate.annotations.CascadeType.REPLICATE
+
 	})
 	private Set<Category> categories = new HashSet<Category>();
-	
+
 	/**
-	 * Product variants
-	 * Decorates the product with variants
+	 * Product variants Decorates the product with variants
 	 * 
 	 */
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private Set<ProductVariant> variants = new HashSet<ProductVariant>();
-	
-	@Column(name="DATE_AVAILABLE")
+
+	@Column(name = "DATE_AVAILABLE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateAvailable = new Date();
-	
-	
+
 	@Column(name = "AVAILABLE")
 	private boolean available = true;
-	
 
-	@Column(name = "PREORDER")
-	private boolean preOrder = false;
-	
+//	Long hide some lines here (21/4/2023)
+//	@Column(name = "PREORDER")
+//	private boolean preOrder = false;
+//	end
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH})
-	@JoinColumn(name="MANUFACTURER_ID", nullable=true)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinColumn(name = "MANUFACTURER_ID", nullable = true)
 	private Manufacturer manufacturer;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH})
-	@JoinColumn(name="PRODUCT_TYPE_ID", nullable=true)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinColumn(name = "PRODUCT_TYPE_ID", nullable = true)
 	private ProductType type;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH})
-	@JoinColumn(name="TAX_CLASS_ID", nullable=true)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinColumn(name = "TAX_CLASS_ID", nullable = true)
 	private TaxClass taxClass;
 
 	@Column(name = "PRODUCT_VIRTUAL")
 	private boolean productVirtual = false;
-	
+
 	@Column(name = "PRODUCT_SHIP")
 	private boolean productShipeable = false;
 
@@ -181,61 +184,61 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 
 	@Column(name = "QUANTITY_ORDERED")
 	private Integer productOrdered;
-	
+
 	@Column(name = "SORT_ORDER")
 	private Integer sortOrder = new Integer(0);
 
 	@NotEmpty
-	@Pattern(regexp="^[a-zA-Z0-9_]*$")
+	@Pattern(regexp = "^[a-zA-Z0-9_]*$")
 	@Column(name = "SKU")
 	private String sku;
-	
+
 	/**
 	 * External system reference SKU/ID
 	 */
 	@Column(name = "REF_SKU")
 	private String refSku;
-	
-	@Column(name="COND", nullable = true)
+
+	@Column(name = "COND", nullable = true)
 	private ProductCondition condition;
-	
+
 	/**
 	 * RENTAL ADDITIONAL FIELDS
 	 */
 
-	@Column(name="RENTAL_STATUS", nullable = true)
-	private RentalStatus rentalStatus;
-	
+	//Long hide some lines here(21/4/2023)
+//	@Column(name = "RENTAL_STATUS", nullable = true)
+//	private RentalStatus rentalStatus;
 
-	@Column(name="RENTAL_DURATION", nullable = true)
-	private Integer rentalDuration;
-	
-	@Column(name="RENTAL_PERIOD", nullable = true)
-	private Integer rentalPeriod;
+//	@Column(name = "RENTAL_DURATION", nullable = true)
+//	private Integer rentalDuration;
 
-	
-	public Integer getRentalPeriod() {
-		return rentalPeriod;
-	}
+//	@Column(name = "RENTAL_PERIOD", nullable = true)
+//	private Integer rentalPeriod;
 
-	public void setRentalPeriod(Integer rentalPeriod) {
-		this.rentalPeriod = rentalPeriod;
-	}
-
-	public Integer getRentalDuration() {
-		return rentalDuration;
-	}
-
-	public void setRentalDuration(Integer rentalDuration) {
-		this.rentalDuration = rentalDuration;
-	}
+//	public Integer getRentalPeriod() {
+//		return rentalPeriod;
+//	}
+//
+//	public void setRentalPeriod(Integer rentalPeriod) {
+//		this.rentalPeriod = rentalPeriod;
+//	}
+//
+//	public Integer getRentalDuration() {
+//		return rentalDuration;
+//	}
+//
+//	public void setRentalDuration(Integer rentalDuration) {
+//		this.rentalDuration = rentalDuration;
+//	}
+	//end
 
 	/**
 	 * End rental fields
 	 */
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="CUSTOMER_ID", nullable=true)
+	@JoinColumn(name = "CUSTOMER_ID", nullable = true)
 	private Customer owner;
 
 	public Product() {
@@ -261,12 +264,9 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.auditSection = auditSection;
 	}
 
-
 	public boolean isProductVirtual() {
 		return productVirtual;
 	}
-
-
 
 	public BigDecimal getProductLength() {
 		return productLength;
@@ -316,7 +316,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.productReviewCount = productReviewCount;
 	}
 
-
 	public Integer getProductOrdered() {
 		return productOrdered;
 	}
@@ -341,7 +340,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.descriptions = descriptions;
 	}
 
-
 	public boolean getProductVirtual() {
 		return productVirtual;
 	}
@@ -358,8 +356,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.productIsFree = productIsFree;
 	}
 
-
-
 	public Set<ProductAttribute> getAttributes() {
 		return attributes;
 	}
@@ -367,8 +363,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	public void setAttributes(Set<ProductAttribute> attributes) {
 		this.attributes = attributes;
 	}
-
-
 
 	public Manufacturer getManufacturer() {
 		return manufacturer;
@@ -385,8 +379,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	public void setType(ProductType type) {
 		this.type = type;
 	}
-
-
 
 	public Set<ProductAvailability> getAvailabilities() {
 		return availabilities;
@@ -420,7 +412,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.relationships = relationships;
 	}
 
-
 	public Set<Category> getCategories() {
 		return categories;
 	}
@@ -436,8 +427,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	public void setMerchantStore(MerchantStore merchantStore) {
 		this.merchantStore = merchantStore;
 	}
-
-
 
 	public Date getDateAvailable() {
 		return dateAvailable;
@@ -455,8 +444,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		return sortOrder;
 	}
 
-
-
 	public void setAvailable(Boolean available) {
 		this.available = available;
 	}
@@ -464,7 +451,7 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	public boolean isAvailable() {
 		return available;
 	}
-	
+
 	public boolean isProductShipeable() {
 		return productShipeable;
 	}
@@ -473,34 +460,35 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.productShipeable = productShipeable;
 	}
 
-	
 	public ProductDescription getProductDescription() {
-		if(this.getDescriptions()!=null && this.getDescriptions().size()>0) {
+		if (this.getDescriptions() != null && this.getDescriptions().size() > 0) {
 			return this.getDescriptions().iterator().next();
 		}
 		return null;
 	}
-	
+
 	public ProductImage getProductImage() {
 		ProductImage productImage = null;
-		if(this.getImages()!=null && this.getImages().size()>0) {
-			for(ProductImage image : this.getImages()) {
+		if (this.getImages() != null && this.getImages().size() > 0) {
+			for (ProductImage image : this.getImages()) {
 				productImage = image;
-				if(productImage.isDefaultImage()) {
+				if (productImage.isDefaultImage()) {
 					break;
 				}
 			}
 		}
 		return productImage;
 	}
-	
-	public boolean isPreOrder() {
-		return preOrder;
-	}
 
-	public void setPreOrder(boolean preOrder) {
-		this.preOrder = preOrder;
-	}
+//	Long  hide some lines here (21/4/2023)
+//	public boolean isPreOrder() {
+//		return preOrder;
+//	}
+//
+//	public void setPreOrder(boolean preOrder) {
+//		this.preOrder = preOrder;
+//	}
+//	end
 
 	public String getRefSku() {
 		return refSku;
@@ -518,14 +506,16 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.condition = condition;
 	}
 
-	public RentalStatus getRentalStatus() {
-		return rentalStatus;
-	}
+//	Long hide some lines here (21/4/2023)
+//	public RentalStatus getRentalStatus() {
+//		return rentalStatus;
+//	}
+//
+//	public void setRentalStatus(RentalStatus rentalStatus) {
+//		this.rentalStatus = rentalStatus;
+//	}
+//	end
 
-	public void setRentalStatus(RentalStatus rentalStatus) {
-		this.rentalStatus = rentalStatus;
-	}
-	
 	public Customer getOwner() {
 		return owner;
 	}
@@ -550,7 +540,22 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.productShipeable = productShipeable;
 	}
 
+	//Long add some lines here (21/4/2023)
+	public Set<SkillDescription> getSkillDescriptions() {
+		return skillDescriptions;
+	}
 
+	public void setSkillDescriptions(Set<SkillDescription> skillDescriptions) {
+		this.skillDescriptions = skillDescriptions;
+	}
 
+	public Set<LocationDescription> getLocationDescriptions() {
+		return locationDescriptions;
+	}
+
+	public void setLocationDescriptions(Set<LocationDescription> locationDescriptions) {
+		this.locationDescriptions = locationDescriptions;
+	}
+	//end
 
 }
