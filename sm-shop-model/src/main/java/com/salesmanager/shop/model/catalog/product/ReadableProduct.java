@@ -12,6 +12,8 @@ import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductProp
 import com.salesmanager.shop.model.catalog.product.product.ProductEntity;
 import com.salesmanager.shop.model.catalog.product.product.variant.ReadableProductVariant;
 import com.salesmanager.shop.model.catalog.product.type.ReadableProductType;
+import com.salesmanager.shop.model.location.ReadableLocationDescription;
+import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 
 public class ReadableProduct extends ProductEntity implements Serializable {
 
@@ -19,33 +21,41 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private ProductDescription description;
+
+//	private ProductDescription description;
 	private ReadableProductPrice productPrice;
 	private String finalPrice = "0";
 	private String originalPrice = null;
-	private boolean discounted = false;
+//	private boolean discounted = false;
 	private ReadableImage image;
-	private List<ReadableImage> images = new ArrayList<ReadableImage>();
+//	private List<ReadableImage> images = new ArrayList<ReadableImage>();
 	private ReadableManufacturer manufacturer;
-	private List<ReadableProductAttribute> attributes = new ArrayList<ReadableProductAttribute>();
-	private List<ReadableProductOption> options = new ArrayList<ReadableProductOption>();
-	private List<ReadableProductVariant> variants = new ArrayList<ReadableProductVariant>();
-	private List<ReadableProductProperty> properties = new ArrayList<ReadableProductProperty>();
-	private List<ReadableCategory> categories = new ArrayList<ReadableCategory>();
-	private ReadableProductType type;
+//	private List<ReadableProductAttribute> attributes = new ArrayList<ReadableProductAttribute>();
+//	private List<ReadableProductOption> options = new ArrayList<ReadableProductOption>();
+//	private List<ReadableProductVariant> variants = new ArrayList<ReadableProductVariant>();
+//	private List<ReadableProductProperty> properties = new ArrayList<ReadableProductProperty>();
+//	private List<ReadableCategory> categories = new ArrayList<ReadableCategory>();
+//	private ReadableProductType type;
+
 	private boolean canBePurchased = false;
 
 	// RENTAL
 	private RentalOwner owner;
 
-	public ProductDescription getDescription() {
-		return description;
-	}
+	// Long add some lines here (21/4/2023)
+	private List<ReadableSkillDescription> skillsDecription = new ArrayList<ReadableSkillDescription>();
+	private List<ReadableLocationDescription> locationsDecription = new ArrayList<ReadableLocationDescription>();
+	// end
 
-	public void setDescription(ProductDescription description) {
-		this.description = description;
-	}
+	// Long hide some lines here (21/4/2023)
+//	public ProductDescription getDescription() {
+//		return description;
+//	}
+//
+//	public void setDescription(ProductDescription description) {
+//		this.description = description;
+//	}
+	// end
 
 	public String getFinalPrice() {
 		return finalPrice;
@@ -63,21 +73,21 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 		this.originalPrice = originalPrice;
 	}
 
-	public boolean isDiscounted() {
-		return discounted;
-	}
+//	public boolean isDiscounted() {
+//		return discounted;
+//	}
+//
+//	public void setDiscounted(boolean discounted) {
+//		this.discounted = discounted;
+//	}
 
-	public void setDiscounted(boolean discounted) {
-		this.discounted = discounted;
-	}
-
-	public void setImages(List<ReadableImage> images) {
-		this.images = images;
-	}
-
-	public List<ReadableImage> getImages() {
-		return images;
-	}
+//	public void setImages(List<ReadableImage> images) {
+//		this.images = images;
+//	}
+//
+//	public List<ReadableImage> getImages() {
+//		return images;
+//	}
 
 	public void setImage(ReadableImage image) {
 		this.image = image;
@@ -86,14 +96,15 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	public ReadableImage getImage() {
 		return image;
 	}
-
-	public void setAttributes(List<ReadableProductAttribute> attributes) {
-		this.attributes = attributes;
-	}
-
-	public List<ReadableProductAttribute> getAttributes() {
-		return attributes;
-	}
+	// Long add some lines here (21/4/2023)
+//	public void setAttributes(List<ReadableProductAttribute> attributes) {
+//		this.attributes = attributes;
+//	}
+//
+//	public List<ReadableProductAttribute> getAttributes() {
+//		return attributes;
+//	}
+	// end
 
 	public void setManufacturer(ReadableManufacturer manufacturer) {
 		this.manufacturer = manufacturer;
@@ -118,30 +129,31 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	public void setOwner(RentalOwner owner) {
 		this.owner = owner;
 	}
-
-	public List<ReadableCategory> getCategories() {
-		return categories;
-	}
-
-	public void setCategories(List<ReadableCategory> categories) {
-		this.categories = categories;
-	}
-
-	public List<ReadableProductOption> getOptions() {
-		return options;
-	}
-
-	public void setOptions(List<ReadableProductOption> options) {
-		this.options = options;
-	}
-
-	public ReadableProductType getType() {
-		return type;
-	}
-
-	public void setType(ReadableProductType type) {
-		this.type = type;
-	}
+	// Long add some lines here (21/4/2023)
+//	public List<ReadableCategory> getCategories() {
+//		return categories;
+//	}
+//
+//	public void setCategories(List<ReadableCategory> categories) {
+//		this.categories = categories;
+//	}
+//
+//	public List<ReadableProductOption> getOptions() {
+//		return options;
+//	}
+//
+//	public void setOptions(List<ReadableProductOption> options) {
+//		this.options = options;
+//	}
+//
+//	public ReadableProductType getType() {
+//		return type;
+//	}
+//
+//	public void setType(ReadableProductType type) {
+//		this.type = type;
+//	}
+	// end
 
 	public ReadableProductPrice getProductPrice() {
 		return productPrice;
@@ -151,22 +163,44 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 		this.productPrice = productPrice;
 	}
 
-	public List<ReadableProductProperty> getProperties() {
-		return properties;
+	// Long add some lines here (21/4/2023)
+//	public List<ReadableProductProperty> getProperties() {
+//		return properties;
+//	}
+//
+//	public void setProperties(List<ReadableProductProperty> properties) {
+//		this.properties = properties;
+//	}
+//
+//	public List<ReadableProductVariant> getVariants() {
+//		return variants;
+//	}
+//
+//	public void setVariants(List<ReadableProductVariant> variants) {
+//		this.variants = variants;
+//	}
+	// end
+	public List<ReadableSkillDescription> getSkillsDecription() {
+		return skillsDecription;
 	}
 
-	public void setProperties(List<ReadableProductProperty> properties) {
-		this.properties = properties;
+	// Long add some lines here (21/4/2023)
+	public void setSkillsDecription(List<ReadableSkillDescription> skillsDecription) {
+		this.skillsDecription = skillsDecription;
 	}
 
-	public List<ReadableProductVariant> getVariants() {
-		return variants;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	public void setVariants(List<ReadableProductVariant> variants) {
-		this.variants = variants;
+	public List<ReadableLocationDescription> getLocationsDecription() {
+		return locationsDecription;
 	}
 
-
+	public void setLocationsDecription(List<ReadableLocationDescription> locationsDecription) {
+		this.locationsDecription = locationsDecription;
+	}
+	
+	// end
 
 }
