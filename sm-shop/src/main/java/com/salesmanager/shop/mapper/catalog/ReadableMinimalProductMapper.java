@@ -70,7 +70,10 @@ public class ReadableMinimalProductMapper implements Mapper<Product, ReadableMin
 		specifications.setWidth(source.getProductWidth());
 		destination.setProductSpecifications(specifications);
 		
-		destination.setPreOrder(source.isPreOrder());
+//		Long hide some lines here (21/4/2023)
+//		destination.setPreOrder(source.isPreOrder());
+//		end
+		
 		destination.setRefSku(source.getRefSku());
 		destination.setSortOrder(source.getSortOrder());
 		destination.setSku(source.getSku());

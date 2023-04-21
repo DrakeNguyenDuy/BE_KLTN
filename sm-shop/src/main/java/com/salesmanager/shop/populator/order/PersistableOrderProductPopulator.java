@@ -84,7 +84,9 @@ public class PersistableOrderProductPopulator extends
 			}
 
 			target.setOneTimeCharge(source.getPrice());	
-			target.setProductName(source.getProduct().getDescription().getName());
+//			Long hide some lines here
+//			target.setProductName(source.getProduct().getDescription().getName());
+//			end
 			target.setProductQuantity(source.getOrderedQuantity());
 			target.setSku(source.getProduct().getSku());
 			

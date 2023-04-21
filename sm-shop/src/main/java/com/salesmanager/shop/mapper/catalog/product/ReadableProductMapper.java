@@ -30,8 +30,10 @@ import com.salesmanager.core.model.catalog.product.price.FinalPrice;
 import com.salesmanager.core.model.catalog.product.price.ProductPrice;
 import com.salesmanager.core.model.catalog.product.price.ProductPriceDescription;
 import com.salesmanager.core.model.catalog.product.variant.ProductVariant;
+import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
+import com.salesmanager.core.model.skill.SkillDescription;
 import com.salesmanager.shop.mapper.Mapper;
 import com.salesmanager.shop.mapper.catalog.ReadableCategoryMapper;
 import com.salesmanager.shop.mapper.catalog.ReadableManufacturerMapper;
@@ -50,8 +52,10 @@ import com.salesmanager.shop.model.catalog.product.attribute.api.ReadableProduct
 import com.salesmanager.shop.model.catalog.product.product.ProductSpecification;
 import com.salesmanager.shop.model.catalog.product.product.variant.ReadableProductVariant;
 import com.salesmanager.shop.model.catalog.product.type.ReadableProductType;
+import com.salesmanager.shop.model.location.ReadableLocationDescription;
 import com.salesmanager.shop.model.references.DimensionUnitOfMeasure;
 import com.salesmanager.shop.model.references.WeightUnitOfMeasure;
+import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 import com.salesmanager.shop.store.api.exception.ConversionRuntimeException;
 import com.salesmanager.shop.utils.DateUtil;
 import com.salesmanager.shop.utils.ImageFilePath;
@@ -97,7 +101,6 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		Validate.notNull(source, "Product cannot be null");
 		Validate.notNull(destination, "Product destination cannot be null");
 
-
 		// read only product values
 		// will contain options
 		TreeMap<Long, ReadableProductOption> selectableOptions = new TreeMap<Long, ReadableProductOption>();
@@ -121,14 +124,19 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setAvailable(source.isAvailable());
 		destination.setProductShipeable(source.isProductShipeable());
 
-		destination.setPreOrder(source.isPreOrder());
+//		Long hide some lines here (21/4/2023)
+//		destination.setPreOrder(source.isPreOrder());
+//		end
+		
 		destination.setRefSku(source.getRefSku());
 		destination.setSortOrder(source.getSortOrder());
 
-		if (source.getType() != null) {
-			ReadableProductType readableType = readableProductTypeMapper.convert(source.getType(), store, language);
-			destination.setType(readableType);
-		}
+		// Long hide some lines here (21/4/2023)
+//		if (source.getType() != null) {
+//			ReadableProductType readableType = readableProductTypeMapper.convert(source.getType(), store, language);
+//			destination.setType(readableType);
+//		}
+		// end
 
 		if (source.getDateAvailable() != null) {
 			destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
@@ -156,8 +164,24 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 			List<ReadableImage> imageList = images.stream().map(i -> this.convertImage(source, i, store))
 					.collect(Collectors.toList());
-			destination.setImages(imageList);
+			// Long hide some lines here
+//			destination.setImages(imageList);
+			// end
 		}
+		// Long add some lines here 21/4/2023
+		Set<SkillDescription> skills = source.getSkillDescriptions();
+		if (CollectionUtils.isNotEmpty(skills)) {
+			List<ReadableSkillDescription> skillDescriptions = skills.stream().map(i -> this.convertSkill(i))
+					.collect(Collectors.toList());
+			destination.setSkillsDecription(skillDescriptions);
+		}
+		Set<LocationDescription> locations = source.getLocationDescriptions();
+		if (CollectionUtils.isNotEmpty(locations)) {
+			List<ReadableLocationDescription> locationDescriptions = locations.stream().map(i -> this.convertLocation(i))
+					.collect(Collectors.toList());
+			destination.setLocationsDecription(locationDescriptions);
+		}
+		// end
 
 		if (!CollectionUtils.isEmpty(source.getAttributes())) {
 
@@ -209,7 +233,9 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 						}
 
 						property.setPropertyValue(readableOptionValue);
-						destination.getProperties().add(property);
+						// Long hide some lines here (21/4/2023)
+//						destination.getProperties().add(property);
+//						end
 
 					} else {// selectable option
 
@@ -288,72 +314,69 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 				}
 			}
 		}
-		
+
 		ReadableProductVariant defaultInstance = null;
 
 		// variants
-		if (!CollectionUtils.isEmpty(source.getVariants()))
+		// Long hide some lines here (21/04/2023)
+//		if (!CollectionUtils.isEmpty(source.getVariants()))
+//
+//		{
+//			List<ReadableProductVariant> instances = source
+//					.getVariants().stream()
+//					.map(i -> readableProductVariantMapper.convert(i, store, language)).collect(Collectors.toList());
+//			destination.setVariants(instances);
+//			
+//			/**
+//			 * When an item has instances
+//			 * Take default instance
+//			 * 
+//			 * - Set item price as default instance price
+//			 * - Set default image as default instance image
+//			 */
+//			
+//			//get default instance
+//			defaultInstance = instances.stream().filter(i -> i.isDefaultSelection()).findAny().orElse(null);
+//			
+//
+//			/**
+//			 * variants options list variation color
+//			 */
+//
+//			/**
+//			 * Returns a list of ReadableProductOptions
+//			 * 
+//			 * name lang type code List ReadableProductOptionValueEntity name description
+//			 * image order default
+//			 */
+//
+//			/**
+//			 * Create options from instance Create a list of option values
+//			 */
+//
+//			for (ProductVariant instance : source.getVariants()) {
+//				instanceToOption(selectableOptions, instance, store, language);
+//			}
+//
+//		}
+//
+//		if (selectableOptions != null) {
+//			List<ReadableProductOption> options = new ArrayList<ReadableProductOption>(selectableOptions.values());
+//			destination.setOptions(options);
+//		}
+		// end
 
-		{
-			List<ReadableProductVariant> instances = source
-					.getVariants().stream()
-					.map(i -> readableProductVariantMapper.convert(i, store, language)).collect(Collectors.toList());
-			destination.setVariants(instances);
-			
-			/**
-			 * When an item has instances
-			 * Take default instance
-			 * 
-			 * - Set item price as default instance price
-			 * - Set default image as default instance image
-			 */
-			
-			//get default instance
-			defaultInstance = instances.stream().filter(i -> i.isDefaultSelection()).findAny().orElse(null);
-			
-
-			/**
-			 * variants options list variation color
-			 */
-
-			/**
-			 * Returns a list of ReadableProductOptions
-			 * 
-			 * name lang type code List ReadableProductOptionValueEntity name description
-			 * image order default
-			 */
-
-			/**
-			 * Create options from instance Create a list of option values
-			 */
-
-			for (ProductVariant instance : source.getVariants()) {
-				instanceToOption(selectableOptions, instance, store, language);
-			}
-
-		}
-
-		if (selectableOptions != null) {
-			List<ReadableProductOption> options = new ArrayList<ReadableProductOption>(selectableOptions.values());
-			destination.setOptions(options);
-		}
-		
 		// availability
 		ProductAvailability availability = null;
 		for (ProductAvailability a : source.getAvailabilities()) {
 			// TODO validate region
 			// if(availability.getRegion().equals(Constants.ALL_REGIONS)) {//TODO REL 3.X
 			// accept a region
-			
+
 			/**
-			 * Default availability
-			 * store
-			 * product
-			 * instance null
-			 * region variant null
+			 * Default availability store product instance null region variant null
 			 */
-			
-			
+
 			availability = a;
 			destination.setQuantity(availability.getProductQuantity() == null ? 1 : availability.getProductQuantity());
 			destination.setQuantityOrderMaximum(
@@ -363,13 +386,13 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			if (availability.getProductQuantity().intValue() > 0 && destination.isAvailable()) {
 				destination.setCanBePurchased(true);
 			}
-			
-			if(a.getProductVariant()==null && StringUtils.isEmpty(a.getRegionVariant())) {
+
+			if (a.getProductVariant() == null && StringUtils.isEmpty(a.getRegionVariant())) {
 				break;
 			}
 		}
-		
-		//if default instance
+
+		// if default instance
 
 		destination.setSku(source.getSku());
 
@@ -381,16 +404,20 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 				destination.setPrice(price.getFinalPrice());
 				destination.setOriginalPrice(pricingService.getDisplayAmount(price.getOriginalPrice(), store));
 
-				if (price.isDiscounted()) {
-					destination.setDiscounted(true);
-				}
+				// Long hide some lines here (21/04/2023)
+//				if (price.isDiscounted()) {
+//					destination.setDiscounted(true);
+//				}
+				// end
 
 				// price appender
 				if (availability != null) {
 					Set<ProductPrice> prices = availability.getPrices();
 					if (!CollectionUtils.isEmpty(prices)) {
 						ReadableProductPrice readableProductPrice = new ReadableProductPrice();
-						readableProductPrice.setDiscounted(destination.isDiscounted());
+						// Long hide some lines here (21/04/2023)
+//						readableProductPrice.setDiscounted(destination.isDiscounted());
+						// end
 						readableProductPrice.setFinalPrice(destination.getFinalPrice());
 						readableProductPrice.setOriginalPrice(destination.getOriginalPrice());
 
@@ -399,7 +426,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 						destination.setProductPrice(readableProductPrice);
 
-						if (pr.isPresent() && language !=null) {
+						if (pr.isPresent() && language != null) {
 							readableProductPrice.setId(pr.get().getId());
 							Optional<ProductPriceDescription> d = pr.get().getDescriptions().stream()
 									.filter(desc -> desc.getLanguage().getCode().equals(language.getCode()))
@@ -431,23 +458,24 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		if (source.getProductReviewCount() != null) {
 			destination.setRatingCount(source.getProductReviewCount().intValue());
 		}
-
-		if (description != null) {
-			com.salesmanager.shop.model.catalog.product.ProductDescription tragetDescription = populateDescription(
-					description);
-			destination.setDescription(tragetDescription);
-
-		}
-
-		if (!CollectionUtils.isEmpty(source.getCategories())) {
-			List<ReadableCategory> categoryList = new ArrayList<ReadableCategory>();
-			for (Category category : source.getCategories()) {
-				ReadableCategory readableCategory = readableCategoryMapper.convert(category, store, language);
-				categoryList.add(readableCategory);
-
-			}
-			destination.setCategories(categoryList);
-		}
+//		Long hide some lines here
+//		if (description != null) {
+//			com.salesmanager.shop.model.catalog.product.ProductDescription tragetDescription = populateDescription(
+//					description);
+//			destination.setDescription(tragetDescription);
+//
+//		}
+//
+//		if (!CollectionUtils.isEmpty(source.getCategories())) {
+//			List<ReadableCategory> categoryList = new ArrayList<ReadableCategory>();
+//			for (Category category : source.getCategories()) {
+//				ReadableCategory readableCategory = readableCategoryMapper.convert(category, store, language);
+//				categoryList.add(readableCategory);
+//
+//			}
+//			destination.setCategories(categoryList);
+//		}
+		// end
 
 		ProductSpecification specifications = new ProductSpecification();
 		specifications.setHeight(source.getProductHeight());
@@ -596,10 +624,9 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 	private void instanceToOption(TreeMap<Long, ReadableProductOption> selectableOptions, ProductVariant instance,
 			MerchantStore store, Language language) {
 
-
-		ReadableProductOption option = this.option(selectableOptions, instance.getVariation().getProductOption(), language);
+		ReadableProductOption option = this.option(selectableOptions, instance.getVariation().getProductOption(),
+				language);
 		option.setVariant(true);
-
 
 		// take care of option value
 		Optional<ReadableProductOptionValue> optionOptionValue = this
@@ -615,12 +642,12 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		}
 
 		if (instance.getVariationValue() != null) {
-			ReadableProductOption optionValue = this.option(selectableOptions, instance.getVariationValue().getProductOption(), language);
+			ReadableProductOption optionValue = this.option(selectableOptions,
+					instance.getVariationValue().getProductOption(), language);
 
 			// take care of option value
 			Optional<ReadableProductOptionValue> optionValueOptionValue = this
 					.optionValue(instance.getVariationValue().getProductOptionValue(), store, language);
-
 
 			if (optionValueOptionValue.isPresent()) {
 				optionValueOptionValue.get().setId(instance.getId());
@@ -633,21 +660,20 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		}
 
 	}
-	
+
 	private void addOptionValue(ReadableProductOption option, ReadableProductOptionValue optionValue) {
-		
+
 		ReadableProductOptionValue find = option.getOptionValues().stream()
-				  .filter(optValue -> optValue.getCode()==optionValue.getCode())
-				  .findAny()
-				  .orElse(null);
-		
-		if(find == null) {
+				.filter(optValue -> optValue.getCode() == optionValue.getCode()).findAny().orElse(null);
+
+		if (find == null) {
 			option.getOptionValues().add(optionValue);
 		}
 	}
-	
-	private ReadableProductOption option(TreeMap<Long, ReadableProductOption> selectableOptions, ProductOption option, Language language) {
-		if(selectableOptions.containsKey(option.getId())) {
+
+	private ReadableProductOption option(TreeMap<Long, ReadableProductOption> selectableOptions, ProductOption option,
+			Language language) {
+		if (selectableOptions.containsKey(option.getId())) {
 			return selectableOptions.get(option.getId());
 		}
 
@@ -688,4 +714,22 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 	}
 
+	// Long add some here
+	private ReadableSkillDescription convertSkill(SkillDescription sd) {
+		ReadableSkillDescription rsd = new ReadableSkillDescription();
+		rsd.setCode(sd.getCODE());
+		rsd.setIdSkill(sd.getID_SKILL());
+		rsd.setName(sd.getNAME());
+		return rsd;
+	}
+	private ReadableLocationDescription convertLocation(LocationDescription ld) {
+		ReadableLocationDescription rld = new ReadableLocationDescription();
+		rld.setIdLocation(ld.getID_LOCATION());
+		rld.setDetailAddress(ld.getDETAIL_ADDRESS());
+		rld.setWard(ld.getWARD());
+		rld.setDistrict(ld.getDISTRICT());
+		rld.setProvince(ld.getPROVINCE());
+		return rld;
+	}
+	// end
 }
