@@ -264,6 +264,11 @@ public class ProductApiV2 {
 			// n
 			// allowing
 			// navigation
+			
+//			Long add some lines here (22/04/2023)
+			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, //paging
+//			end
+			
 			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count, // count
 			// per
 			// page
@@ -279,6 +284,10 @@ public class ProductApiV2 {
 
 		searchCriterias.setMaxCount(count);
 		searchCriterias.setLanguage(language.getCode());
+		
+		//Long add some lines here (22/4/2023)
+		searchCriterias.setStartPage(page);
+		//end
 
 		try {
 			return productFacadeV2.getProductListsByCriterias(merchantStore, language, searchCriterias);
