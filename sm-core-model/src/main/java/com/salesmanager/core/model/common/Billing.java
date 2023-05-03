@@ -13,53 +13,62 @@ import com.salesmanager.core.model.reference.zone.Zone;
 
 @Embeddable
 public class Billing {
-	
-	@NotEmpty
-	@Column (name ="BILLING_LAST_NAME", length=64, nullable=false)
+
+//	Long hide some lines here (25/4/2023)
+//	@NotEmpty
+//	end
+	@Column(name = "BILLING_LAST_NAME", length = 64, nullable = true
+//			Long hide some lines here (25/4/2023)
+//			false
+//			end
+	)
 	private String lastName;
 
-	@NotEmpty
-	@Column (name ="BILLING_FIRST_NAME", length=64, nullable=false)
+//	Long hide some lines here (25/4/2023)
+//	@NotEmpty
+//	end
+	@Column(name = "BILLING_FIRST_NAME", length = 64, nullable = true
+//			Long hide some lines here (25/4/2023)
+//			false
+//			end
+	)
 	private String firstName;
-	
 
-
-	@Column (name ="BILLING_COMPANY", length=100)
+	@Column(name = "BILLING_COMPANY", length = 100, nullable = true)
 	private String company;
-	
-	@Column (name ="BILLING_STREET_ADDRESS", length=256)
+
+	@Column(name = "BILLING_STREET_ADDRESS", length = 256)
 	private String address;
-	
-	
-	@Column (name ="BILLING_CITY", length=100)
+
+	@Column(name = "BILLING_CITY", length = 100, nullable = true)
 	private String city;
-	
-	@Column (name ="BILLING_POSTCODE", length=20)
+
+	@Column(name = "BILLING_POSTCODE", length = 20, nullable = true)
 	private String postalCode;
-	
-	@Column(name="BILLING_TELEPHONE", length=32)
+
+	@Column(name = "BILLING_TELEPHONE", length = 32, nullable = true)
 	private String telephone;
-	
-	@Column (name ="BILLING_STATE", length=100)
+
+	@Column(name = "BILLING_STATE", length = 100, nullable = true)
 	private String state;
-	
-	@Column (name ="LONGITUDE", length=100)
+
+	@Column(name = "LONGITUDE", length = 100, nullable = true)
 	private String longitude;
-	
-	@Column (name ="LATITUDE", length=100)
+
+	@Column(name = "LATITUDE", length = 100, nullable = true)
 	private String latitude;
 
-
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Country.class)
-	@JoinColumn(name="BILLING_COUNTRY_ID", nullable=false)
+	@JoinColumn(name = "BILLING_COUNTRY_ID", nullable = true
+//			Long hide some lines here (25/4/2023)
+//			false
+//			end
+	)
 	private Country country;
-	
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Zone.class)
-	@JoinColumn(name="BILLING_ZONE_ID", nullable=true)
+	@JoinColumn(name = "BILLING_ZONE_ID", nullable = true)
 	private Zone zone;
-
-
 
 	public String getCompany() {
 		return company;
@@ -92,7 +101,7 @@ public class Billing {
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
-	
+
 	public Country getCountry() {
 		return country;
 	}
@@ -108,7 +117,7 @@ public class Billing {
 	public void setZone(Zone zone) {
 		this.zone = zone;
 	}
-	
+
 	public String getState() {
 		return state;
 	}
@@ -124,8 +133,7 @@ public class Billing {
 	public String getTelephone() {
 		return telephone;
 	}
-	
-	
+
 	public String getLastName() {
 		return lastName;
 	}
@@ -133,7 +141,7 @@ public class Billing {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -157,5 +165,5 @@ public class Billing {
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
-	
+
 }

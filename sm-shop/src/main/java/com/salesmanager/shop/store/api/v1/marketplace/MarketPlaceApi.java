@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
+import com.salesmanager.shop.mapper.store.StoreMapper;
+import com.salesmanager.shop.mapper.user.UserMapper;
 import com.salesmanager.shop.model.marketplace.ReadableMarketPlace;
 import com.salesmanager.shop.model.marketplace.SignupStore;
+import com.salesmanager.shop.model.store.PersistableMerchantStore;
+import com.salesmanager.shop.model.user.PersistableUser;
 import com.salesmanager.shop.model.user.ReadableUser;
 import com.salesmanager.shop.store.api.exception.OperationNotAllowedException;
 import com.salesmanager.shop.store.api.exception.ResourceNotFoundException;
@@ -46,6 +50,13 @@ public class MarketPlaceApi {
 
 	@Inject
 	private LanguageUtils languageUtils;
+	
+	//Long add some lines here (3/5/2023)
+	@Autowired
+	private StoreMapper storeMapper;
+	@Autowired
+	private UserMapper userMapper;
+	//end
 
 	/**
 	 * Get a marketplace from storeCode returns market place details and
@@ -83,11 +94,18 @@ public class MarketPlaceApi {
 			throw new OperationNotAllowedException(
 					"Store [" + store.getCode() + "] already exist and cannot be registered");
 		}
-
-		// create user
-
+		
 		// create store
-
+		
+		//Long add some lines here (3/5/2023)
+		PersistableMerchantStore merchantStore = storeMapper.convert(store, null, null);
+		storeFacade.create(merchantStore);
+		
+		// create user
+		PersistableUser persistableUser = userMapper.convert(store, null, null);
+		persistableUser.setStore(merchantStore.getCode());
+		MerchantStore merchantStore2 = storeMapper.convert(store);
+		userFacade.create(persistableUser, merchantStore2);
 		// send notification
 
 	}

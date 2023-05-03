@@ -52,7 +52,11 @@ public class Country extends SalesManagerEntity<Integer, Country> {
 	@Column(name = "COUNTRY_SUPPORTED")
 	private boolean supported = true;
 	
-	@Column(name = "COUNTRY_ISOCODE", unique=true, nullable = false)
+	@Column(name = "COUNTRY_ISOCODE", unique=true, nullable = true
+//			Long hide some lines here (25/4/2023)
+//			false
+//			end
+			)
 	private String isoCode;
 	
 	@Transient
