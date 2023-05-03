@@ -108,7 +108,11 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	
 
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
-	@JoinColumn(name = "LANGUAGE_ID", nullable=false)
+	@JoinColumn(name = "LANGUAGE_ID", nullable=true
+//			Long hide some lines here (25/4/2023)
+//			false
+//			end
+			)
 	private Language defaultLanguage;
 	
 
@@ -117,7 +121,11 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MERCHANT_ID", nullable=false)
+	@JoinColumn(name="MERCHANT_ID", nullable=true
+//			Long hide some lines here (25/4/2023)
+//			false
+//			end
+			)
 	private MerchantStore merchantStore;
 	
 

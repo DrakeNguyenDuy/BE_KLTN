@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -98,9 +99,10 @@ public class AuthenticateCustomerApi {
 		@ApiImplicitParam(name = "lang", dataType = "string", defaultValue = "en") })
     @ResponseBody
     public ResponseEntity<?> register(
-    		@Valid @RequestBody PersistableCustomer customer, 
+    		@Valid @RequestBody PersistableCustomer customer,
 			@ApiIgnore MerchantStore merchantStore,
-			@ApiIgnore Language language) throws Exception {
+			@ApiIgnore Language language
+			) throws Exception {
 
 
             customer.setUserName(customer.getEmailAddress());
@@ -111,8 +113,8 @@ public class AuthenticateCustomerApi {
 			}
             
             Validate.notNull(customer.getUserName(),"Username cannot be null");
-            Validate.notNull(customer.getBilling(),"Requires customer Country code");
-            Validate.notNull(customer.getBilling().getCountry(),"Requires customer Country code");
+//            Validate.notNull(customer.getBilling(),"Requires customer Country code");
+//            Validate.notNull(customer.getBilling().getCountry(),"Requires customer Country code");
             
             customerFacade.registerCustomer(customer, merchantStore, language);
             
