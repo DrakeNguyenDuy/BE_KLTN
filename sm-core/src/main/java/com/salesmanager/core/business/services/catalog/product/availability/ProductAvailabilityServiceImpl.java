@@ -65,7 +65,10 @@ public class ProductAvailabilityServiceImpl extends SalesManagerEntityServiceImp
 		Validate.notNull(productId, "Product cannot be null");
 		Validate.notNull(store, "MercantStore cannot be null");
 		Pageable pageRequest = PageRequest.of(page, count);
-		return pageableProductAvailabilityRepository.getByProductId(productId, store.getCode(), pageRequest);
+//		Long hide some lines here(7/5/2023)
+//		return pageableProductAvailabilityRepository.getByProductId(productId, store.getCode(), pageRequest);
+//		end
+		return null;
 	}
 
 
@@ -80,19 +83,28 @@ public class ProductAvailabilityServiceImpl extends SalesManagerEntityServiceImp
 	public Page<ProductAvailability> getBySku(String sku, MerchantStore store, int page, int count) {
 		Validate.notNull(store, "MerchantStore cannot be null");
 		Pageable pageRequest = PageRequest.of(page, count);
-		return pageableProductAvailabilityRepository.getBySku(sku, store.getCode(), pageRequest);
+//		Long hide some lines here(7/5/2023)
+//		return pageableProductAvailabilityRepository.getBySku(sku, store.getCode(), pageRequest);
+//		end
+		return null;
 	}
 
 	@Override
 	public Page<ProductAvailability> getBySku(String sku, int page, int count) {
 		Pageable pageRequest = PageRequest.of(page, count);
-		return pageableProductAvailabilityRepository.getBySku(sku, pageRequest);
+//		Long hide some lines here
+//		return pageableProductAvailabilityRepository.getBySku(sku, pageRequest);
+//		end
+		return null;
 	}
 
 	@Override
 	public List<ProductAvailability> getBySku(String sku, MerchantStore store) {
 		Validate.notNull(store, "MerchantStore cannot be null");
-		return productAvailabilityRepository.getBySku(sku, store.getCode());
+	//  Long hide some lines here
+//		return productAvailabilityRepository.getBySku(sku, store.getCode());
+//	end
+		return null;
 	}
 
 }

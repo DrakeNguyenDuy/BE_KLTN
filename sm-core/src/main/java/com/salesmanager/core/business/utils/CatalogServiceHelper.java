@@ -22,25 +22,26 @@ public class CatalogServiceHelper {
 	 */
 	public static void setToLanguage(Product p, int language) {
 
-
-		Set<ProductAttribute> attributes = p.getAttributes();
-		if (attributes != null) {
-
-			for (ProductAttribute attribute : attributes) {
-
-				ProductOption po = attribute.getProductOption();
-				if (po.getDescriptions() != null) {
-					Set<ProductOptionDescription> podDescriptions = po.getDescriptions().stream().filter(pod -> pod.getLanguage().getId() == language).collect(Collectors.toSet());
-					po.setDescriptions(podDescriptions);
-				}
-
-				ProductOptionValue pov = attribute.getProductOptionValue();
-				if (pov.getDescriptions() != null) {
-					Set<ProductOptionValueDescription> povdDescriptions = pov.getDescriptions().stream().filter(pod -> pod.getLanguage().getId() == language).collect(Collectors.toSet());
-					pov.setDescriptions(povdDescriptions);
-				}
-			}
-		}
+//		Long hide some lines here(6/5/2023)
+//		Set<ProductAttribute> attributes = p.getAttributes();
+//		if (attributes != null) {
+//
+//			for (ProductAttribute attribute : attributes) {
+//
+//				ProductOption po = attribute.getProductOption();
+//				if (po.getDescriptions() != null) {
+//					Set<ProductOptionDescription> podDescriptions = po.getDescriptions().stream().filter(pod -> pod.getLanguage().getId() == language).collect(Collectors.toSet());
+//					po.setDescriptions(podDescriptions);
+//				}
+//
+//				ProductOptionValue pov = attribute.getProductOptionValue();
+//				if (pov.getDescriptions() != null) {
+//					Set<ProductOptionValueDescription> povdDescriptions = pov.getDescriptions().stream().filter(pod -> pod.getLanguage().getId() == language).collect(Collectors.toSet());
+//					pov.setDescriptions(povdDescriptions);
+//				}
+//			}
+//		}
+//		end
 
 	}
 

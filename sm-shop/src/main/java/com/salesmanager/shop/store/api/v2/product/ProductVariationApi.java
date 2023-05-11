@@ -137,18 +137,20 @@ public class ProductVariationApi {
     List<ReadableProductVariantValue> variants = options.getOptions();
     List<ProductAttribute> attributes = new ArrayList<ProductAttribute>();
     
-    Set<ProductAttribute> productAttributes = product.getAttributes();
-    for(ProductAttribute attribute : productAttributes) {
-      Long option = attribute.getProductOption().getId();
-      Long optionValue = attribute.getProductOptionValue().getId();
-      for(ReadableProductVariantValue v : variants) {
-        if(v.getOption().longValue() == option.longValue()
-            && v.getValue().longValue() == optionValue.longValue()) {
-          attributes.add(attribute);
-        }
-      }
-      
-    }
+//    Long hide some lines here(6/5/2023)
+//    Set<ProductAttribute> productAttributes = product.getAttributes();
+//    for(ProductAttribute attribute : productAttributes) {
+//      Long option = attribute.getProductOption().getId();
+//      Long optionValue = attribute.getProductOptionValue().getId();
+//      for(ReadableProductVariantValue v : variants) {
+//        if(v.getOption().longValue() == option.longValue()
+//            && v.getValue().longValue() == optionValue.longValue()) {
+//          attributes.add(attribute);
+//        }
+//      }
+//      
+//    }
+//    end
 
     FinalPrice price = pricingService.calculateProductPrice(product, attributes);
     ReadableProductPrice readablePrice = new ReadableProductPrice();

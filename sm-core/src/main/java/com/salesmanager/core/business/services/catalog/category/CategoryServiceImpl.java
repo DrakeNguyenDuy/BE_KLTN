@@ -148,7 +148,8 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
 	public Category getByCode(MerchantStore store, String code) throws ServiceException {
 
 		try {
-			return categoryRepository.findByCode(store.getId(), code);
+//			return categoryRepository.findByCode(store.getId(), code);
+			return categoryRepository.findByCode(code);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

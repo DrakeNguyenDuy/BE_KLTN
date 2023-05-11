@@ -426,25 +426,29 @@ public class ProductCommonFacadeImpl implements ProductCommonFacade {
 			throw new ServiceRuntimeException(e);
 		}
 		
-		ProductVariant instance = modified.getVariants().stream()
-				  .filter(inst -> sku.equals(inst.getSku()))
-				  .findAny()
-				  .orElse(null);
+//		Long hide some lines here
+//		ProductVariant instance = modified.getVariants().stream()
+//				  .filter(inst -> sku.equals(inst.getSku()))
+//				  .findAny()
+//				  .orElse(null);
+//		end
 		
-		if(instance!=null) {
-			instance.setAvailable(product.isAvailable());
-			
-			for (ProductAvailability availability : instance.getAvailabilities()) {
-				this.setAvailability(availability, product);
-			}
-		} else {
-			// Update product with minimal set
-			modified.setAvailable(product.isAvailable());
-			
-			for (ProductAvailability availability : modified.getAvailabilities()) {
-				this.setAvailability(availability, product);
-			}
-		}
+//		Long hide some lines here(6/5/2023)
+//		if(instance!=null) {
+//			instance.setAvailable(product.isAvailable());
+//			
+//			for (ProductAvailability availability : instance.getAvailabilities()) {
+//				this.setAvailability(availability, product);
+//			}
+//		} else {
+//			// Update product with minimal set
+//			modified.setAvailable(product.isAvailable());
+//			
+//			for (ProductAvailability availability : modified.getAvailabilities()) {
+//				this.setAvailability(availability, product);
+//			}
+//		}
+//		end
 
 		try {
 			productService.saveProduct(modified);

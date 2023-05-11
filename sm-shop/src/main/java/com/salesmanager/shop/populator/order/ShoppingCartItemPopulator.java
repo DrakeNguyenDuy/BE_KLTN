@@ -53,7 +53,10 @@ public class ShoppingCartItemPopulator extends
 				if(attribute.getProduct().getId().longValue()!=source.getProduct().getId().longValue()) {
 					throw new ConversionException("ProductAttribute with id " + attr.getId() + " is not assigned to Product id " + source.getProduct().getId());
 				}
-				product.getAttributes().add(attribute);
+				
+//				Long hide some lines here(6/5/2023)
+//				product.getAttributes().add(attribute);
+//				end
 			}
 		}
 

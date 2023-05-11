@@ -75,6 +75,14 @@ public interface ProductRelationshipService extends
 	 */
 	List<ProductRelationship> getGroups(MerchantStore store);
 	
+//	Long add some lines here(6/5/2023)
+	/**
+	 * Get a list of relationship acting as groups of products
+	 * @return
+	 */
+	List<ProductRelationship> getGroups();
+//	end
+	
 	/**
 	 * Get group by store and group name (code)
 	 * @param store

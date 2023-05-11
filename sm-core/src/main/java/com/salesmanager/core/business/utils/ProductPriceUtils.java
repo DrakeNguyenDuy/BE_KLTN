@@ -144,29 +144,32 @@ public class ProductPriceUtils {
 
 		// attributes
 		BigDecimal attributePrice = null;
-		if (product.getAttributes() != null && product.getAttributes().size() > 0) {
-			for (ProductAttribute attribute : product.getAttributes()) {
-				if (attribute.getAttributeDefault()) {
-					if (attribute.getProductAttributePrice() != null
-							&& attribute.getProductAttributePrice().doubleValue() > 0) {
-						if (attributePrice == null) {
-							attributePrice = new BigDecimal(0);
-						}
-						attributePrice = attributePrice.add(attribute.getProductAttributePrice());
-					}
-				}
-			}
-
-			if (attributePrice != null && attributePrice.doubleValue() > 0) {
-				BigDecimal fp = finalPrice.getFinalPrice();
-				fp = fp.add(attributePrice);
-				finalPrice.setFinalPrice(fp);
-
-				BigDecimal op = finalPrice.getOriginalPrice();
-				op = op.add(attributePrice);
-				finalPrice.setOriginalPrice(op);
-			}
-		}
+		
+//		Long hide some lines here(6/5/2023)
+//		if (product.getAttributes() != null && product.getAttributes().size() > 0) {
+//			for (ProductAttribute attribute : product.getAttributes()) {
+//				if (attribute.getAttributeDefault()) {
+//					if (attribute.getProductAttributePrice() != null
+//							&& attribute.getProductAttributePrice().doubleValue() > 0) {
+//						if (attributePrice == null) {
+//							attributePrice = new BigDecimal(0);
+//						}
+//						attributePrice = attributePrice.add(attribute.getProductAttributePrice());
+//					}
+//				}
+//			}
+//
+//			if (attributePrice != null && attributePrice.doubleValue() > 0) {
+//				BigDecimal fp = finalPrice.getFinalPrice();
+//				fp = fp.add(attributePrice);
+//				finalPrice.setFinalPrice(fp);
+//
+//				BigDecimal op = finalPrice.getOriginalPrice();
+//				op = op.add(attributePrice);
+//				finalPrice.setOriginalPrice(op);
+//			}
+//		}
+//		end
 
 		finalPrice.setStringPrice(getStringAmount(finalPrice.getFinalPrice()));
 		if (finalPrice.isDiscounted()) {
@@ -186,24 +189,26 @@ public class ProductPriceUtils {
 		FinalPrice finalPrice = null;
 		List<FinalPrice> otherPrices = null;
 
-		for (ProductAvailability availability : variant.getAvailabilities()) {
-			if (!StringUtils.isEmpty(availability.getRegion())
-					&& availability.getRegion().equals(Constants.ALL_REGIONS)) {// TODO REL 2.1 accept a region
-				Set<ProductPrice> prices = availability.getPrices();
-				for (ProductPrice price : prices) {
-
-					FinalPrice p = finalPrice(price);
-					if (price.isDefaultPrice()) {
-						finalPrice = p;
-					} else {
-						if (otherPrices == null) {
-							otherPrices = new ArrayList<FinalPrice>();
-						}
-						otherPrices.add(p);
-					}
-				}
-			}
-		}
+//		Long hide some lines here(7/5/2023)
+//		for (ProductAvailability availability : variant.getAvailabilities()) {
+//			if (!StringUtils.isEmpty(availability.getRegion())
+//					&& availability.getRegion().equals(Constants.ALL_REGIONS)) {// TODO REL 2.1 accept a region
+//				Set<ProductPrice> prices = availability.getPrices();
+//				for (ProductPrice price : prices) {
+//
+//					FinalPrice p = finalPrice(price);
+//					if (price.isDefaultPrice()) {
+//						finalPrice = p;
+//					} else {
+//						if (otherPrices == null) {
+//							otherPrices = new ArrayList<FinalPrice>();
+//						}
+//						otherPrices.add(p);
+//					}
+//				}
+//			}
+//		}
+//		end
 
 		if (finalPrice != null) {
 			finalPrice.setAdditionalPrices(otherPrices);
@@ -559,40 +564,44 @@ public class ProductPriceUtils {
 		 * we use availability from variant Otherwise we use price
 		 */
 
-		Set<ProductAvailability> availabilities = null;
-		if (!CollectionUtils.isEmpty(product.getVariants())) {
-			Optional<ProductVariant> variants = product.getVariants().stream().filter(i -> i.isDefaultSelection())
-					.findFirst();
-			if (variants.isPresent()) {
-				availabilities = variants.get().getAvailabilities();
-				availabilities = this.applicableAvailabilities(availabilities);
+//		Long hide some lines here(6/5/2023)
+//		Set<ProductAvailability> availabilities = null;
+//		if (!CollectionUtils.isEmpty(product.getVariants())) {
+//			Optional<ProductVariant> variants = product.getVariants().stream().filter(i -> i.isDefaultSelection())
+//					.findFirst();
+//			if (variants.isPresent()) {
+//				availabilities = variants.get().getAvailabilities();
+//				availabilities = this.applicableAvailabilities(availabilities);
+//
+//			}
+//		}
+//
+//		if (CollectionUtils.isEmpty(availabilities)) {
+//			availabilities = product.getAvailabilities();
+//			availabilities = this.applicableAvailabilities(availabilities);
+//		}
+//		end
 
-			}
-		}
-
-		if (CollectionUtils.isEmpty(availabilities)) {
-			availabilities = product.getAvailabilities();
-			availabilities = this.applicableAvailabilities(availabilities);
-		}
-
-		for (ProductAvailability availability : availabilities) {
-			if (!StringUtils.isEmpty(availability.getRegion())
-					&& availability.getRegion().equals(Constants.ALL_REGIONS)) {// TODO REL 2.1 accept a region
-				Set<ProductPrice> prices = availability.getPrices();
-				for (ProductPrice price : prices) {
-
-					FinalPrice p = finalPrice(price);
-					if (price.isDefaultPrice()) {
-						finalPrice = p;
-					} else {
-						if (otherPrices == null) {
-							otherPrices = new ArrayList<FinalPrice>();
-						}
-						otherPrices.add(p);
-					}
-				}
-			}
-		}
+//		Long hide some lines here(6/5/2023)
+//		for (ProductAvailability availability : availabilities) {
+//			if (!StringUtils.isEmpty(availability.getRegion())
+//					&& availability.getRegion().equals(Constants.ALL_REGIONS)) {// TODO REL 2.1 accept a region
+//				Set<ProductPrice> prices = availability.getPrices();
+//				for (ProductPrice price : prices) {
+//
+//					FinalPrice p = finalPrice(price);
+//					if (price.isDefaultPrice()) {
+//						finalPrice = p;
+//					} else {
+//						if (otherPrices == null) {
+//							otherPrices = new ArrayList<FinalPrice>();
+//						}
+//						otherPrices.add(p);
+//					}
+//				}
+//			}
+//		}
+//		end
 
 		if (finalPrice != null) {
 			finalPrice.setAdditionalPrices(otherPrices);

@@ -54,7 +54,10 @@ public class DigitalProductServiceImpl extends SalesManagerEntityServiceImpl<Lon
 			
 			productDownloadsFileManager.addFile(product.getMerchantStore().getCode(), Optional.of(path), inputFile);
 			
-			product.setProductVirtual(true);
+//			Long hide some lines here(4/5/2023)
+//			product.setProductVirtual(true);
+//			end
+			
 			productService.update(product);
 		
 		} catch (Exception e) {
@@ -89,7 +92,11 @@ public class DigitalProductServiceImpl extends SalesManagerEntityServiceImpl<Lon
 		String path = null;
 
 		productDownloadsFileManager.removeFile(digitalProduct.getProduct().getMerchantStore().getCode(), FileContentType.PRODUCT, digitalProduct.getProductFileName(), Optional.of(path));
-		digitalProduct.getProduct().setProductVirtual(false);
+		
+//		Long hide some lines here(4/5/2023)
+//		digitalProduct.getProduct().setProductVirtual(false);
+//		end
+		
 		productService.update(digitalProduct.getProduct());
 	}
 	
@@ -105,7 +112,10 @@ public class DigitalProductServiceImpl extends SalesManagerEntityServiceImpl<Lon
 			super.create(digitalProduct);
 		}
 		
-		digitalProduct.getProduct().setProductVirtual(true);
+//		Long hide some lines here(4/5/2023)
+//		digitalProduct.getProduct().setProductVirtual(true);
+//		end
+		
 		productService.update(digitalProduct.getProduct());
 		
 		

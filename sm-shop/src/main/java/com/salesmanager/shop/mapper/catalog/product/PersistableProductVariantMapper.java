@@ -119,8 +119,13 @@ public class PersistableProductVariantMapper implements Mapper<PersistableProduc
 		 */
 		if(source.getInventory() != null) {
 			ProductAvailability availability = persistableProductAvailabilityMapper.convert(source.getInventory(), store, language);
-			availability.setProductVariant(destination);
-			destination.getAvailabilities().add(availability);
+//			Long hide some lines here(6/5/2023)
+//			availability.setProductVariant(destination);
+//			end
+			
+//			Long hide some lines here(7/5/2023)
+//			destination.getAvailabilities().add(availability);
+//			end
 		}
 		
 		

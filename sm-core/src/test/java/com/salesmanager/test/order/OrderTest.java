@@ -197,11 +197,19 @@ public class OrderTest extends com.salesmanager.test.common.AbstractSalesManager
 	     * Create a complex product
 	     */
 	    Product product = new Product();
-	    product.setProductHeight(new BigDecimal(4));
-	    product.setProductLength(new BigDecimal(3));
-	    product.setProductWidth(new BigDecimal(1));
+	    
+//	    Long hide some lines here(4/5/2023)
+//	    product.setProductHeight(new BigDecimal(4));
+//	    product.setProductLength(new BigDecimal(3));
+//	    product.setProductWidth(new BigDecimal(1));
+//	    end
+	    
 	    product.setSku("TB12345");
-	    product.setManufacturer(addidas);
+	    
+//	    Long hide some lines here(6/5/2023)
+//	    product.setManufacturer(addidas);
+//	    end
+	    
 	    product.setType(generalType);
 	    product.setMerchantStore(merchant);
 
@@ -251,7 +259,10 @@ public class OrderTest extends com.salesmanager.test.common.AbstractSalesManager
 	    whiteAttribute.setProductOption(option);
 	    whiteAttribute.setProductOptionValue(white);
 	    
-	    product.getAttributes().add(whiteAttribute);
+//	    Long hide some lines here
+//	    product.getAttributes().add(whiteAttribute);
+//	    end
+	    
 	    //black
 	    ProductAttribute blackAttribute = new ProductAttribute();
 	    blackAttribute.setProduct(product);
@@ -261,8 +272,10 @@ public class OrderTest extends com.salesmanager.test.common.AbstractSalesManager
 	    blackAttribute.setProductOption(option);
 	    blackAttribute.setProductOptionValue(black);
 	    
-	    product.getAttributes().add(blackAttribute);
-
+//	    Long hide some lines here
+//	    product.getAttributes().add(blackAttribute);
+//	    end
+	    
 	    productService.saveProduct(product);
 
 			

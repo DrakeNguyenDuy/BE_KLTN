@@ -44,6 +44,7 @@ import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
 import com.salesmanager.core.model.customer.Customer;
+import com.salesmanager.core.model.experience.ExperienceDescription;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -77,9 +78,10 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	/**
 	 * Attributes of a product Decorates the product with additional properties
 	 */
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private Set<ProductAttribute> attributes = new HashSet<ProductAttribute>();
-
+	
 	/**
 	 * Default product images
 	 */
@@ -103,10 +105,10 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	private MerchantStore merchantStore;
 
 	// Long add some lines here (21/4/2023)
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "SKILL_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_SKILL"))
 	private Set<SkillDescription> skillDescriptions = new HashSet<SkillDescription>();
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "LOCATION_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_LOCATION"))
 	private Set<LocationDescription> locationDescriptions = new HashSet<LocationDescription>();
 	//end
@@ -130,13 +132,29 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	 */
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private Set<ProductVariant> variants = new HashSet<ProductVariant>();
-
+	
 	@Column(name = "DATE_AVAILABLE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateAvailable = new Date();
+	
+	//Long add some lines here(6/5/2023)
+	@Column(name="DATE_EXPERIENCE")
+	@Temporal(TemporalType.DATE)
+	private Date dateExperience;
+	//end
 
 	@Column(name = "AVAILABLE")
 	private boolean available = true;
+	
+	//Long add some lines here(4/5/2023)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_EXPERIENCE" , nullable = false)
+	private ExperienceDescription experience;
+	//end
+	
+	//Long add some lines here(6/5/2023)
+	@Column(name = "GENDER")
+	private String gender;
 
 //	Long hide some lines here (21/4/2023)
 //	@Column(name = "PREORDER")
@@ -146,6 +164,7 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "MANUFACTURER_ID", nullable = true)
 	private Manufacturer manufacturer;
+	
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "PRODUCT_TYPE_ID", nullable = true)
@@ -155,26 +174,29 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	@JoinColumn(name = "TAX_CLASS_ID", nullable = true)
 	private TaxClass taxClass;
 
-	@Column(name = "PRODUCT_VIRTUAL")
-	private boolean productVirtual = false;
-
-	@Column(name = "PRODUCT_SHIP")
-	private boolean productShipeable = false;
-
-	@Column(name = "PRODUCT_FREE")
-	private boolean productIsFree;
-
-	@Column(name = "PRODUCT_LENGTH")
-	private BigDecimal productLength;
-
-	@Column(name = "PRODUCT_WIDTH")
-	private BigDecimal productWidth;
-
-	@Column(name = "PRODUCT_HEIGHT")
-	private BigDecimal productHeight;
-
-	@Column(name = "PRODUCT_WEIGHT")
-	private BigDecimal productWeight;
+//	Long hide some lines here(4/5/2023)
+//	@Column(name = "PRODUCT_VIRTUAL")
+//	private boolean productVirtual = false;
+//
+//	@Column(name = "PRODUCT_SHIP")
+//	private boolean productShipeable = false;
+//
+//	@Column(name = "PRODUCT_FREE")
+//	private boolean productIsFree;
+//
+//	@Column(name = "PRODUCT_LENGTH")
+//	private BigDecimal productLength;
+//
+//	@Column(name = "PRODUCT_WIDTH")
+//	private BigDecimal productWidth;
+//
+//	@Column(name = "PRODUCT_HEIGHT")
+//	private BigDecimal productHeight;
+//
+//	@Column(name = "PRODUCT_WEIGHT")
+//	private BigDecimal productWeight;
+//	end
+	
 
 	@Column(name = "REVIEW_AVG")
 	private BigDecimal productReviewAvg;
@@ -185,8 +207,10 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	@Column(name = "QUANTITY_ORDERED")
 	private Integer productOrdered;
 
-	@Column(name = "SORT_ORDER")
-	private Integer sortOrder = new Integer(0);
+//	Long hide some lines here(4/5/2023)
+//	@Column(name = "SORT_ORDER")
+//	private Integer sortOrder = new Integer(0);
+//	end
 
 	@NotEmpty
 	@Pattern(regexp = "^[a-zA-Z0-9_]*$")
@@ -264,41 +288,43 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.auditSection = auditSection;
 	}
 
-	public boolean isProductVirtual() {
-		return productVirtual;
-	}
-
-	public BigDecimal getProductLength() {
-		return productLength;
-	}
-
-	public void setProductLength(BigDecimal productLength) {
-		this.productLength = productLength;
-	}
-
-	public BigDecimal getProductWidth() {
-		return productWidth;
-	}
-
-	public void setProductWidth(BigDecimal productWidth) {
-		this.productWidth = productWidth;
-	}
-
-	public BigDecimal getProductHeight() {
-		return productHeight;
-	}
-
-	public void setProductHeight(BigDecimal productHeight) {
-		this.productHeight = productHeight;
-	}
-
-	public BigDecimal getProductWeight() {
-		return productWeight;
-	}
-
-	public void setProductWeight(BigDecimal productWeight) {
-		this.productWeight = productWeight;
-	}
+//	Long hide some lines here(4/5/2023)
+//	public boolean isProductVirtual() {
+//		return productVirtual;
+//	}
+//
+//	public BigDecimal getProductLength() {
+//		return productLength;
+//	}
+//
+//	public void setProductLength(BigDecimal productLength) {
+//		this.productLength = productLength;
+//	}
+//
+//	public BigDecimal getProductWidth() {
+//		return productWidth;
+//	}
+//
+//	public void setProductWidth(BigDecimal productWidth) {
+//		this.productWidth = productWidth;
+//	}
+//
+//	public BigDecimal getProductHeight() {
+//		return productHeight;
+//	}
+//
+//	public void setProductHeight(BigDecimal productHeight) {
+//		this.productHeight = productHeight;
+//	}
+//
+//	public BigDecimal getProductWeight() {
+//		return productWeight;
+//	}
+//
+//	public void setProductWeight(BigDecimal productWeight) {
+//		this.productWeight = productWeight;
+//	}
+//	end
 
 	public BigDecimal getProductReviewAvg() {
 		return productReviewAvg;
@@ -340,29 +366,33 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.descriptions = descriptions;
 	}
 
-	public boolean getProductVirtual() {
-		return productVirtual;
-	}
+//	Long hide some lines here(4/5/2023)
+//	public boolean getProductVirtual() {
+//		return productVirtual;
+//	}
+//
+//	public void setProductVirtual(boolean productVirtual) {
+//		this.productVirtual = productVirtual;
+//	}
+//
+//	public boolean getProductIsFree() {
+//		return productIsFree;
+//	}
+//
+//	public void setProductIsFree(boolean productIsFree) {
+//		this.productIsFree = productIsFree;
+//	}
+//	end
 
-	public void setProductVirtual(boolean productVirtual) {
-		this.productVirtual = productVirtual;
-	}
-
-	public boolean getProductIsFree() {
-		return productIsFree;
-	}
-
-	public void setProductIsFree(boolean productIsFree) {
-		this.productIsFree = productIsFree;
-	}
-
-	public Set<ProductAttribute> getAttributes() {
-		return attributes;
-	}
-
-	public void setAttributes(Set<ProductAttribute> attributes) {
-		this.attributes = attributes;
-	}
+//	Long hide some lines here(6/5/2023)
+//	public Set<ProductAttribute> getAttributes() {
+//		return attributes;
+//	}
+//
+//	public void setAttributes(Set<ProductAttribute> attributes) {
+//		this.attributes = attributes;
+//	}
+//	end
 
 	public Manufacturer getManufacturer() {
 		return manufacturer;
@@ -436,13 +466,15 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.dateAvailable = dateAvailable;
 	}
 
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
-
-	public Integer getSortOrder() {
-		return sortOrder;
-	}
+//	Long hide some lines here(4/5/2023)
+//	public void setSortOrder(Integer sortOrder) {
+//		this.sortOrder = sortOrder;
+//	}
+//
+//	public Integer getSortOrder() {
+//		return sortOrder;
+//	}
+//	end
 
 	public void setAvailable(Boolean available) {
 		this.available = available;
@@ -452,13 +484,15 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		return available;
 	}
 
-	public boolean isProductShipeable() {
-		return productShipeable;
-	}
-
-	public void setProductShipeable(Boolean productShipeable) {
-		this.productShipeable = productShipeable;
-	}
+//	Long hide some lines here(4/5/2023)
+//	public boolean isProductShipeable() {
+//		return productShipeable;
+//	}
+//
+//	public void setProductShipeable(Boolean productShipeable) {
+//		this.productShipeable = productShipeable;
+//	}
+//	end
 
 	public ProductDescription getProductDescription() {
 		if (this.getDescriptions() != null && this.getDescriptions().size() > 0) {
@@ -498,13 +532,15 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.refSku = refSku;
 	}
 
-	public ProductCondition getCondition() {
-		return condition;
-	}
-
-	public void setCondition(ProductCondition condition) {
-		this.condition = condition;
-	}
+//	Long hide some lines here(6/5/2023)
+//	public ProductCondition getCondition() {
+//		return condition;
+//	}
+//
+//	public void setCondition(ProductCondition condition) {
+//		this.condition = condition;
+//	}
+//	end
 
 //	Long hide some lines here (21/4/2023)
 //	public RentalStatus getRentalStatus() {
@@ -516,29 +552,35 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 //	}
 //	end
 
-	public Customer getOwner() {
-		return owner;
-	}
+//	Long hide some lines here(6/5/2023)
+//	public Customer getOwner() {
+//		return owner;
+//	}
+//
+//	public void setOwner(Customer owner) {
+//		this.owner = owner;
+//	}
+//	end
 
-	public void setOwner(Customer owner) {
-		this.owner = owner;
-	}
-
-	public Set<ProductVariant> getVariants() {
-		return variants;
-	}
-
-	public void setVariants(Set<ProductVariant> variants) {
-		this.variants = variants;
-	}
+//	Long hide some lines here(6/5/2023)
+//	public Set<ProductVariant> getVariants() {
+//		return variants;
+//	}
+//
+//	public void setVariants(Set<ProductVariant> variants) {
+//		this.variants = variants;
+//	}
+//	end
 
 	public void setAvailable(boolean available) {
 		this.available = available;
 	}
 
-	public void setProductShipeable(boolean productShipeable) {
-		this.productShipeable = productShipeable;
-	}
+//	Long hide some lines here(4/5/2023)
+//	public void setProductShipeable(boolean productShipeable) {
+//		this.productShipeable = productShipeable;
+//	}
+//	end
 
 	//Long add some lines here (21/4/2023)
 	public Set<SkillDescription> getSkillDescriptions() {
@@ -558,4 +600,30 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	}
 	//end
 
+	//Long add some lines here(6/5/2023)
+
+	public String getGender() {
+		return gender;
+	}
+
+	public ExperienceDescription getExperience() {
+		return experience;
+	}
+
+	public void setExperience(ExperienceDescription experience) {
+		this.experience = experience;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Date getDateExperience() {
+		return dateExperience;
+	}
+
+	public void setDateExperience(Date dateExperience) {
+		this.dateExperience = dateExperience;
+	}
+	//end
 }

@@ -39,7 +39,11 @@ import com.salesmanager.core.utils.CloneUtils;
 
 @Entity
 @Table(name = "PRODUCT_AVAILABILITY",
-uniqueConstraints= @UniqueConstraint(columnNames = {"MERCHANT_ID", "PRODUCT_ID", "PRODUCT_VARIANT", "REGION_VARIANT"}),
+uniqueConstraints= @UniqueConstraint(columnNames = {"MERCHANT_ID", "PRODUCT_ID",
+//		Long hide some lines here(7/5/2023)
+//		"PRODUCT_VARIANT",
+//		end
+		"REGION_VARIANT"}),
 indexes = 
 	{ 
 		@Index(name="PRD_AVAIL_STORE_PRD_IDX", columnList = "PRODUCT_ID,MERCHANT_ID"),
@@ -88,6 +92,7 @@ public class ProductAvailability extends SalesManagerEntity<Long, ProductAvailab
 	/**
 	 * This describes the availability of a product variant
 	 */
+	
 	@ManyToOne(targetEntity = ProductVariant.class)
 	@JoinColumn(name = "PRODUCT_VARIANT", nullable = true)
 	private ProductVariant productVariant;
@@ -301,6 +306,5 @@ public class ProductAvailability extends SalesManagerEntity<Long, ProductAvailab
 	public void setProductVariant(ProductVariant productVariant) {
 		this.productVariant = productVariant;
 	}
-
 
 }

@@ -114,11 +114,14 @@ public class PersistableProductMapper implements Mapper<PersistableProduct, Prod
 			 * SPEIFICATIONS
 			 */
 			if(source.getProductSpecifications()!=null) {
-				destination.setProductHeight(source.getProductSpecifications().getHeight());
-				destination.setProductLength(source.getProductSpecifications().getLength());
-				destination.setProductWeight(source.getProductSpecifications().getWeight());
-				destination.setProductWidth(source.getProductSpecifications().getWidth());
-
+				
+//				Long hide some line here(4/5/2023)
+//				destination.setProductHeight(source.getProductSpecifications().getHeight());
+//				destination.setProductLength(source.getProductSpecifications().getLength());
+//				destination.setProductWeight(source.getProductSpecifications().getWeight());
+//				destination.setProductWidth(source.getProductSpecifications().getWidth());
+//				end
+				
 				 /**
 				  * BRANDING
 				  */
@@ -129,7 +132,11 @@ public class PersistableProductMapper implements Mapper<PersistableProduct, Prod
     					if(manufacturer == null) {
     						throw new ConversionException("Manufacturer [" + source.getProductSpecifications().getManufacturer() + "] does not exist");
     					}
-    					destination.setManufacturer(manufacturer);
+    					
+//    					Long hide some lines here(end)
+//    					destination.setManufacturer(manufacturer);
+//    					end
+    					
                }
 			}
 			
@@ -193,9 +200,12 @@ public class PersistableProductMapper implements Mapper<PersistableProduct, Prod
 				destination.setDescriptions(descriptions);
 			}
 			
-			destination.setSortOrder(source.getSortOrder());
-			destination.setProductVirtual(source.isProductVirtual());
-			destination.setProductShipeable(source.isProductShipeable());
+//			Long hide some lines here(4/5/2023)
+//			destination.setSortOrder(source.getSortOrder());
+//			destination.setProductVirtual(source.isProductVirtual());
+//			destination.setProductShipeable(source.isProductShipeable());
+//			end
+			
 			if(source.getRating() != null) {
 				destination.setProductReviewAvg(new BigDecimal(source.getRating()));
 			}
@@ -235,11 +245,14 @@ public class PersistableProductMapper implements Mapper<PersistableProduct, Prod
 			/**
 			 * Variants
 			 */
-			if(!CollectionUtils.isEmpty(source.getVariants())) {
-				Set<ProductVariant> variants = source.getVariants().stream().map(v -> this.variant(destination, v, store, language)).collect(Collectors.toSet());
-
-				destination.setVariants(variants);
-			}
+			
+//			Long hide some lines here(6/5/2023)
+//			if(!CollectionUtils.isEmpty(source.getVariants())) {
+//				Set<ProductVariant> variants = source.getVariants().stream().map(v -> this.variant(destination, v, store, language)).collect(Collectors.toSet());
+//
+//				destination.setVariants(variants);
+//			}
+//			end
 			
 			/**
 			 * Default inventory
@@ -251,19 +264,22 @@ public class PersistableProductMapper implements Mapper<PersistableProduct, Prod
 				destination.getAvailabilities().add(productAvailability);
 			} else {
 				//need an inventory to create a Product
-				if(!CollectionUtils.isEmpty(destination.getVariants())) {
-					ProductAvailability defaultAvailability = null;	
-					for(ProductVariant variant : destination.getVariants()) {
-						defaultAvailability = this.defaultAvailability(variant.getAvailabilities().stream().collect(Collectors.toList()));
-						if(defaultAvailability != null) {
-							break;
-						}
-					}
-					
-					defaultAvailability.setProduct(destination);
-					destination.getAvailabilities().add(defaultAvailability);
-					
-				}
+				
+//				Long hide some lines here(6/5/2023)
+//				if(!CollectionUtils.isEmpty(destination.getVariants())) {
+//					ProductAvailability defaultAvailability = null;	
+//					for(ProductVariant variant : destination.getVariants()) {
+//						defaultAvailability = this.defaultAvailability(variant.getAvailabilities().stream().collect(Collectors.toList()));
+//						if(defaultAvailability != null) {
+//							break;
+//						}
+//					}
+//					
+//					defaultAvailability.setProduct(destination);
+//					destination.getAvailabilities().add(defaultAvailability);
+//					
+//				}
+//				end
 			}
 			
 			//images

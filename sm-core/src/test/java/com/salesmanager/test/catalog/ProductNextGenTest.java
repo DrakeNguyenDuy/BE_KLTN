@@ -108,11 +108,19 @@ public class ProductNextGenTest extends com.salesmanager.test.common.AbstractSal
 	    // -- non variable informations
 
 	    Product summerShoes = new Product();
-	    summerShoes.setProductHeight(new BigDecimal(3));
-	    summerShoes.setProductLength(new BigDecimal(9));//average
-	    summerShoes.setProductWidth(new BigDecimal(4));
+	    
+//	    Long hide some lines here(4/5/2023)
+//	    summerShoes.setProductHeight(new BigDecimal(3));
+//	    summerShoes.setProductLength(new BigDecimal(9));//average
+//	    summerShoes.setProductWidth(new BigDecimal(4));
+//	    end
+	    
 	    summerShoes.setSku("BR12345");
-	    summerShoes.setManufacturer(brown);
+	    
+//	    Long hide some lines here
+//	    summerShoes.setManufacturer(brown);
+//	    end
+	    
 	    summerShoes.setType(generalType);
 	    summerShoes.setMerchantStore(store);
 	    
@@ -157,8 +165,9 @@ public class ProductNextGenTest extends com.salesmanager.test.common.AbstractSal
         size_nine.setProductAttributeWeight(new BigDecimal(0));//no weight variation
         size_nine.setProductOptionValue(nine);
         
-        summerShoes.getAttributes().add(size_nine);
-        
+//        Long hide some lines here(6/5/2023)
+//        summerShoes.getAttributes().add(size_nine);
+//        end
 
 	    ProductAttribute size_nine_half = new ProductAttribute();
 	    size_nine_half.setProduct(summerShoes);
@@ -167,8 +176,9 @@ public class ProductNextGenTest extends com.salesmanager.test.common.AbstractSal
 	    size_nine_half.setProductAttributeWeight(new BigDecimal(0));//weight variation
 	    size_nine_half.setProductOptionValue(nineHalf);
 	    
-	    summerShoes.getAttributes().add(size_nine_half);
-
+//	    Long hide some lines here(6/5/2023)
+//	    summerShoes.getAttributes().add(size_nine_half);
+//	    end
 
 	    ProductAttribute size_ten = new ProductAttribute();
 	    size_ten.setProduct(summerShoes);
@@ -177,8 +187,9 @@ public class ProductNextGenTest extends com.salesmanager.test.common.AbstractSal
 	    size_ten.setProductAttributeWeight(new BigDecimal(0));//weight variation
 	    size_ten.setProductOptionValue(ten);
 	    
-	    summerShoes.getAttributes().add(size_ten);	    
-	    
+//	    Long hide some lines here
+//	    summerShoes.getAttributes().add(size_ten);	    
+//	    end
 	    
 	    // ---- variable informations - inventory - variants - prices
 	    ProductAvailability availability = createInventory(store, 100, new BigDecimal("99.99"));

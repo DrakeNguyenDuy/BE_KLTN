@@ -157,13 +157,15 @@ public class IndexProductEventListener implements ApplicationListener<ProductEve
 		 * add new variant to be saved
 		 **/
 
-		List<ProductVariant> filteredVariants = product.getVariants().stream()
-				.filter(i -> variant.getId().longValue() != i.getId().longValue()).collect(Collectors.toList());
-
-		filteredVariants.add(variant);
-
-		Set<ProductVariant> allVariants = new HashSet<ProductVariant>(filteredVariants);
-		product.setVariants(allVariants);
+//		Long hide some lines here(6/5/2023)
+//		List<ProductVariant> filteredVariants = product.getVariants().stream()
+//				.filter(i -> variant.getId().longValue() != i.getId().longValue()).collect(Collectors.toList());
+//
+//		filteredVariants.add(variant);
+//
+//		Set<ProductVariant> allVariants = new HashSet<ProductVariant>(filteredVariants);
+//		product.setVariants(allVariants);
+//		end
 
 		try {
 			searchService.index(store, product);
@@ -185,11 +187,13 @@ public class IndexProductEventListener implements ApplicationListener<ProductEve
 		 * remove variant to be saved
 		 **/
 
-		List<ProductVariant> filteredVariants = product.getVariants().stream()
-				.filter(i -> variant.getId().longValue() != i.getId().longValue()).collect(Collectors.toList());
-
-		Set<ProductVariant> allVariants = new HashSet<ProductVariant>(filteredVariants);
-		product.setVariants(allVariants);
+//		Long hide some lines here(6/5/2023)
+//		List<ProductVariant> filteredVariants = product.getVariants().stream()
+//				.filter(i -> variant.getId().longValue() != i.getId().longValue()).collect(Collectors.toList());
+//
+//		Set<ProductVariant> allVariants = new HashSet<ProductVariant>(filteredVariants);
+//		product.setVariants(allVariants);
+//		end
 
 		try {
 			searchService.index(store, product);
@@ -270,13 +274,15 @@ public class IndexProductEventListener implements ApplicationListener<ProductEve
 		 * add new attribute to be saved
 		 **/
 
-		List<ProductAttribute> filteredAttributes = product.getAttributes().stream()
-				.filter(i -> i.getId().longValue() != i.getId().longValue()).collect(Collectors.toList());
-
-		filteredAttributes.add(attribute);
-
-		Set<ProductAttribute> allAttributes = new HashSet<ProductAttribute>(filteredAttributes);
-		product.setAttributes(allAttributes);
+//		Long hide some lines here(6/5/2023)
+//		List<ProductAttribute> filteredAttributes = product.getAttributes().stream()
+//				.filter(i -> i.getId().longValue() != i.getId().longValue()).collect(Collectors.toList());
+//
+//		filteredAttributes.add(attribute);
+//
+//		Set<ProductAttribute> allAttributes = new HashSet<ProductAttribute>(filteredAttributes);
+//		product.setAttributes(allAttributes);
+//		end
 
 		try {
 			searchService.index(store, product);
@@ -296,11 +302,12 @@ public class IndexProductEventListener implements ApplicationListener<ProductEve
 		 * add new attribute to be saved
 		 **/
 
-		List<ProductAttribute> filteredAttributes = product.getAttributes().stream()
-				.filter(i -> i.getId().longValue() != i.getId().longValue()).collect(Collectors.toList());
-
-		Set<ProductAttribute> allAttributes = new HashSet<ProductAttribute>(filteredAttributes);
-		product.setAttributes(allAttributes);
+//		Long hide some lines here(6/5/2023)
+//		List<ProductAttribute> filteredAttributes = product.getAttributes().stream()
+//				.filter(i -> i.getId().longValue() != i.getId().longValue()).collect(Collectors.toList());
+//
+//		Set<ProductAttribute> allAttributes = new HashSet<ProductAttribute>(filteredAttributes);
+//		product.setAttributes(allAttributes);
 
 		try {
 			searchService.index(store, product);

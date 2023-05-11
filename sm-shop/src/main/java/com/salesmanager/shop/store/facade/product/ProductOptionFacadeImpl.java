@@ -484,8 +484,10 @@ public class ProductOptionFacadeImpl implements ProductOptionFacade {
 		
 			//save to a product
 			Product product = this.product(productId, store);
-			product.getAttributes().addAll(modelAttributes);
-		
+			
+//			Long hide some lines here(6/5/2023)
+//			product.getAttributes().addAll(modelAttributes);
+//			end
 		
 			productService.save(product);
 		} catch (ServiceException e) {

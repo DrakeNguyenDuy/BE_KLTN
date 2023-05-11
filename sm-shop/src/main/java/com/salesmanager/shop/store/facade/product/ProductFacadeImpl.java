@@ -129,8 +129,11 @@ public class ProductFacadeImpl implements ProductFacade {
 		
 		List<Product> products = modelProductList.getContent();
 		
-		List<Product> prds = products.stream().sorted(Comparator.comparing(Product::getSortOrder)).collect(Collectors.toList());
-		products = prds;
+//		Long hide some lines here(4/5/2023)
+//		List<Product> prds = products.stream().sorted(Comparator.comparing(Product::getSortOrder)).collect(Collectors.toList());
+//		
+//		products = prds;
+//		end
 		
 		ReadableProductPopulator populator = new ReadableProductPopulator();
 		populator.setPricingService(pricingService);

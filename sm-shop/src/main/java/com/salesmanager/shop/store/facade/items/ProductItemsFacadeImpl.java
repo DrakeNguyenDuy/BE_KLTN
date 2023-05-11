@@ -169,7 +169,9 @@ public class ProductItemsFacadeImpl implements ProductItemsFacade {
 		ProductRelationship relationship = new ProductRelationship();
 		relationship.setActive(true);
 		relationship.setCode(group);
-		relationship.setStore(store);
+//		Long hide some lines here
+//		relationship.setStore(store);
+//		end
 		relationship.setRelatedProduct(product);
 
 		try {

@@ -282,14 +282,17 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
 		Set<ProductAvailability> availabilities = product.getAvailabilities();
 
 		ProductVariant instance = null;
-		if (CollectionUtils.isNotEmpty(product.getVariants())) {
-			instance = product.getVariants().iterator().next();
-			Set<ProductAvailability> instanceAvailabilities = instance.getAvailabilities();
-			if(!CollectionUtils.isEmpty(instanceAvailabilities)) {
-				availabilities = instanceAvailabilities;
-			}
-			
-		}
+		
+//		Long hide some lines here(6/5/2023)
+//		if (CollectionUtils.isNotEmpty(product.getVariants())) {
+//			instance = product.getVariants().iterator().next();
+//			Set<ProductAvailability> instanceAvailabilities = instance.getAvailabilities();
+//			if(!CollectionUtils.isEmpty(instanceAvailabilities)) {
+//				availabilities = instanceAvailabilities;
+//			}
+//			
+//		}
+//		end
 
 		if (CollectionUtils.isEmpty(availabilities)) {
 			throw new Exception(
@@ -599,10 +602,14 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
 
 				LOG.info("Updating cart entry quantity to" + newQuantity);
 				entryToUpdate.setQuantity((int) newQuantity);
+				
 				List<ProductAttribute> productAttributes = new ArrayList<ProductAttribute>();
-				productAttributes.addAll(entryToUpdate.getProduct().getAttributes());
+//				Long hide some lines here(6/5/2023)
+//				productAttributes.addAll(entryToUpdate.getProduct().getAttributes());
+//				end
 				final FinalPrice finalPrice = pricingService.calculateProductPrice(entryToUpdate.getProduct(),
 						productAttributes);
+				
 				entryToUpdate.setItemPrice(finalPrice.getFinalPrice());
 				shoppingCartService.saveOrUpdate(cartModel);
 
@@ -650,7 +657,10 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
 			entryToUpdate.setQuantity((int) item.getQuantity());
 
 			List<ProductAttribute> productAttributes = new ArrayList<ProductAttribute>();
-			productAttributes.addAll(entryToUpdate.getProduct().getAttributes());
+			
+//			Long hide some lines here(6/5/2023)
+//			productAttributes.addAll(entryToUpdate.getProduct().getAttributes());
+//			end
 
 			final FinalPrice finalPrice = pricingService.calculateProductPrice(entryToUpdate.getProduct(),
 					productAttributes);

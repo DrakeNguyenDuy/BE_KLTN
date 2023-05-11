@@ -215,11 +215,19 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
 	    // PRODUCT 1
 
 	    Product product = new Product();
-	    product.setProductHeight(new BigDecimal(4));
-	    product.setProductLength(new BigDecimal(3));
-	    product.setProductWidth(new BigDecimal(1));
+	    
+//	    Long hide some lines here(4/5/2023)
+//	    product.setProductHeight(new BigDecimal(4));
+//	    product.setProductLength(new BigDecimal(3));
+//	    product.setProductWidth(new BigDecimal(1));
+//	    end
+	    
 	    product.setSku("CT12345");
-	    product.setManufacturer(oreilley);
+	    
+//	    Long hide some lines here(6/5/2023)
+//	    product.setManufacturer(oreilley);
+//	    end
+	    
 	    product.setType(generalType);
 	    product.setMerchantStore(store);
 
@@ -475,8 +483,9 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
         
         productAttributeService.create(color_blue);
         
-        product.getAttributes().add(color_blue);
-        
+//        Long hide some lines here
+//        product.getAttributes().add(color_blue);
+//        end
 	    
 	    /** create attributes **/
 	    //attributes
@@ -490,8 +499,9 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
 	    
 	    productAttributeService.create(color_red);
 	    
-	    product.getAttributes().add(color_red);
-
+//	    Long hide some lines here(6/5/2023)
+//	    product.getAttributes().add(color_red);
+//	    end
 
 	    ProductAttribute smallAttr = new ProductAttribute();
 	    smallAttr.setProduct(product);
@@ -503,7 +513,9 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
 	    
 	    productAttributeService.create(smallAttr);
 	    
-	    product.getAttributes().add(smallAttr);
+//	    Long hide some lines here(6/5/2023)
+//	    product.getAttributes().add(smallAttr);
+//	    end
 	    
 	    productService.update(product);
 	    
@@ -603,11 +615,19 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
 	    // PRODUCT 1
 
 	    Product related = new Product();
-	    related.setProductHeight(new BigDecimal(4));
-	    related.setProductLength(new BigDecimal(3));
-	    related.setProductWidth(new BigDecimal(1));
+	    
+//	    Long hide some lines here(4/5/2023)
+//	    related.setProductHeight(new BigDecimal(4));
+//	    related.setProductLength(new BigDecimal(3));
+//	    related.setProductWidth(new BigDecimal(1));
+//	    end
+	    
 	    related.setSku("TB67891");
-	    related.setManufacturer(oreilley);
+	    
+//	    Long hide some lines here(6/5/2023)
+//	    related.setManufacturer(oreilley);
+//	    end
+	    
 	    related.setType(generalType);
 	    related.setMerchantStore(store);
 
@@ -657,7 +677,9 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
 	    relationship.setCode("spring");
 	    relationship.setProduct(product);
 	    relationship.setRelatedProduct(related);
-	    relationship.setStore(store);
+//	    Long hide some lines here(6/5/2023)
+//	    relationship.setStore(store);
+//	    end
 	    
 	    
 	    //because relationships are nor joined fetched, make sure you query relationships first, then ad to an existing list
