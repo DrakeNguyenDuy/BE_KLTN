@@ -77,11 +77,14 @@ public class ReadableProductVariantMapper implements Mapper<ProductVariant, Read
 			throw new ResourceNotFoundException("Product instances do not include the parent product [" + destination.getSku() + "]");
 		}
 		
-		destination.setProductShipeable(baseProduct.isProductShipeable());
+//		Long hide some lines here(4/5/2023)
+//		destination.setProductShipeable(baseProduct.isProductShipeable());
+//		end
 		
 		//destination.setStore(null);
 		destination.setStore(store.getCode());
 		destination.setVariation(readableProductVariationMapper.convert(source.getVariation(), store, language));
+		
 		if(source.getVariationValue() != null) {
 			destination.setVariationValue(readableProductVariationMapper.convert(source.getVariationValue(), store, language));
 		}
@@ -94,10 +97,12 @@ public class ReadableProductVariantMapper implements Mapper<ProductVariant, Read
 			destination.setImages(instanceImages);
 		}
 		
-		if(!CollectionUtils.isEmpty(source.getAvailabilities())) {
-			List<ReadableInventory> inventories = source.getAvailabilities().stream().map(i -> readableInventoryMapper.convert(i, store, language)).collect(Collectors.toList());
-			destination.setInventory(inventories);
-		}
+//		Long hide some lines here(7/5/2023)
+//		if(!CollectionUtils.isEmpty(source.getAvailabilities())) {
+//			List<ReadableInventory> inventories = source.getAvailabilities().stream().map(i -> readableInventoryMapper.convert(i, store, language)).collect(Collectors.toList());
+//			destination.setInventory(inventories);
+//		}
+//		end
 		
 		return destination;
 	}

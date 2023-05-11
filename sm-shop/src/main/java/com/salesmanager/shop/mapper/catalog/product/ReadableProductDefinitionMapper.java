@@ -77,8 +77,12 @@ public class ReadableProductDefinitionMapper implements Mapper<Product, Readable
 
 		returnDestination.setIdentifier(source.getSku());
 		returnDestination.setId(source.getId());
-		returnDestination.setVisible(source.isAvailable());
-		returnDestination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+		
+//		Long hide some lines here(4/5/2023)
+//		returnDestination.setVisible(source.isAvailable());
+//		returnDestination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+//		end
+		
 		returnDestination.setSku(source.getSku());
 		ProductDescription description = null;
 		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
@@ -110,11 +114,13 @@ public class ReadableProductDefinitionMapper implements Mapper<Product, Readable
 
 		}
 
-		if (source.getManufacturer() != null) {
-			ReadableManufacturer manufacturer = readableManufacturerMapper.convert(source.getManufacturer(), store,
-					language);
-			returnDestination.setManufacturer(manufacturer);
-		}
+//		Long hide some lines here(6/5/2023)
+//		if (source.getManufacturer() != null) {
+//			ReadableManufacturer manufacturer = readableManufacturerMapper.convert(source.getManufacturer(), store,
+//					language);
+//			returnDestination.setManufacturer(manufacturer);
+//		}
+//		end
 
 		if (!CollectionUtils.isEmpty(source.getCategories())) {
 			List<ReadableCategory> categoryList = new ArrayList<ReadableCategory>();
@@ -128,24 +134,33 @@ public class ReadableProductDefinitionMapper implements Mapper<Product, Readable
 		
 		
 		ProductSpecification specifications = new ProductSpecification();
-		specifications.setHeight(source.getProductHeight());
-		specifications.setLength(source.getProductLength());
-		specifications.setWeight(source.getProductWeight());
-		specifications.setWidth(source.getProductWidth());
+		
+//		Long hide some line here(4/5/2023)
+//		specifications.setHeight(source.getProductHeight());
+//		specifications.setLength(source.getProductLength());
+//		specifications.setWeight(source.getProductWeight());
+//		specifications.setWidth(source.getProductWidth());
+//		end
+		
 		if(!StringUtils.isBlank(store.getSeizeunitcode())) {
 			specifications.setDimensionUnitOfMeasure(DimensionUnitOfMeasure.valueOf(store.getSeizeunitcode().toLowerCase()));
 		}
 		if(!StringUtils.isBlank(store.getWeightunitcode())) {
 			specifications.setWeightUnitOfMeasure(WeightUnitOfMeasure.valueOf(store.getWeightunitcode().toLowerCase()));
 		}
-		returnDestination.setProductSpecifications(specifications);
+		
+//		Long hide some lines here
+//		returnDestination.setProductSpecifications(specifications);
+//		end
 
 		if (source.getType() != null) {
 			ReadableProductType readableType = readableProductTypeMapper.convert(source.getType(), store, language);
 			returnDestination.setType(readableType);
 		}
 		
-		returnDestination.setSortOrder(source.getSortOrder());
+//		Long hide some lines here(4/5/2023)
+//		returnDestination.setSortOrder(source.getSortOrder());
+//		end
 		
 		//images
 		Set<ProductImage> images = source.getImages();
@@ -159,13 +174,19 @@ public class ReadableProductDefinitionMapper implements Mapper<Product, Readable
 		ProductAvailability availability = null;
 		for(ProductAvailability a : source.getAvailabilities()) {
 				availability = a;
-				if(a.getProductVariant() != null) {
-					continue;
-				}	
+//				Long hide some lines here(4/5/2023)
+//				if(a.getProductVariant() != null) {
+//					continue;
+//				}	
+//				end
 		}
 		
 		if(availability != null) {
-			returnDestination.setCanBePurchased(availability.getProductStatus());
+			
+//			Long hide some lines here(3/5/2023)
+//			returnDestination.setCanBePurchased(availability.getProductStatus());
+//			end
+			
 			ReadableInventory inventory = readableInventoryMapper.convert(availability, store, language);
 			returnDestination.setInventory(inventory);
 		}

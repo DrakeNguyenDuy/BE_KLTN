@@ -70,10 +70,14 @@ public class ShippingQuoteByWeightTest extends com.salesmanager.test.common.Abst
 	    store.setStorepostalcode("J4B-9J9");
 
 	    Product product = new Product();
-	    product.setProductHeight(new BigDecimal(4));
-	    product.setProductLength(new BigDecimal(3));
-	    product.setProductWidth(new BigDecimal(5));
-	    product.setProductWeight(new BigDecimal(8));
+	    
+//	    Long hide some lines here(4/5/2023)
+//	    product.setProductHeight(new BigDecimal(4));
+//	    product.setProductLength(new BigDecimal(3));
+//	    product.setProductWidth(new BigDecimal(5));
+//	    product.setProductWeight(new BigDecimal(8));
+//	    end
+	    
 	    product.setSku("TESTSKU");
 	    product.setType(generalType);
 	    product.setMerchantStore(store);

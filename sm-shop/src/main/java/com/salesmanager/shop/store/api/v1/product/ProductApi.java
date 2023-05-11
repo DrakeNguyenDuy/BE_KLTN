@@ -502,7 +502,9 @@ public class ProductApi {
 			/**
 			 * Change order
 			 */
-			p.setSortOrder(position);
+//			Long hide some lines here(4/5/2023)
+//			p.setSortOrder(position);
+//			end
 
 		} catch (Exception e) {
 			LOGGER.error("Error while updating Product position", e);

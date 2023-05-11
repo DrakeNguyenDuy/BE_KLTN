@@ -150,11 +150,19 @@ public class ShoppingCartTest extends com.salesmanager.test.common.AbstractSales
 	     * Create a complex product
 	     */
 	    Product product = new Product();
-	    product.setProductHeight(new BigDecimal(4));
-	    product.setProductLength(new BigDecimal(3));
-	    product.setProductWidth(new BigDecimal(1));
+	    
+//	    Long hide some lines here(4/5/2023)
+//	    product.setProductHeight(new BigDecimal(4));
+//	    product.setProductLength(new BigDecimal(3));
+//	    product.setProductWidth(new BigDecimal(1));
+//	    end
+	    
 	    product.setSku("XABC12");
-	    product.setManufacturer(addidas);
+	    
+//	    Long hide some lines here(6/5/2023)
+//	    product.setManufacturer(addidas);
+//	    end
+	    
 	    product.setType(generalType);
 	    product.setMerchantStore(store);
 
@@ -204,7 +212,10 @@ public class ShoppingCartTest extends com.salesmanager.test.common.AbstractSales
 	    whiteAttribute.setProductOption(option);
 	    whiteAttribute.setProductOptionValue(white);
 	    
-	    product.getAttributes().add(whiteAttribute);
+//	    Long hide some lines here(6/5/2023)
+//	    product.getAttributes().add(whiteAttribute);
+//	    end
+	 
 	    //black
 	    ProductAttribute blackAttribute = new ProductAttribute();
 	    blackAttribute.setProduct(product);
@@ -214,8 +225,10 @@ public class ShoppingCartTest extends com.salesmanager.test.common.AbstractSales
 	    blackAttribute.setProductOption(option);
 	    blackAttribute.setProductOptionValue(black);
 	    
-	    product.getAttributes().add(blackAttribute);
-
+//	    Long hide some lines here
+//	    product.getAttributes().add(blackAttribute);
+//	    end
+	    
 	    productService.saveProduct(product);
 	    
 	    /** Create Shopping cart **/

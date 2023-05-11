@@ -302,39 +302,48 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		item.setProduct(product);
 		item.setSku(product.getSku());
 
-		if (product.isProductVirtual()) {
-			item.setProductVirtual(true);
-		}
+//		Long hide some lines here(4/5/2023)
+//		if (product.isProductVirtual()) {
+//			item.setProductVirtual(true);
+//		}
+//		end
 
 		Set<ShoppingCartAttributeItem> cartAttributes = item.getAttributes();
-		Set<ProductAttribute> productAttributes = product.getAttributes();
+		
+//		Long hide some lines here(6/5/2023)
+//		Set<ProductAttribute> productAttributes = product.getAttributes();
+//		end
+		
 		List<ProductAttribute> attributesList = new ArrayList<ProductAttribute>();// attributes maintained
 		List<ShoppingCartAttributeItem> removeAttributesList = new ArrayList<ShoppingCartAttributeItem>();// attributes
 																											// to remove
 		// DELETE ORPHEANS MANUALLY
-		if ((productAttributes != null && productAttributes.size() > 0)
-				|| (cartAttributes != null && cartAttributes.size() > 0)) {
-			if (cartAttributes != null) {
-				for (ShoppingCartAttributeItem attribute : cartAttributes) {
-					long attributeId = attribute.getProductAttributeId();
-					boolean existingAttribute = false;
-					for (ProductAttribute productAttribute : productAttributes) {
-
-						if (productAttribute.getId().equals(attributeId)) {
-							attribute.setProductAttribute(productAttribute);
-							attributesList.add(productAttribute);
-							existingAttribute = true;
-							break;
-						}
-					}
-
-					if (!existingAttribute) {
-						removeAttributesList.add(attribute);
-					}
-
-				}
-			}
-		}
+		
+//		Long hide some lines here(6/5/2023)
+//		if ((productAttributes != null && productAttributes.size() > 0)
+//				|| (cartAttributes != null && cartAttributes.size() > 0)) {
+//			if (cartAttributes != null) {
+//				for (ShoppingCartAttributeItem attribute : cartAttributes) {
+//					long attributeId = attribute.getProductAttributeId();
+//					boolean existingAttribute = false;
+//					for (ProductAttribute productAttribute : productAttributes) {
+//
+//						if (productAttribute.getId().equals(attributeId)) {
+//							attribute.setProductAttribute(productAttribute);
+//							attributesList.add(productAttribute);
+//							existingAttribute = true;
+//							break;
+//						}
+//					}
+//
+//					if (!existingAttribute) {
+//						removeAttributesList.add(attribute);
+//					}
+//
+//				}
+//			}
+//		}
+//		end
 
 		// cleanup orphean item
 		if (CollectionUtils.isNotEmpty(removeAttributesList)) {
@@ -367,15 +376,18 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		List<ShippingProduct> shippingProducts = null;
 		for (ShoppingCartItem item : items) {
 			Product product = item.getProduct();
-			if (!product.isProductVirtual() && product.isProductShipeable()) {
-				if (shippingProducts == null) {
-					shippingProducts = new ArrayList<ShippingProduct>();
-				}
-				ShippingProduct shippingProduct = new ShippingProduct(product);
-				shippingProduct.setQuantity(item.getQuantity());
-				shippingProduct.setFinalPrice(item.getFinalPrice());
-				shippingProducts.add(shippingProduct);
-			}
+			
+//			Long hide some lines here(4/5/2023)
+//			if (!product.isProductVirtual() && product.isProductShipeable()) {
+//				if (shippingProducts == null) {
+//					shippingProducts = new ArrayList<ShippingProduct>();
+//				}
+//				ShippingProduct shippingProduct = new ShippingProduct(product);
+//				shippingProduct.setQuantity(item.getQuantity());
+//				shippingProduct.setFinalPrice(item.getFinalPrice());
+//				shippingProducts.add(shippingProduct);
+//			}
+//			end
 		}
 
 		return shippingProducts;

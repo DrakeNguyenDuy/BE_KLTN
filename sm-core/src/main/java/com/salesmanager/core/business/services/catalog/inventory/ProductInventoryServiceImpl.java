@@ -39,15 +39,23 @@ public class ProductInventoryServiceImpl implements ProductInventoryService {
 
 	@Override
 	public ProductInventory inventory(ProductVariant variant) throws ServiceException {
-		Validate.notNull(variant.getAvailabilities());
+		
+//		Long hide some lines here(7/5/2023)
+//		Validate.notNull(variant.getAvailabilities());
+//		end
+		
 		Validate.notNull(variant.getProduct());
 		
 		ProductAvailability availability = null;
-		if(!CollectionUtils.isEmpty(variant.getAvailabilities())) {
-			availability = defaultAvailability(variant.getAvailabilities());
-		} else {
-			availability = defaultAvailability(variant.getProduct().getAvailabilities());
-		}
+		
+//		Long hide some lines here(7/5/2023)
+//		if(!CollectionUtils.isEmpty(variant.getAvailabilities())) {
+//			availability = defaultAvailability(variant.getAvailabilities());
+//		} else {
+//			availability = defaultAvailability(variant.getProduct().getAvailabilities());
+//		}
+//		end
+		
 		FinalPrice finalPrice = pricingService.calculateProductPrice(variant);
 		
 		if(finalPrice==null) {

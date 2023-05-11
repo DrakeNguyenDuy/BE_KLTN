@@ -187,7 +187,10 @@ public class ProductInventoryFacadeImpl implements ProductInventoryFacade {
 		} else {
 			if(inventory.getVariant() != null && inventory.getId().longValue() > 0) {
 				ProductVariant instance = this.getProductByInstance(inventory.getVariant(), store);
-				originAvailability = instance.getAvailabilities();
+				
+//				Long hide some lines here(7/5/203)
+//				originAvailability = instance.getAvailabilities();
+//				end
 				product = instance.getProduct();
 			}
 		}

@@ -60,16 +60,21 @@ public class ManufacturerShippingCodeOrderTotalModuleImpl implements OrderTotalP
 
 		
 	    Validate.notNull(product,"product must not be null");
-		Validate.notNull(product.getManufacturer(),"product manufacturer must not be null");
-		
+	    
+//	    Long hide some lines here(6/5/2023)
+//		Validate.notNull(product.getManufacturer(),"product manufacturer must not be null");
+//		end
+	    
 		//requires shipping summary, otherwise return null
 		if(summary.getShippingSummary()==null) {
 			return null;
 		}
 
 		OrderTotalInputParameters inputParameters = new OrderTotalInputParameters();
-		inputParameters.setItemManufacturerCode(product.getManufacturer().getCode());
 		
+//		Long hide some lines here(6/5/2023)
+//		inputParameters.setItemManufacturerCode(product.getManufacturer().getCode());
+//		end
 		
 		inputParameters.setShippingMethod(summary.getShippingSummary().getShippingOptionCode());
 		

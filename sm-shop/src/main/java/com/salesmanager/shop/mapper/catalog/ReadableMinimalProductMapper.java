@@ -61,21 +61,28 @@ public class ReadableMinimalProductMapper implements Mapper<Product, ReadableMin
 		
 		destination.setId(source.getId());
 		destination.setAvailable(source.isAvailable());
-		destination.setProductShipeable(source.isProductShipeable());
 		
-		ProductSpecification specifications = new ProductSpecification();
-		specifications.setHeight(source.getProductHeight());
-		specifications.setLength(source.getProductLength());
-		specifications.setWeight(source.getProductWeight());
-		specifications.setWidth(source.getProductWidth());
-		destination.setProductSpecifications(specifications);
+//		Long hide some lines here(4/5/2023)
+//		destination.setProductShipeable(source.isProductShipeable());
+//		
+//		ProductSpecification specifications = new ProductSpecification();
+//		specifications.setHeight(source.getProductHeight());
+//		specifications.setLength(source.getProductLength());
+//		specifications.setWeight(source.getProductWeight());
+//		specifications.setWidth(source.getProductWidth());
+//		destination.setProductSpecifications(specifications);
+//		end
 		
 //		Long hide some lines here (21/4/2023)
 //		destination.setPreOrder(source.isPreOrder());
 //		end
 		
 		destination.setRefSku(source.getRefSku());
-		destination.setSortOrder(source.getSortOrder());
+		
+//		Long hide some lines here(4/5/2023)
+//		destination.setSortOrder(source.getSortOrder());
+//		end
+		
 		destination.setSku(source.getSku());
 		
 		if(source.getDateAvailable() != null) {
@@ -88,7 +95,10 @@ public class ReadableMinimalProductMapper implements Mapper<Product, ReadableMin
 			destination.setRating(rating);
 		}
 		
-		destination.setProductVirtual(source.getProductVirtual());
+//		Long hide some lines here(4/5/2023)
+//		destination.setProductVirtual(source.getProductVirtual());
+//		end
+		
 		if(source.getProductReviewCount()!=null) {
 			destination.setRatingCount(source.getProductReviewCount().intValue());
 		}

@@ -92,8 +92,10 @@ public class PersistableInventoryMapper implements Mapper<PersistableInventory, 
 								source.getProductId() != null && (a.getProduct().getId().longValue() == source.getProductId().longValue())
 								&&
 								a.getMerchantStore().getId() == store.getId()
-								&&
-								(source.getVariant() == null && a.getProductVariant() == null) || (a.getProductVariant() != null && source.getVariant()!= null && a.getProductVariant().getId().longValue() == source.getVariant().longValue())
+//								Long hide some lines here
+//								&&
+//								(source.getVariant() == null && a.getProductVariant() == null) || (a.getProductVariant() != null && source.getVariant()!= null && a.getProductVariant().getId().longValue() == source.getVariant().longValue())
+//								end
 								&&
 								(source.getRegionVariant() == null && a.getRegionVariant() == null) || (a.getRegionVariant() != null && source.getRegionVariant() != null &&  a.getRegionVariant().equals(source.getRegionVariant()))
 						)).findAny().orElse(null);
@@ -125,7 +127,9 @@ public class PersistableInventoryMapper implements Mapper<PersistableInventory, 
 					throw new ResourceNotFoundException("productVariant with id [" + source.getVariant() + "] not found for store [" + store.getCode() + "]");
 				}
 				destination.setSku(instance.get().getSku());
-				destination.setProductVariant(instance.get());
+//				Long hide some lines here(6/5/2023)
+//				destination.setProductVariant(instance.get());
+//				end
 			}
 			
 			//merge with existing or replace

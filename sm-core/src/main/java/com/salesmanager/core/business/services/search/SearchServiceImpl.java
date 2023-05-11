@@ -141,10 +141,12 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 		try {
 			documents = document(product.getId(), languages, RequestOptions.DO_NOT_FAIL_ON_NOT_FOUND);
 
-				if (!CollectionUtils.isEmpty(product.getVariants())) {
-					variants = new ArrayList<Map<String, String>>();
-					variants = product.getVariants().stream().map(i -> variants(i)).collect(Collectors.toList());
-				}
+//				Long hide some lines here(6/5/2023)
+//				if (!CollectionUtils.isEmpty(product.getVariants())) {
+//					variants = new ArrayList<Map<String, String>>();
+//					variants = product.getVariants().stream().map(i -> variants(i)).collect(Collectors.toList());
+//				}
+//				end
 	
 				if (!CollectionUtils.isEmpty(documents)) {
 					if (documents.iterator().next() != null) {
@@ -208,11 +210,13 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 			
 			itemInventory.add(inventory(product));
 			
-			if (!CollectionUtils.isEmpty(product.getVariants())) {
-				for(ProductVariant variant : product.getVariants()) {
-					itemInventory.add(inventory(variant));
-				}
-			}
+//			Long hide some lines here(6/5/2023)
+//			if (!CollectionUtils.isEmpty(product.getVariants())) {
+//				for(ProductVariant variant : product.getVariants()) {
+//					itemInventory.add(inventory(variant));
+//				}
+//			}
+//			end
 
 			IndexItem item = new IndexItem();
 			item.setId(product.getId());
@@ -221,20 +225,23 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 			item.setName(description.getName());
 			item.setInventory(itemInventory);
 
-
-			if (product.getManufacturer() != null) {
-				item.setBrand(manufacturer(product.getManufacturer(), description.getLanguage().getCode()));
-			}
+//			Long hide some lines here
+//			if (product.getManufacturer() != null) {
+//				item.setBrand(manufacturer(product.getManufacturer(), description.getLanguage().getCode()));
+//			}
+//			end
 
 			if (!CollectionUtils.isEmpty(product.getCategories())) {
 				item.setCategory(
 						category(product.getCategories().iterator().next(), description.getLanguage().getCode()));
 			}
 
-			if (!CollectionUtils.isEmpty(product.getAttributes())) {
-				Map<String, String> attributes = attributes(product, description.getLanguage().getCode());
-				item.setAttributes(attributes);
-			}
+//			Long hide some lines here(6/5/2023)
+//			if (!CollectionUtils.isEmpty(product.getAttributes())) {
+//				Map<String, String> attributes = attributes(product, description.getLanguage().getCode());
+//				item.setAttributes(attributes);
+//			}
+//			end
 
 			if (image != null) {
 				item.setImage(image.getProductImage());
@@ -362,12 +369,13 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 
 		}
 		
-
-		if (variant.getVariationValue() != null) {
-			String variantCode = variant.getVariationValue().getProductOption().getCode();
-			String variantValueCode = variant.getVariationValue().getProductOptionValue().getCode();
-			variantMap.put(variantCode, variantValueCode);
-		}
+//		Long hide some lines here(6/5/2023)
+//		if (variant.getVariationValue() != null) {
+//			String variantCode = variant.getVariationValue().getProductOption().getCode();
+//			String variantValueCode = variant.getVariationValue().getProductOptionValue().getCode();
+//			variantMap.put(variantCode, variantValueCode);
+//		}
+//		end
 		
 		if(!StringUtils.isBlank(variant.getSku())) {
 			variantMap.put(VSKU, variant.getSku());
@@ -469,10 +477,12 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 
 		Map<String, String> allAttributes = new HashMap<String, String>();
 
-		for (ProductAttribute attribute : product.getAttributes()) {
-			Map<String, String> attr = attribute(attribute, language);
-			allAttributes.putAll(attr);
-		}
+//		Long hide some lines here(6/5/2023)
+//		for (ProductAttribute attribute : product.getAttributes()) {
+//			Map<String, String> attr = attribute(attribute, language);
+//			allAttributes.putAll(attr);
+//		}
+//		end
 
 		return allAttributes;
 

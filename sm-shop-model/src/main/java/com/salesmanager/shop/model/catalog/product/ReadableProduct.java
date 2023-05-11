@@ -35,7 +35,7 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 //	private List<ReadableProductVariant> variants = new ArrayList<ReadableProductVariant>();
 //	private List<ReadableProductProperty> properties = new ArrayList<ReadableProductProperty>();
 //	private List<ReadableCategory> categories = new ArrayList<ReadableCategory>();
-//	private ReadableProductType type;
+	private ReadableProductType type;
 
 	private boolean canBePurchased = false;
 
@@ -145,15 +145,15 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 //	public void setOptions(List<ReadableProductOption> options) {
 //		this.options = options;
 //	}
-//
-//	public ReadableProductType getType() {
-//		return type;
-//	}
-//
-//	public void setType(ReadableProductType type) {
-//		this.type = type;
-//	}
-	// end
+//	 end
+	
+	public ReadableProductType getType() {
+		return type;
+	}
+
+	public void setType(ReadableProductType type) {
+		this.type = type;
+	}
 
 	public ReadableProductPrice getProductPrice() {
 		return productPrice;

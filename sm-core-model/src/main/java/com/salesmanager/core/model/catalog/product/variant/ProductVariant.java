@@ -199,15 +199,13 @@ public class ProductVariant extends SalesManagerEntity<Long, ProductVariant> imp
 		this.productVariantGroup = productVariantGroup;
 	}
 
-	public Set<ProductAvailability> getAvailabilities() {
-		return availabilities;
-	}
-
-	public void setAvailabilities(Set<ProductAvailability> availabilities) {
-		this.availabilities = availabilities;
-	}
-	
-
-
-
+//	Long hide some lines(7/5/2023)
+//	public Set<ProductAvailability> getAvailabilities() {
+//		return availabilities;
+//	}
+//
+//	public void setAvailabilities(Set<ProductAvailability> availabilities) {
+//		this.availabilities = availabilities;
+//	}
+//	end
 }

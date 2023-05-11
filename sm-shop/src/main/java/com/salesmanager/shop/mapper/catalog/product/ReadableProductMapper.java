@@ -122,14 +122,20 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		}
 		destination.setId(source.getId());
 		destination.setAvailable(source.isAvailable());
-		destination.setProductShipeable(source.isProductShipeable());
+		
+//		Long hide some line here(4/5/2023)
+//		destination.setProductShipeable(source.isProductShipeable());
+//		end
 
 //		Long hide some lines here (21/4/2023)
 //		destination.setPreOrder(source.isPreOrder());
 //		end
 		
 		destination.setRefSku(source.getRefSku());
-		destination.setSortOrder(source.getSortOrder());
+		
+//		Long hide some lines here(4/5/2023)
+//		destination.setSortOrder(source.getSortOrder());
+//		end
 
 		// Long hide some lines here (21/4/2023)
 //		if (source.getType() != null) {
@@ -146,17 +152,21 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			destination.setCreationDate(DateUtil.formatDate(source.getAuditSection().getDateCreated()));
 		}
 
-		destination.setProductVirtual(source.getProductVirtual());
+//		Long hide some lines here(4/5/2023)
+//		destination.setProductVirtual(source.getProductVirtual());
+//		end
 
 		if (source.getProductReviewCount() != null) {
 			destination.setRatingCount(source.getProductReviewCount().intValue());
 		}
 
-		if (source.getManufacturer() != null) {
-			ReadableManufacturer manufacturer = readableManufacturerMapper.convert(source.getManufacturer(), store,
-					language);
-			destination.setManufacturer(manufacturer);
-		}
+//		Long hide some lines here(6/5/2023)
+//		if (source.getManufacturer() != null) {
+//			ReadableManufacturer manufacturer = readableManufacturerMapper.convert(source.getManufacturer(), store,
+//					language);
+//			destination.setManufacturer(manufacturer);
+//		}
+//		end
 
 		// images
 		Set<ProductImage> images = source.getImages();
@@ -183,137 +193,139 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		}
 		// end
 
-		if (!CollectionUtils.isEmpty(source.getAttributes())) {
-
-			Set<ProductAttribute> attributes = source.getAttributes();
-
-			if (!CollectionUtils.isEmpty(attributes)) {
-
-				for (ProductAttribute attribute : attributes) {
-					ReadableProductOption opt = null;
-					ReadableProductAttribute attr = null;
-					ReadableProductProperty property = null;
-					ReadableProductPropertyValue propertyValue = null;
-					ReadableProductAttributeValue attrValue = new ReadableProductAttributeValue();
-
-					ProductOptionValue optionValue = attribute.getProductOptionValue();
-
-					// we need to set readonly attributes only
-					if (attribute.getAttributeDisplayOnly()) {// read only attribute = property
-
-						property = createProperty(attribute, language);
-
-						ReadableProductOption readableOption = new ReadableProductOption(); // that is the property
-						ReadableProductPropertyValue readableOptionValue = new ReadableProductPropertyValue();
-
-						readableOption.setCode(attribute.getProductOption().getCode());
-						readableOption.setId(attribute.getProductOption().getId());
-
-						Set<ProductOptionDescription> podescriptions = attribute.getProductOption().getDescriptions();
-						if (podescriptions != null && podescriptions.size() > 0) {
-							for (ProductOptionDescription optionDescription : podescriptions) {
-								if (optionDescription.getLanguage().getCode().equals(language.getCode())) {
-									readableOption.setName(optionDescription.getName());
-								}
-							}
-						}
-
-						property.setProperty(readableOption);
-
-						Set<ProductOptionValueDescription> povdescriptions = attribute.getProductOptionValue()
-								.getDescriptions();
-						readableOptionValue.setId(attribute.getProductOptionValue().getId());
-						readableOptionValue.setCode(optionValue.getCode());
-						if (povdescriptions != null && povdescriptions.size() > 0) {
-							for (ProductOptionValueDescription optionValueDescription : povdescriptions) {
-								if (optionValueDescription.getLanguage().getCode().equals(language.getCode())) {
-									readableOptionValue.setName(optionValueDescription.getName());
-								}
-							}
-						}
-
-						property.setPropertyValue(readableOptionValue);
-						// Long hide some lines here (21/4/2023)
-//						destination.getProperties().add(property);
-//						end
-
-					} else {// selectable option
-
-						/**
-						 * Returns a list of ReadableProductOptions
-						 * 
-						 * name lang type code List ReadableProductOptionValueEntity name description
-						 * image order default
-						 */
-
-						if (selectableOptions == null) {
-							selectableOptions = new TreeMap<Long, ReadableProductOption>();
-						}
-						opt = selectableOptions.get(attribute.getProductOption().getId());
-						if (opt == null) {
-							opt = createOption(attribute.getProductOption(), language);
-						}
-						if (opt != null) {
-							selectableOptions.put(attribute.getProductOption().getId(), opt);
-						}
-
-						ReadableProductOptionValue optValue = new ReadableProductOptionValue();
-
-						optValue.setDefaultValue(attribute.getAttributeDefault());
-						// optValue.setId(attribute.getProductOptionValue().getId());
-						optValue.setId(attribute.getId());
-						optValue.setCode(attribute.getProductOptionValue().getCode());
-
-						com.salesmanager.shop.model.catalog.product.attribute.ProductOptionValueDescription valueDescription = new com.salesmanager.shop.model.catalog.product.attribute.ProductOptionValueDescription();
-						valueDescription.setLanguage(language.getCode());
-						// optValue.setLang(language.getCode());
-						if (attribute.getProductAttributePrice() != null
-								&& attribute.getProductAttributePrice().doubleValue() > 0) {
-							String formatedPrice = null;
-							try {
-								formatedPrice = pricingService.getDisplayAmount(attribute.getProductAttributePrice(),
-										store);
-								optValue.setPrice(formatedPrice);
-							} catch (ServiceException e) {
-								throw new ConversionRuntimeException(
-										"Error converting product option, an exception occured with pricingService", e);
-							}
-						}
-
-						if (!StringUtils.isBlank(attribute.getProductOptionValue().getProductOptionValueImage())) {
-							optValue.setImage(imageUtils.buildProductPropertyImageUtils(store,
-									attribute.getProductOptionValue().getProductOptionValueImage()));
-						}
-						optValue.setSortOrder(0);
-						if (attribute.getProductOptionSortOrder() != null) {
-							optValue.setSortOrder(attribute.getProductOptionSortOrder().intValue());
-						}
-
-						List<ProductOptionValueDescription> podescriptions = optionValue.getDescriptionsSettoList();
-						ProductOptionValueDescription podescription = null;
-						if (podescriptions != null && podescriptions.size() > 0) {
-							podescription = podescriptions.get(0);
-							if (podescriptions.size() > 1) {
-								for (ProductOptionValueDescription optionValueDescription : podescriptions) {
-									if (optionValueDescription.getLanguage().getId().intValue() == language.getId()
-											.intValue()) {
-										podescription = optionValueDescription;
-										break;
-									}
-								}
-							}
-						}
-						valueDescription.setName(podescription.getName());
-						valueDescription.setDescription(podescription.getDescription());
-						optValue.setDescription(valueDescription);
-
-						if (opt != null) {
-							opt.getOptionValues().add(optValue);
-						}
-					}
-				}
-			}
-		}
+//		Long hide some lines here(6/5/2023)
+//		if (!CollectionUtils.isEmpty(source.getAttributes())) {
+//
+//			Set<ProductAttribute> attributes = source.getAttributes();
+//
+//			if (!CollectionUtils.isEmpty(attributes)) {
+//
+//				for (ProductAttribute attribute : attributes) {
+//					ReadableProductOption opt = null;
+//					ReadableProductAttribute attr = null;
+//					ReadableProductProperty property = null;
+//					ReadableProductPropertyValue propertyValue = null;
+//					ReadableProductAttributeValue attrValue = new ReadableProductAttributeValue();
+//
+//					ProductOptionValue optionValue = attribute.getProductOptionValue();
+//
+//					// we need to set readonly attributes only
+//					if (attribute.getAttributeDisplayOnly()) {// read only attribute = property
+//
+//						property = createProperty(attribute, language);
+//
+//						ReadableProductOption readableOption = new ReadableProductOption(); // that is the property
+//						ReadableProductPropertyValue readableOptionValue = new ReadableProductPropertyValue();
+//
+//						readableOption.setCode(attribute.getProductOption().getCode());
+//						readableOption.setId(attribute.getProductOption().getId());
+//
+//						Set<ProductOptionDescription> podescriptions = attribute.getProductOption().getDescriptions();
+//						if (podescriptions != null && podescriptions.size() > 0) {
+//							for (ProductOptionDescription optionDescription : podescriptions) {
+//								if (optionDescription.getLanguage().getCode().equals(language.getCode())) {
+//									readableOption.setName(optionDescription.getName());
+//								}
+//							}
+//						}
+//
+//						property.setProperty(readableOption);
+//
+//						Set<ProductOptionValueDescription> povdescriptions = attribute.getProductOptionValue()
+//								.getDescriptions();
+//						readableOptionValue.setId(attribute.getProductOptionValue().getId());
+//						readableOptionValue.setCode(optionValue.getCode());
+//						if (povdescriptions != null && povdescriptions.size() > 0) {
+//							for (ProductOptionValueDescription optionValueDescription : povdescriptions) {
+//								if (optionValueDescription.getLanguage().getCode().equals(language.getCode())) {
+//									readableOptionValue.setName(optionValueDescription.getName());
+//								}
+//							}
+//						}
+//
+//						property.setPropertyValue(readableOptionValue);
+//						// Long hide some lines here (21/4/2023)
+////						destination.getProperties().add(property);
+////						end
+//
+//					} else {// selectable option
+//
+//						/**
+//						 * Returns a list of ReadableProductOptions
+//						 * 
+//						 * name lang type code List ReadableProductOptionValueEntity name description
+//						 * image order default
+//						 */
+//
+//						if (selectableOptions == null) {
+//							selectableOptions = new TreeMap<Long, ReadableProductOption>();
+//						}
+//						opt = selectableOptions.get(attribute.getProductOption().getId());
+//						if (opt == null) {
+//							opt = createOption(attribute.getProductOption(), language);
+//						}
+//						if (opt != null) {
+//							selectableOptions.put(attribute.getProductOption().getId(), opt);
+//						}
+//
+//						ReadableProductOptionValue optValue = new ReadableProductOptionValue();
+//
+//						optValue.setDefaultValue(attribute.getAttributeDefault());
+//						// optValue.setId(attribute.getProductOptionValue().getId());
+//						optValue.setId(attribute.getId());
+//						optValue.setCode(attribute.getProductOptionValue().getCode());
+//
+//						com.salesmanager.shop.model.catalog.product.attribute.ProductOptionValueDescription valueDescription = new com.salesmanager.shop.model.catalog.product.attribute.ProductOptionValueDescription();
+//						valueDescription.setLanguage(language.getCode());
+//						// optValue.setLang(language.getCode());
+//						if (attribute.getProductAttributePrice() != null
+//								&& attribute.getProductAttributePrice().doubleValue() > 0) {
+//							String formatedPrice = null;
+//							try {
+//								formatedPrice = pricingService.getDisplayAmount(attribute.getProductAttributePrice(),
+//										store);
+//								optValue.setPrice(formatedPrice);
+//							} catch (ServiceException e) {
+//								throw new ConversionRuntimeException(
+//										"Error converting product option, an exception occured with pricingService", e);
+//							}
+//						}
+//
+//						if (!StringUtils.isBlank(attribute.getProductOptionValue().getProductOptionValueImage())) {
+//							optValue.setImage(imageUtils.buildProductPropertyImageUtils(store,
+//									attribute.getProductOptionValue().getProductOptionValueImage()));
+//						}
+//						optValue.setSortOrder(0);
+//						if (attribute.getProductOptionSortOrder() != null) {
+//							optValue.setSortOrder(attribute.getProductOptionSortOrder().intValue());
+//						}
+//
+//						List<ProductOptionValueDescription> podescriptions = optionValue.getDescriptionsSettoList();
+//						ProductOptionValueDescription podescription = null;
+//						if (podescriptions != null && podescriptions.size() > 0) {
+//							podescription = podescriptions.get(0);
+//							if (podescriptions.size() > 1) {
+//								for (ProductOptionValueDescription optionValueDescription : podescriptions) {
+//									if (optionValueDescription.getLanguage().getId().intValue() == language.getId()
+//											.intValue()) {
+//										podescription = optionValueDescription;
+//										break;
+//									}
+//								}
+//							}
+//						}
+//						valueDescription.setName(podescription.getName());
+//						valueDescription.setDescription(podescription.getDescription());
+//						optValue.setDescription(valueDescription);
+//
+//						if (opt != null) {
+//							opt.getOptionValues().add(optValue);
+//						}
+//					}
+//				}
+//			}
+//		}
+//		end
 
 		ReadableProductVariant defaultInstance = null;
 
@@ -387,9 +399,11 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 				destination.setCanBePurchased(true);
 			}
 
-			if (a.getProductVariant() == null && StringUtils.isEmpty(a.getRegionVariant())) {
-				break;
-			}
+//			Long hide some lines here(6/5/2023)
+//			if (a.getProductVariant() == null && StringUtils.isEmpty(a.getRegionVariant())) {
+//				break;
+//			}
+//			end
 		}
 
 		// if default instance
@@ -478,10 +492,14 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		// end
 
 		ProductSpecification specifications = new ProductSpecification();
-		specifications.setHeight(source.getProductHeight());
-		specifications.setLength(source.getProductLength());
-		specifications.setWeight(source.getProductWeight());
-		specifications.setWidth(source.getProductWidth());
+		
+//		Long hide some lines here(4/5/2023)
+//		specifications.setHeight(source.getProductHeight());
+//		specifications.setLength(source.getProductLength());
+//		specifications.setWeight(source.getProductWeight());
+//		specifications.setWidth(source.getProductWidth());
+//		end
+		
 		if (!StringUtils.isBlank(store.getSeizeunitcode())) {
 			specifications
 					.setDimensionUnitOfMeasure(DimensionUnitOfMeasure.valueOf(store.getSeizeunitcode().toLowerCase()));
@@ -491,8 +509,10 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		}
 		destination.setProductSpecifications(specifications);
 
-		destination.setSortOrder(source.getSortOrder());
-
+//		Long hide some lines here
+//		destination.setSortOrder(source.getSortOrder());
+//		end
+		
 		return destination;
 	}
 
@@ -641,23 +661,25 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 		}
 
-		if (instance.getVariationValue() != null) {
-			ReadableProductOption optionValue = this.option(selectableOptions,
-					instance.getVariationValue().getProductOption(), language);
-
-			// take care of option value
-			Optional<ReadableProductOptionValue> optionValueOptionValue = this
-					.optionValue(instance.getVariationValue().getProductOptionValue(), store, language);
-
-			if (optionValueOptionValue.isPresent()) {
-				optionValueOptionValue.get().setId(instance.getId());
-				if (instance.isDefaultSelection()) {
-					optionValueOptionValue.get().setDefaultValue(true);
-				}
-				addOptionValue(optionValue, optionValueOptionValue.get());
-			}
-
-		}
+//		Long hide some lines here(6/5/2023)
+//		if (instance.getVariationValue() != null) {
+//			ReadableProductOption optionValue = this.option(selectableOptions,
+//					instance.getVariationValue().getProductOption(), language);
+//
+//			// take care of option value
+//			Optional<ReadableProductOptionValue> optionValueOptionValue = this
+//					.optionValue(instance.getVariationValue().getProductOptionValue(), store, language);
+//
+//			if (optionValueOptionValue.isPresent()) {
+//				optionValueOptionValue.get().setId(instance.getId());
+//				if (instance.isDefaultSelection()) {
+//					optionValueOptionValue.get().setDefaultValue(true);
+//				}
+//				addOptionValue(optionValue, optionValueOptionValue.get());
+//			}
+//
+//		}
+//		end
 
 	}
 
