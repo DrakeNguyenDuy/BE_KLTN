@@ -79,7 +79,9 @@ public class ProductV2ManagementAPIIntegrationTest extends ServicesTestSupport {
 		ProductSpecification specifications = new ProductSpecification();
 		specifications.setManufacturer(
 				com.salesmanager.core.model.catalog.product.manufacturer.Manufacturer.DEFAULT_MANUFACTURER);
-		product.setProductSpecifications(specifications);
+//		Long hide some lines here
+//		product.setProductSpecifications(specifications);
+//		end
 		product.setPrice(BigDecimal.TEN);
 		
 		final HttpEntity<PersistableProduct> productEntity = new HttpEntity<>(product, getHeader());

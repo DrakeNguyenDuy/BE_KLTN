@@ -631,39 +631,41 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		
 		
 
-		/**
-		 * attributes / options values
-		 * origin allows skipping attributes join in admin
-		 */
-		//attribute or option values
-		if (criteria.getOrigin().equals(ProductCriteria.ORIGIN_SHOP) 
-				&& CollectionUtils.isNotEmpty(criteria.getAttributeCriteria()) 
-				|| CollectionUtils.isNotEmpty(criteria.getOptionValueIds())) {
-
-			countBuilderSelect.append(" INNER JOIN p.attributes pattr");
-			countBuilderSelect.append(" INNER JOIN pattr.productOption po");
-			countBuilderSelect.append(" INNER JOIN pattr.productOptionValue pov ");
-			countBuilderSelect.append(" INNER JOIN pov.descriptions povd ");
-			
-			if(CollectionUtils.isNotEmpty(criteria.getAttributeCriteria())) {
-				int count = 0;
-				for (AttributeCriteria attributeCriteria : criteria.getAttributeCriteria()) {
-					if (count == 0) {
-						countBuilderWhere.append(" and po.code =:").append(attributeCriteria.getAttributeCode());
-						countBuilderWhere.append(" and povd.description like :").append("val").append(count)
-								.append(attributeCriteria.getAttributeCode());
-					}
-					count++;
-				}
-				if (criteria.getLanguage() != null && !criteria.getLanguage().equals("_all")) {
-					countBuilderWhere.append(" and povd.language.code=:lang");
-				}
-			}
-			
-			if(CollectionUtils.isNotEmpty(criteria.getOptionValueIds())) {
-				countBuilderWhere.append(" and pov.id in (:povid)");
-			}
-		}
+//		Long hide some lines here
+//		/**
+//		 * attributes / options values
+//		 * origin allows skipping attributes join in admin
+//		 */
+//		//attribute or option values
+//		if (criteria.getOrigin().equals(ProductCriteria.ORIGIN_SHOP) 
+//				&& CollectionUtils.isNotEmpty(criteria.getAttributeCriteria()) 
+//				|| CollectionUtils.isNotEmpty(criteria.getOptionValueIds())) {
+//
+//			countBuilderSelect.append(" INNER JOIN p.attributes pattr");
+//			countBuilderSelect.append(" INNER JOIN pattr.productOption po");
+//			countBuilderSelect.append(" INNER JOIN pattr.productOptionValue pov ");
+//			countBuilderSelect.append(" INNER JOIN pov.descriptions povd ");
+//			
+//			if(CollectionUtils.isNotEmpty(criteria.getAttributeCriteria())) {
+//				int count = 0;
+//				for (AttributeCriteria attributeCriteria : criteria.getAttributeCriteria()) {
+//					if (count == 0) {
+//						countBuilderWhere.append(" and po.code =:").append(attributeCriteria.getAttributeCode());
+//						countBuilderWhere.append(" and povd.description like :").append("val").append(count)
+//								.append(attributeCriteria.getAttributeCode());
+//					}
+//					count++;
+//				}
+//				if (criteria.getLanguage() != null && !criteria.getLanguage().equals("_all")) {
+//					countBuilderWhere.append(" and povd.language.code=:lang");
+//				}
+//			}
+//			
+//			if(CollectionUtils.isNotEmpty(criteria.getOptionValueIds())) {
+//				countBuilderWhere.append(" and pov.id in (:povid)");
+//			}
+//		}
+//		end
 
 		if (criteria.getAvailable() != null) {
 			if (criteria.getAvailable()) {
@@ -1239,8 +1241,39 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		}
 		
 	}
-//	//long thêm
-//
-//	public ProductList listProdc(MerchantStore store, Language language, ProductCriteria criteria) {
+//	Long add some lines here (14/5/2023)
+	@Override
+	public ProductList listByStore(ProductCriteria criteria) {
+		ProductList productList = new ProductList();
+
+		StringBuilder countBuilderSelect = new StringBuilder();
+		countBuilderSelect.append("select count(distinct p) from Product as p");
+
+		Query countQ = this.em.createQuery(countBuilderSelect.toString());
+
+		Number count = (Number) countQ.getSingleResult();
+		productList.setTotalCount(count.intValue());
+
+		if (count.intValue() == 0)
+			return productList;
+
+		StringBuilder qs = new StringBuilder();
+		qs.append("select distinct p from Product as p ");
+		qs.append("order by p.sortOrder asc");
+
+		String hql = qs.toString();
+		Query q = this.em.createQuery(hql);
+
+	    @SuppressWarnings("rawtypes")
+	    GenericEntityList entityList = new GenericEntityList();
+	    entityList.setTotalCount(count.intValue());
+
+		q = RepositoryHelper.paginateQuery(q, count, entityList, criteria);
+		@SuppressWarnings("unchecked")
+		List<Product> products = q.getResultList();
+		productList.setProducts(products);
+		return productList;
+	}
+//	end
 
 }

@@ -95,6 +95,13 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		return this.merge(source, product, store, language);
 	}
 
+//	Long add some lines here(14/5/2023)
+	public ReadableProduct convert(Product source) {
+		ReadableProduct product = new ReadableProduct();
+		return this.merge(source, product);
+	}
+//	end
+
 	@Override
 	public ReadableProduct merge(Product source, ReadableProduct destination, MerchantStore store, Language language) {
 
@@ -109,6 +116,12 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setRefSku(source.getRefSku());
 		destination.setId(source.getId());
 		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+//		Long add some lines here(13/05/2023)
+		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
+		if (source.getMerchantStore() != null) {
+			destination.setNameCompany(source.getMerchantStore().getStorename());
+		}
+//		end
 
 		ProductDescription description = null;
 		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
@@ -122,7 +135,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		}
 		destination.setId(source.getId());
 		destination.setAvailable(source.isAvailable());
-		
+
 //		Long hide some line here(4/5/2023)
 //		destination.setProductShipeable(source.isProductShipeable());
 //		end
@@ -130,12 +143,10 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 //		Long hide some lines here (21/4/2023)
 //		destination.setPreOrder(source.isPreOrder());
 //		end
-		
+
 		destination.setRefSku(source.getRefSku());
-		
-//		Long hide some lines here(4/5/2023)
-//		destination.setSortOrder(source.getSortOrder());
-//		end
+
+		destination.setSortOrder(source.getSortOrder());
 
 		// Long hide some lines here (21/4/2023)
 //		if (source.getType() != null) {
@@ -148,17 +159,21 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		}
 
-		if (source.getAuditSection() != null) {
-			destination.setCreationDate(DateUtil.formatDate(source.getAuditSection().getDateCreated()));
-		}
+//		Long hide some lines here(13/05/2023)
+//		if (source.getAuditSection() != null) {
+//			destination.setCreationDate(DateUtil.formatDate(source.getAuditSection().getDateCreated()));
+//		}
+//		end
 
 //		Long hide some lines here(4/5/2023)
 //		destination.setProductVirtual(source.getProductVirtual());
 //		end
 
-		if (source.getProductReviewCount() != null) {
-			destination.setRatingCount(source.getProductReviewCount().intValue());
-		}
+//		Long hide some lines here(13/5/2023)
+//		if (source.getProductReviewCount() != null) {
+//			destination.setRatingCount(source.getProductReviewCount().intValue());
+//		}
+//		end
 
 //		Long hide some lines here(6/5/2023)
 //		if (source.getManufacturer() != null) {
@@ -187,8 +202,8 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		}
 		Set<LocationDescription> locations = source.getLocationDescriptions();
 		if (CollectionUtils.isNotEmpty(locations)) {
-			List<ReadableLocationDescription> locationDescriptions = locations.stream().map(i -> this.convertLocation(i))
-					.collect(Collectors.toList());
+			List<ReadableLocationDescription> locationDescriptions = locations.stream()
+					.map(i -> this.convertLocation(i)).collect(Collectors.toList());
 			destination.setLocationsDecription(locationDescriptions);
 		}
 		// end
@@ -391,13 +406,19 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 			availability = a;
 			destination.setQuantity(availability.getProductQuantity() == null ? 1 : availability.getProductQuantity());
-			destination.setQuantityOrderMaximum(
-					availability.getProductQuantityOrderMax() == null ? 1 : availability.getProductQuantityOrderMax());
-			destination.setQuantityOrderMinimum(
-					availability.getProductQuantityOrderMin() == null ? 1 : availability.getProductQuantityOrderMin());
-			if (availability.getProductQuantity().intValue() > 0 && destination.isAvailable()) {
-				destination.setCanBePurchased(true);
-			}
+
+//			Long hide some lines here
+//			destination.setQuantityOrderMaximum(
+//					availability.getProductQuantityOrderMax() == null ? 1 : availability.getProductQuantityOrderMax());
+//			destination.setQuantityOrderMinimum(
+//					availability.getProductQuantityOrderMin() == null ? 1 : availability.getProductQuantityOrderMin());
+//			end
+
+//			Long hide some lines here(13/5/2023)
+//			if (availability.getProductQuantity().intValue() > 0 && destination.isAvailable()) {
+//				destination.setCanBePurchased(true);
+//			}
+//			end
 
 //			Long hide some lines here(6/5/2023)
 //			if (a.getProductVariant() == null && StringUtils.isEmpty(a.getRegionVariant())) {
@@ -438,7 +459,9 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 						Optional<ProductPrice> pr = prices.stream()
 								.filter(p -> p.getCode().equals(ProductPrice.DEFAULT_PRICE_CODE)).findFirst();
 
-						destination.setProductPrice(readableProductPrice);
+//						Long hide some lines here(13/5/2023)
+//						destination.setProductPrice(readableProductPrice);
+//						end
 
 						if (pr.isPresent() && language != null) {
 							readableProductPrice.setId(pr.get().getId());
@@ -463,15 +486,18 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			throw new ConversionRuntimeException("An error while converting product price", e);
 		}
 
-		if (source.getProductReviewAvg() != null) {
-			double avg = source.getProductReviewAvg().doubleValue();
-			double rating = Math.round(avg * 2) / 2.0f;
-			destination.setRating(rating);
-		}
+//		Long hide some lines here(13/5/2023)
+//		if (source.getProductReviewAvg() != null) {
+//			double avg = source.getProductReviewAvg().doubleValue();
+//			double rating = Math.round(avg * 2) / 2.0f;
+//			destination.setRating(rating);
+//		}
+//
+//		if (source.getProductReviewCount() != null) {
+//			destination.setRatingCount(source.getProductReviewCount().intValue());
+//		}
+//		end
 
-		if (source.getProductReviewCount() != null) {
-			destination.setRatingCount(source.getProductReviewCount().intValue());
-		}
 //		Long hide some lines here
 //		if (description != null) {
 //			com.salesmanager.shop.model.catalog.product.ProductDescription tragetDescription = populateDescription(
@@ -491,30 +517,160 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 //		}
 		// end
 
-		ProductSpecification specifications = new ProductSpecification();
-		
+//		Long hide some lines here(13/5/2023)
+//		ProductSpecification specifications = new ProductSpecification();
+//		end
+
 //		Long hide some lines here(4/5/2023)
 //		specifications.setHeight(source.getProductHeight());
 //		specifications.setLength(source.getProductLength());
 //		specifications.setWeight(source.getProductWeight());
 //		specifications.setWidth(source.getProductWidth());
 //		end
-		
-		if (!StringUtils.isBlank(store.getSeizeunitcode())) {
-			specifications
-					.setDimensionUnitOfMeasure(DimensionUnitOfMeasure.valueOf(store.getSeizeunitcode().toLowerCase()));
-		}
-		if (!StringUtils.isBlank(store.getWeightunitcode())) {
-			specifications.setWeightUnitOfMeasure(WeightUnitOfMeasure.valueOf(store.getWeightunitcode().toLowerCase()));
-		}
-		destination.setProductSpecifications(specifications);
 
-//		Long hide some lines here
-//		destination.setSortOrder(source.getSortOrder());
+//		Long hide some lines here(14/5/2023)
+//		if (!StringUtils.isBlank(store.getSeizeunitcode())) {
+//			specifications
+//					.setDimensionUnitOfMeasure(DimensionUnitOfMeasure.valueOf(store.getSeizeunitcode().toLowerCase()));
+//		}
+//		if (!StringUtils.isBlank(store.getWeightunitcode())) {
+//			specifications.setWeightUnitOfMeasure(WeightUnitOfMeasure.valueOf(store.getWeightunitcode().toLowerCase()));
+//		}
+//		
+//		destination.setProductSpecifications(specifications);
 //		end
-		
+
+		destination.setSortOrder(source.getSortOrder());
+
 		return destination;
 	}
+
+//	Long add some lines here(14/5/2023)
+	public ReadableProduct merge(Product source, ReadableProduct destination) {
+
+		Validate.notNull(source, "Product cannot be null");
+		Validate.notNull(destination, "Product destination cannot be null");
+
+		// read only product values
+		// will contain options
+		TreeMap<Long, ReadableProductOption> selectableOptions = new TreeMap<Long, ReadableProductOption>();
+
+		destination.setSku(source.getSku());
+		destination.setRefSku(source.getRefSku());
+		destination.setId(source.getId());
+		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
+		if (source.getMerchantStore() != null) {
+			destination.setNameCompany(source.getMerchantStore().getStorename());
+		}
+
+		ProductDescription description = null;
+		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
+			for (ProductDescription desc : source.getDescriptions()) {
+				description = desc;
+				break;
+			}
+		}
+		destination.setId(source.getId());
+		destination.setAvailable(source.isAvailable());
+		destination.setRefSku(source.getRefSku());
+		destination.setSortOrder(source.getSortOrder());
+
+		if (source.getDateAvailable() != null) {
+			destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+		}
+
+		// temp store
+		MerchantStore store = new MerchantStore();
+		store.setCode(source.getMerchantStore().getCode());
+
+		// images
+		Set<ProductImage> images = source.getImages();
+		if (CollectionUtils.isNotEmpty(images)) {
+			List<ReadableImage> imageList = images.stream().map(i -> this.convertImage(source, i, store))
+					.collect(Collectors.toList());
+		}
+
+		Set<SkillDescription> skills = source.getSkillDescriptions();
+		if (CollectionUtils.isNotEmpty(skills)) {
+			List<ReadableSkillDescription> skillDescriptions = skills.stream().map(i -> this.convertSkill(i))
+					.collect(Collectors.toList());
+			destination.setSkillsDecription(skillDescriptions);
+		}
+		Set<LocationDescription> locations = source.getLocationDescriptions();
+		if (CollectionUtils.isNotEmpty(locations)) {
+			List<ReadableLocationDescription> locationDescriptions = locations.stream()
+					.map(i -> this.convertLocation(i)).collect(Collectors.toList());
+			destination.setLocationsDecription(locationDescriptions);
+		}
+		// end
+
+		ReadableProductVariant defaultInstance = null;
+
+		// availability
+		ProductAvailability availability = null;
+		for (ProductAvailability a : source.getAvailabilities()) {
+			// TODO validate region
+			// if(availability.getRegion().equals(Constants.ALL_REGIONS)) {//TODO REL 3.X
+			// accept a region
+
+			/**
+			 * Default availability store product instance null region variant null
+			 */
+
+			availability = a;
+			destination.setQuantity(availability.getProductQuantity() == null ? 1 : availability.getProductQuantity());
+		}
+
+		// if default instance
+
+		destination.setSku(source.getSku());
+
+		try {
+			FinalPrice price = pricingService.calculateProductPrice(source);
+			if (price != null) {
+
+				destination.setFinalPrice(pricingService.getDisplayAmount(price.getFinalPrice(), store));
+				destination.setPrice(price.getFinalPrice());
+				destination.setOriginalPrice(pricingService.getDisplayAmount(price.getOriginalPrice(), store));
+
+				// price appender
+				if (availability != null) {
+					Set<ProductPrice> prices = availability.getPrices();
+					if (!CollectionUtils.isEmpty(prices)) {
+						ReadableProductPrice readableProductPrice = new ReadableProductPrice();
+						readableProductPrice.setFinalPrice(destination.getFinalPrice());
+						readableProductPrice.setOriginalPrice(destination.getOriginalPrice());
+
+						Optional<ProductPrice> pr = prices.stream()
+								.filter(p -> p.getCode().equals(ProductPrice.DEFAULT_PRICE_CODE)).findFirst();
+
+						if (pr.isPresent()) {
+							readableProductPrice.setId(pr.get().getId());
+							Optional<ProductPriceDescription> d = pr.get().getDescriptions().stream().findFirst();
+							if (d.isPresent()) {
+								com.salesmanager.shop.model.catalog.product.ProductPriceDescription priceDescription = new com.salesmanager.shop.model.catalog.product.ProductPriceDescription();
+								priceDescription.setLanguage("black");
+								priceDescription.setId(d.get().getId());
+								priceDescription.setPriceAppender(d.get().getPriceAppender());
+								readableProductPrice.setDescription(priceDescription);
+							}
+						}
+
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+			throw new ConversionRuntimeException("An error while converting product price", e);
+		}
+
+		destination.setSortOrder(source.getSortOrder());
+
+		return destination;
+	}
+//	end
 
 	private ReadableImage convertImage(Product product, ProductImage image, MerchantStore store) {
 		ReadableImage prdImage = new ReadableImage();
@@ -739,11 +895,12 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 	// Long add some here
 	private ReadableSkillDescription convertSkill(SkillDescription sd) {
 		ReadableSkillDescription rsd = new ReadableSkillDescription();
-		rsd.setCode(sd.getCODE());
+		rsd.setCode(sd.getCode());
 		rsd.setIdSkill(sd.getID_SKILL());
-		rsd.setName(sd.getNAME());
+		rsd.setName(sd.getName());
 		return rsd;
 	}
+
 	private ReadableLocationDescription convertLocation(LocationDescription ld) {
 		ReadableLocationDescription rld = new ReadableLocationDescription();
 		rld.setIdLocation(ld.getID_LOCATION());

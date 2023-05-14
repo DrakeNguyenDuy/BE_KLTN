@@ -2,6 +2,7 @@ package com.salesmanager.shop.populator.catalog;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -138,9 +139,7 @@ public class ReadableProductPopulator extends
 			
 			target.setRefSku(source.getRefSku());
 			
-//			Long hide some lines here(4/5/2023)
-//			target.setSortOrder(source.getSortOrder());
-//			end
+			target.setSortOrder(source.getSortOrder());
 
 			if(source.getType() != null) {
 				target.setType(this.type(source.getType(), language));
@@ -173,10 +172,18 @@ public class ReadableProductPopulator extends
 			if(source.getDateAvailable() != null) {
 				target.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 			}
-
-			if(source.getAuditSection()!=null) {
-			  target.setCreationDate(DateUtil.formatDate(source.getAuditSection().getDateCreated()));
+			
+//			Long hide some lines here(13/5/2023)
+			if(source.getDateExperience() != null) {
+				target.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
 			}
+//			end
+
+//			Long hide some lines here(13/05/2023)
+//			if(source.getAuditSection()!=null) {
+//			  target.setCreationDate(DateUtil.formatDate(source.getAuditSection().getDateCreated()));
+//			}
+//			end
 
 /*			if(source.getProductReviewAvg()!=null) {
 				double avg = source.getProductReviewAvg().doubleValue();
@@ -524,11 +531,16 @@ public class ReadableProductPopulator extends
 				//if(availability.getRegion().equals(Constants.ALL_REGIONS)) {//TODO REL 2.1 accept a region
 					availability = a;
 					target.setQuantity(availability.getProductQuantity() == null ? 1:availability.getProductQuantity());
-					target.setQuantityOrderMaximum(availability.getProductQuantityOrderMax() == null ? 1:availability.getProductQuantityOrderMax());
-					target.setQuantityOrderMinimum(availability.getProductQuantityOrderMin()==null ? 1:availability.getProductQuantityOrderMin());
-					if(availability.getProductQuantity().intValue() > 0 && target.isAvailable()) {
-							target.setCanBePurchased(true);
-					}
+//					Long hide some lines here(13/5/2023)
+//					target.setQuantityOrderMaximum(availability.getProductQuantityOrderMax() == null ? 1:availability.getProductQuantityOrderMax());
+//					target.setQuantityOrderMinimum(availability.getProductQuantityOrderMin()==null ? 1:availability.getProductQuantityOrderMin());
+//					end
+					
+//					Long hide some lines here(13/05/2023)
+//					if(availability.getProductQuantity().intValue() > 0 && target.isAvailable()) {
+//							target.setCanBePurchased(true);
+//					}
+//					end
 				//}
 			}
 
@@ -563,8 +575,10 @@ public class ReadableProductPopulator extends
 						Optional<ProductPrice> pr = prices.stream().filter(p -> p.getCode().equals(ProductPrice.DEFAULT_PRICE_CODE))
 								.findFirst();
 
-						target.setProductPrice(readableProductPrice);
-
+						//Long hide some lines here(13/05/2023)
+//						target.setProductPrice(readableProductPrice);
+//						end
+						
 						if(pr.isPresent()) {
 							readableProductPrice.setId(pr.get().getId());
 							Optional<ProductPriceDescription> d = pr.get().getDescriptions().stream().filter(desc -> desc.getLanguage().getCode().equals(lang.getCode())).findFirst();

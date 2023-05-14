@@ -387,7 +387,10 @@ public class CategoryManagementAPIIntegrationTest extends ServicesTestSupport {
 
 		ProductSpecification specifications = new ProductSpecification();
 		specifications.setManufacturer("BRAND1");
-		product1.setProductSpecifications(specifications);
+		
+//		Long hide some lines here(13/05/2023)
+//		product1.setProductSpecifications(specifications);
+//		end
 
 		json = writer.writeValueAsString(product1);
 		entity = new HttpEntity<>(json, getHeader());
@@ -403,8 +406,11 @@ public class CategoryManagementAPIIntegrationTest extends ServicesTestSupport {
 
 		specifications = new ProductSpecification();
 		specifications.setManufacturer("BRAND2");
-		product2.setProductSpecifications(specifications);
-
+		
+//		Long hide some lines here(13/05/2023)
+//		product2.setProductSpecifications(specifications);
+//		end
+		
 		json = writer.writeValueAsString(product2);
 		entity = new HttpEntity<>(json, getHeader());
 

@@ -36,9 +36,7 @@ public class ProductDefinition extends Entity {
 //	private ProductSpecification productSpecifications;
 //	end
 	
-//	Long hide some lines here(6/5/2023)
-//	private int sortOrder;
-//	end
+	private int sortOrder;
 	
 	
 //	Long hide some lines here(5/5/2023)
@@ -72,14 +70,12 @@ public class ProductDefinition extends Entity {
 //	}
 //	end
 	
-//	Long hide some lines here(6/5/2023)
-//	public int getSortOrder() {
-//		return sortOrder;
-//	}
-//	public void setSortOrder(int sortOrder) {
-//		this.sortOrder = sortOrder;
-//	}
-//	end
+	public int getSortOrder() {
+		return sortOrder;
+	}
+	public void setSortOrder(int sortOrder) {
+		this.sortOrder = sortOrder;
+	}
 	
 //	Long hide some lines here(3/5/2023)
 //	public boolean isShipeable() {

@@ -231,6 +231,31 @@ public class ProductFacadeV2Impl implements ProductFacade {
 		return null;
 	}
 
+	@Override
+	public ReadableProductList getProductLists(ProductCriteria criterias) throws Exception {
+		Validate.notNull(criterias, "ProductCriteria must be set for this product");
+		
+		Page<Product> modelProductList = productService.listByStoreV2( criterias, criterias.getStartPage(), criterias.getMaxCount());
+		
+		List<Product> products = modelProductList.getContent();
+		ReadableProductList productList = new ReadableProductList();
+		
+		/**
+		 * ReadableProductMapper
+		 */
+		
+		List<ReadableProduct> readableProducts = products.stream().map(p -> readableProductMapper.convert(p))
+				.sorted(Comparator.comparing(ReadableProduct::getSortOrder)).collect(Collectors.toList());
+
+
+		productList.setRecordsTotal(modelProductList.getTotalElements());
+		productList.setNumber(modelProductList.getNumberOfElements());
+		productList.setProducts(readableProducts);
+		productList.setTotalPages(modelProductList.getTotalPages());
+
+		return productList;
+	}
+
 
 	/**
 	@Override

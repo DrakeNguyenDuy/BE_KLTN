@@ -74,7 +74,7 @@ public class MarketPlaceApi {
 	// signup new merchant
 	@PostMapping("/store/signup")
 	@ApiOperation(httpMethod = "POST", value = "Signup store", notes = "", produces = "application/json", response = Void.class)
-	public void signup(@RequestBody SignupStore store, @ApiIgnore Language language) {
+	public String signup(@RequestBody SignupStore store, @ApiIgnore Language language) {
 
 		ReadableUser user = null;
 		try {
@@ -85,14 +85,16 @@ public class MarketPlaceApi {
 		}
 
 		if (user != null) {
-			throw new OperationNotAllowedException(
-					"User [" + store.getEmail() + "] already exist and cannot be registered");
+//			throw new OperationNotAllowedException(
+//					"User [" + store.getEmail() + "] already exist and cannot be registered");
+			return "Email đã được sử dụng";
 		}
 
 		// check if store exists
 		if (storeFacade.existByCode(store.getCode())) {
-			throw new OperationNotAllowedException(
-					"Store [" + store.getCode() + "] already exist and cannot be registered");
+//			throw new OperationNotAllowedException(
+//					"Store [" + store.getCode() + "] already exist and cannot be registered");
+			return "Mã nhà hàng(code) đã tồn tại";
 		}
 		
 		// create store
@@ -107,6 +109,7 @@ public class MarketPlaceApi {
 		MerchantStore merchantStore2 = storeMapper.convert(store);
 		userFacade.create(persistableUser, merchantStore2);
 		// send notification
+		return "OK";
 
 	}
 	

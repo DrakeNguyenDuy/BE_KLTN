@@ -22,15 +22,20 @@ public class ProductEntity extends Product implements Serializable {
 	private BigDecimal price;
 	private int quantity = 0;
 	private String sku;
-	private boolean preOrder = false;
-	private boolean productVirtual = false;
-	private int quantityOrderMaximum = -1;// default unlimited
-	private int quantityOrderMinimum = 1;// default 1
+	//Long hide some lines here 
+//	private boolean preOrder = false;
+//	private boolean productVirtual = false;
+//	private int quantityOrderMaximum = -1;// default unlimited
+//	private int quantityOrderMinimum = 1;// default 1
+//	end
 	private boolean productIsFree;
 
-	private ProductSpecification productSpecifications;
-	private Double rating = 0D;
-	private int ratingCount;
+//	Long hide some lines here(13/5/2023)
+//	private ProductSpecification productSpecifications;
+//
+//	private Double rating = 0D;
+//	private int ratingCount;
+//	end
 	private int sortOrder;
 	private String refSku;
 
@@ -41,8 +46,10 @@ public class ProductEntity extends Product implements Serializable {
 	 * @return
 	 */
 
-	private int rentalDuration;
-	private int rentalPeriod;
+//	Long hide some lines here(13/5/2023)
+//	private int rentalDuration;
+//	private int rentalPeriod;
+//	end
 
 	/**
 	 * End RENTAL fields
@@ -91,53 +98,59 @@ public class ProductEntity extends Product implements Serializable {
 		this.sortOrder = sortOrder;
 	}
 
-	public void setQuantityOrderMaximum(int quantityOrderMaximum) {
-		this.quantityOrderMaximum = quantityOrderMaximum;
-	}
+//	Long hide some lines here(13/05/2023)
+//	public void setQuantityOrderMaximum(int quantityOrderMaximum) {
+//		this.quantityOrderMaximum = quantityOrderMaximum;
+//	}
+//
+//	public int getQuantityOrderMaximum() {
+//		return quantityOrderMaximum;
+//	}
+//
+//	public void setProductVirtual(boolean productVirtual) {
+//		this.productVirtual = productVirtual;
+//	}
+//
+//	public boolean isProductVirtual() {
+//		return productVirtual;
+//	}
+//
+//	public int getQuantityOrderMinimum() {
+//		return quantityOrderMinimum;
+//	}
+//
+//	public void setQuantityOrderMinimum(int quantityOrderMinimum) {
+//		this.quantityOrderMinimum = quantityOrderMinimum;
+//	}
+//	end
 
-	public int getQuantityOrderMaximum() {
-		return quantityOrderMaximum;
-	}
+//	Long hide some lines here(13/5/2023)
+//	public int getRatingCount() {
+//		return ratingCount;
+//	}
+//
+//	public void setRatingCount(int ratingCount) {
+//		this.ratingCount = ratingCount;
+//	}
+//
+//	public Double getRating() {
+//		return rating;
+//	}
+//
+//	public void setRating(Double rating) {
+//		this.rating = rating;
+//	}
+//	end
 
-	public void setProductVirtual(boolean productVirtual) {
-		this.productVirtual = productVirtual;
-	}
-
-	public boolean isProductVirtual() {
-		return productVirtual;
-	}
-
-	public int getQuantityOrderMinimum() {
-		return quantityOrderMinimum;
-	}
-
-	public void setQuantityOrderMinimum(int quantityOrderMinimum) {
-		this.quantityOrderMinimum = quantityOrderMinimum;
-	}
-
-	public int getRatingCount() {
-		return ratingCount;
-	}
-
-	public void setRatingCount(int ratingCount) {
-		this.ratingCount = ratingCount;
-	}
-
-	public Double getRating() {
-		return rating;
-	}
-
-	public void setRating(Double rating) {
-		this.rating = rating;
-	}
-
-	public boolean isPreOrder() {
-		return preOrder;
-	}
-
-	public void setPreOrder(boolean preOrder) {
-		this.preOrder = preOrder;
-	}
+//	Long hide some lines here(13/05/2023)
+//	public boolean isPreOrder() {
+//		return preOrder;
+//	}
+//
+//	public void setPreOrder(boolean preOrder) {
+//		this.preOrder = preOrder;
+//	}
+//	end
 
 	public String getRefSku() {
 		return refSku;
@@ -147,30 +160,30 @@ public class ProductEntity extends Product implements Serializable {
 		this.refSku = refSku;
 	}
 
-	public int getRentalDuration() {
-		return rentalDuration;
-	}
-
-	public void setRentalDuration(int rentalDuration) {
-		this.rentalDuration = rentalDuration;
-	}
-
-	public int getRentalPeriod() {
-		return rentalPeriod;
-	}
-
-	public void setRentalPeriod(int rentalPeriod) {
-		this.rentalPeriod = rentalPeriod;
-	}
-
-	public ProductSpecification getProductSpecifications() {
-		return productSpecifications;
-	}
-
-	public void setProductSpecifications(ProductSpecification productSpecifications) {
-		this.productSpecifications = productSpecifications;
-	}
-
-
+//	Long hide some lines here(13/5/2023)
+//	public int getRentalDuration() {
+//		return rentalDuration;
+//	}
+//
+//	public void setRentalDuration(int rentalDuration) {
+//		this.rentalDuration = rentalDuration;
+//	}
+//
+//	public int getRentalPeriod() {
+//		return rentalPeriod;
+//	}
+//
+//	public void setRentalPeriod(int rentalPeriod) {
+//		this.rentalPeriod = rentalPeriod;
+//	}
+//
+//	public ProductSpecification getProductSpecifications() {
+//		return productSpecifications;
+//	}
+//
+//	public void setProductSpecifications(ProductSpecification productSpecifications) {
+//		this.productSpecifications = productSpecifications;
+//	}
+//	end
 
 }
