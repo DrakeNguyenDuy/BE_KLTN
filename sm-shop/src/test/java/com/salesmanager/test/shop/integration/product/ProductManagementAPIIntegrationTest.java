@@ -96,7 +96,11 @@ public class ProductManagementAPIIntegrationTest extends ServicesTestSupport {
 		ProductSpecification specifications = new ProductSpecification();
 		specifications.setManufacturer(
 				com.salesmanager.core.model.catalog.product.manufacturer.Manufacturer.DEFAULT_MANUFACTURER);
-		product.setProductSpecifications(specifications);
+		
+//		Long hide some lines here(13/05/2023)
+//		product.setProductSpecifications(specifications);
+//		end
+		
 		product.setPrice(BigDecimal.TEN);
 		product.setSku("123ABC");
 		final HttpEntity<PersistableProduct> entity = new HttpEntity<>(product, getHeader());
@@ -289,9 +293,13 @@ public class ProductManagementAPIIntegrationTest extends ServicesTestSupport {
 
 		product.setSortOrder(0);// set iterator as sort order
 		product.setAvailable(true);// force availability
-		product.setProductVirtual(false);// force tangible good
-		product.setQuantityOrderMinimum(1);// force to 1 minimum when ordering
-		product.setProductShipeable(true);// all items are shipeable
+		
+//		Long hide some lines here(13/05/2023)
+//		product.setProductVirtual(false);// force tangible good
+//		product.setQuantityOrderMinimum(1);// force to 1 minimum when ordering
+//		product.setProductShipeable(true);// all items are shipeable
+//		end
+		
 
 		/** images **/
 		final String image = "/Users/carlsamson/Documents/csti/IMG_4626.jpg";
@@ -315,8 +323,9 @@ public class ProductManagementAPIIntegrationTest extends ServicesTestSupport {
 		specifications.setWeight(new BigDecimal(22));
 		specifications.setWidth(new BigDecimal(23));
 
-		product.setProductSpecifications(specifications);
-		
+//		Long hide some lines here(13/5/2023)
+//		product.setProductSpecifications(specifications);
+//		end
 		
 		PersistableProductInventory inventory = new PersistableProductInventory();
 		inventory.setQuantity(5);

@@ -40,7 +40,10 @@ public class SignupStore implements Serializable {
 	@NotEmpty
 	private String returnUrl;
 	
-	
+//	Long add some lines here(13/5/2023)
+	@NotEmpty
+	private String phoneNumber;
+//	end
 	
 	public String getReturnUrl() {
 		return returnUrl;
@@ -121,4 +124,12 @@ public class SignupStore implements Serializable {
 		this.country = country;
 	}
 
+//	Long add some  lines here(13/5/2023)
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+//	end
 }

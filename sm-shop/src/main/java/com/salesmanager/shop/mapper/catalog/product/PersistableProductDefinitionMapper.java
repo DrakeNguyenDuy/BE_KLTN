@@ -12,20 +12,28 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.ProjectedPayload;
 import org.springframework.stereotype.Component;
 
 import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.business.exception.ConversionException;
+import com.salesmanager.core.business.repositories.catalog.product.paycycle.PayCycleReposistory;
 import com.salesmanager.core.business.services.catalog.category.CategoryService;
 import com.salesmanager.core.business.services.catalog.product.experience.ProductExperienceService;
+import com.salesmanager.core.business.services.catalog.product.location.ProductLocationService;
 import com.salesmanager.core.business.services.catalog.product.manufacturer.ManufacturerService;
+import com.salesmanager.core.business.services.catalog.product.paycycle.PayCycleService;
+import com.salesmanager.core.business.services.catalog.product.position.ProductPositionService;
 import com.salesmanager.core.business.services.catalog.product.relationship.ProductRelationshipService;
+import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillService;
 import com.salesmanager.core.business.services.catalog.product.type.ProductTypeService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.model.catalog.category.Category;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.availability.ProductAvailability;
 import com.salesmanager.core.model.catalog.product.description.ProductDescription;
+import com.salesmanager.core.model.catalog.product.paycycle.PayCycleDescription;
+import com.salesmanager.core.model.catalog.product.position.PositionDescription;
 import com.salesmanager.core.model.catalog.product.price.ProductPrice;
 import com.salesmanager.core.model.catalog.product.price.ProductPriceDescription;
 import com.salesmanager.core.model.catalog.product.relationship.ProductRelationship;
@@ -65,6 +73,18 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 	private ProductRelationshipService productRelationshipService;
 	@Autowired
 	private ProductExperienceService experienceService;
+
+	@Autowired
+	private ProductLocationService locationService;
+
+	@Autowired
+	private ProductSkillService skillService;
+
+	@Autowired
+	private ProductPositionService positionService;
+
+	@Autowired
+	private PayCycleService payCycleService;
 //	end
 
 	@Override
@@ -271,8 +291,8 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 //               }
 //    			
 //			}
-//			destination.setSortOrder(source.getSortOrder());
 //			end
+			destination.setSortOrder(source.getSortOrder());
 
 //			Long hide some lines here(3/5/2023)
 //			destination.setProductVirtual(source.isVirtual());
@@ -324,46 +344,63 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 			destination.setGender(source.getGender());
 			destination.setDateExperience(DateUtil.getDate(source.getDateExperience()));
 
-			// position (by product group)
-			if (!CollectionUtils.isEmpty(source.getPositionCode())) {
-				Set<ProductRelationship> positionOfJob = new HashSet<ProductRelationship>();
-				List<ProductRelationship> positions = productRelationshipService.getGroups();
-				for (String code : source.getPositionCode()) {
-					for (ProductRelationship productRelationship : positions) {
-						if (code.equals(productRelationship.getCode())) {
-							positionOfJob.add(productRelationship);
-							break;
-						}
-					}
-				}
-				if (positionOfJob.size() > 0) {
-					destination.setRelationships(positionOfJob);
-				}
-			}
+//			Long hide some lines here(14/5/2023)
+//			// position (by product group)
+//			if (!CollectionUtils.isEmpty(source.getPositionCode())) {
+//				Set<ProductRelationship> positionOfJob = new HashSet<ProductRelationship>();
+//				List<ProductRelationship> positions = productRelationshipService.getGroups();
+//				for (String code : source.getPositionCode()) {
+//					for (ProductRelationship productRelationship : positions) {
+//						if (code.equals(productRelationship.getCode())) {
+//							positionOfJob.add(productRelationship);
+//							break;
+//						}
+//					}
+//				}
+//				if (positionOfJob.size() > 0) {
+//					destination.setRelationships(positionOfJob);
+//				}
+//			}
+
 			// location
 			if (!CollectionUtils.isEmpty(source.getLocationsDecription())) {
-				List<LocationDescription> listLocation = source.getLocationsDecription().stream()
-						.map(l -> convertToLocationDescription(l)).collect(Collectors.toList());
 				Set<LocationDescription> locationDescriptions = new HashSet<LocationDescription>();
-				locationDescriptions.addAll(listLocation);
+				List<String> codeLocations = source.getLocationsDecription();
+				for (String string : codeLocations) {
+					locationDescriptions.add(locationService.getLocationDescriptionByCode(string));
+				}
 				destination.setLocationDescriptions(locationDescriptions);
 			}
 			// skill
 			if (!CollectionUtils.isEmpty(source.getSkillsDecription())) {
-				List<SkillDescription> listskill = source.getSkillsDecription().stream()
-						.map(l -> convertToSkillDescription(l)).collect(Collectors.toList());
 				Set<SkillDescription> skilDescriptions = new HashSet<SkillDescription>();
-				skilDescriptions.addAll(listskill);
+				List<String> codeSkills = source.getSkillsDecription();
+				for (String string : codeSkills) {
+					skilDescriptions.add(skillService.getSkillDescriptionByCode(string));
+				}
 				destination.setSkillDescriptions(skilDescriptions);
 			}
-			//experience
-			if(!StringUtils.isBlank(source.getExperence())) {
+			// experience
+			if (!StringUtils.isBlank(source.getExperence())) {
 				ExperienceDescription ed = experienceService.getExperienceByCode(source.getExperence());
-				if(ed!=null) {
+				if (ed != null) {
 					destination.setExperience(ed);
 				}
 			}
-			//end
+			// position
+			if (!CollectionUtils.isEmpty(source.getPositionCode())) {
+				Set<PositionDescription> positionDescriptions = new HashSet<PositionDescription>();
+				List<String> codeSkills = source.getPositionCode();
+				for (String string : codeSkills) {
+					positionDescriptions.add(positionService.getPositionBycode(string));
+				}
+				destination.setPositionDescriptions(positionDescriptions);
+			}
+			// pay cycle
+			if (source.getIdPayCycle() != null) {
+				destination.setIdPayCycle(source.getIdPayCycle());
+			}
+			// end
 			return destination;
 
 		} catch (Exception e) {
@@ -371,20 +408,4 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 		}
 	}
 
-	private LocationDescription convertToLocationDescription(PersistableLocationDescription pld) {
-		LocationDescription locationDescription = new LocationDescription();
-		locationDescription.setCODE(pld.getCode());
-		locationDescription.setDETAIL_ADDRESS(pld.getDetailAddress());
-		locationDescription.setDISTRICT(pld.getDistrict());
-		locationDescription.setPROVINCE(pld.getProvince());
-		locationDescription.setWARD(pld.getWard());
-		return locationDescription;
-	}
-
-	private SkillDescription convertToSkillDescription(PersistableSkillDescription psd) {
-		SkillDescription skillDescription = new SkillDescription();
-		skillDescription.setCODE(psd.getCode());
-		skillDescription.setNAME(psd.getName());
-		return skillDescription;
-	}
 }

@@ -22,10 +22,10 @@ public class SkillDescription {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID_SKILL;
-	@Column
-	private String CODE;
-	@Column
-	private String NAME;
+	@Column(name = "CODE", unique = true)
+	private String code;
+	@Column(name = "NAME")
+	private String name;
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
 
@@ -37,20 +37,28 @@ public class SkillDescription {
 		ID_SKILL = iD_SKILL;
 	}
 
-	public String getCODE() {
-		return CODE;
+	public String getCode() {
+		return code;
 	}
 
-	public void setCODE(String cODE) {
-		CODE = cODE;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public String getNAME() {
-		return NAME;
+	public String getName() {
+		return name;
 	}
 
-	public void setNAME(String nAME) {
-		NAME = nAME;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
 	}
 
 	public AuditSection getAuditSection() {
@@ -61,8 +69,8 @@ public class SkillDescription {
 		this.auditSection = auditSection;
 	}
 
-//	@ManyToMany(mappedBy = "skillDescriptions")
-	@ManyToMany(targetEntity = Product.class)
-	@JoinColumn(name = "PRODUCT_ID", nullable = false)
+	@ManyToMany(mappedBy = "skillDescriptions")
+//	@ManyToMany(targetEntity = Product.class)
+//	@JoinColumn(name = "PRODUCT_ID", nullable = false)
 	private Set<Product> products = new HashSet<Product>();
 }

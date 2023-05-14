@@ -205,7 +205,9 @@ public class ServicesTestSupport {
 		ProductSpecification specifications = new ProductSpecification();
 		specifications.setManufacturer(
 				com.salesmanager.core.model.catalog.product.manufacturer.Manufacturer.DEFAULT_MANUFACTURER);
-		product.setProductSpecifications(specifications);
+//		Long hide some line here(13/5/2023)
+//		product.setProductSpecifications(specifications);
+//		end
 		product.setAvailable(true);
 		product.setPrice(BigDecimal.TEN);
 		product.setSku(code);

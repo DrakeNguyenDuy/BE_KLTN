@@ -129,11 +129,9 @@ public class ProductFacadeImpl implements ProductFacade {
 		
 		List<Product> products = modelProductList.getContent();
 		
-//		Long hide some lines here(4/5/2023)
-//		List<Product> prds = products.stream().sorted(Comparator.comparing(Product::getSortOrder)).collect(Collectors.toList());
-//		
-//		products = prds;
-//		end
+		List<Product> prds = products.stream().sorted(Comparator.comparing(Product::getSortOrder)).collect(Collectors.toList());
+		
+		products = prds;
 		
 		ReadableProductPopulator populator = new ReadableProductPopulator();
 		populator.setPricingService(pricingService);
@@ -269,6 +267,12 @@ public class ProductFacadeImpl implements ProductFacade {
 	@Override
 	public Product getProduct(Long id, MerchantStore store) {
 		return productService.findOne(id, store);
+	}
+
+	@Override
+	public ReadableProductList getProductLists(ProductCriteria criterias) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

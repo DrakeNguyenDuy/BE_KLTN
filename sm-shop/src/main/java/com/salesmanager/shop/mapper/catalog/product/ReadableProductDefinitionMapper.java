@@ -158,9 +158,7 @@ public class ReadableProductDefinitionMapper implements Mapper<Product, Readable
 			returnDestination.setType(readableType);
 		}
 		
-//		Long hide some lines here(4/5/2023)
-//		returnDestination.setSortOrder(source.getSortOrder());
-//		end
+		returnDestination.setSortOrder(source.getSortOrder());
 		
 		//images
 		Set<ProductImage> images = source.getImages();

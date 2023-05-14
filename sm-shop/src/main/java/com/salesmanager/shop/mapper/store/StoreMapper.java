@@ -27,7 +27,7 @@ public class StoreMapper implements Mapper<SignupStore, PersistableMerchantStore
 		merchantStore.setEmail(source.getEmail());
 		merchantStore.setInBusinessSince("2023-05-03T08:05:10.746Z");
 		merchantStore.setName(source.getName());
-		merchantStore.setPhone("0378989394");
+		merchantStore.setPhone(source.getPhoneNumber());
 		merchantStore.setRetailer(true);
 		merchantStore.setUseCache(true);
 		merchantStore.setWeight(WeightUnit.JOB);

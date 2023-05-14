@@ -79,9 +79,7 @@ public class ReadableMinimalProductMapper implements Mapper<Product, ReadableMin
 		
 		destination.setRefSku(source.getRefSku());
 		
-//		Long hide some lines here(4/5/2023)
-//		destination.setSortOrder(source.getSortOrder());
-//		end
+		destination.setSortOrder(source.getSortOrder());
 		
 		destination.setSku(source.getSku());
 		
@@ -89,19 +87,23 @@ public class ReadableMinimalProductMapper implements Mapper<Product, ReadableMin
 			destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		}
 		
-		if(source.getProductReviewAvg()!=null) {
-			double avg = source.getProductReviewAvg().doubleValue();
-			double rating = Math.round(avg * 2) / 2.0f;
-			destination.setRating(rating);
-		}
+//		Long hide some lines here(13/05/2023)
+//		if(source.getProductReviewAvg()!=null) {
+//			double avg = source.getProductReviewAvg().doubleValue();
+//			double rating = Math.round(avg * 2) / 2.0f;
+//			destination.setRating(rating);
+//		}
+//		end
 		
 //		Long hide some lines here(4/5/2023)
 //		destination.setProductVirtual(source.getProductVirtual());
 //		end
 		
-		if(source.getProductReviewCount()!=null) {
-			destination.setRatingCount(source.getProductReviewCount().intValue());
-		}
+//		Long hide some lines here(13/5/2023)
+//		if(source.getProductReviewCount()!=null) {
+//			destination.setRatingCount(source.getProductReviewCount().intValue());
+//		}
+//		end
 
 		//price
 

@@ -37,6 +37,8 @@ import com.salesmanager.core.model.catalog.product.availability.ProductAvailabil
 import com.salesmanager.core.model.catalog.product.description.ProductDescription;
 import com.salesmanager.core.model.catalog.product.image.ProductImage;
 import com.salesmanager.core.model.catalog.product.manufacturer.Manufacturer;
+import com.salesmanager.core.model.catalog.product.paycycle.PayCycleDescription;
+import com.salesmanager.core.model.catalog.product.position.PositionDescription;
 import com.salesmanager.core.model.catalog.product.relationship.ProductRelationship;
 import com.salesmanager.core.model.catalog.product.type.ProductType;
 import com.salesmanager.core.model.catalog.product.variant.ProductVariant;
@@ -53,7 +55,7 @@ import com.salesmanager.core.model.tax.taxclass.TaxClass;
 
 @Entity
 @EntityListeners(value = AuditListener.class)
-@Table(name = "PRODUCT", uniqueConstraints = @UniqueConstraint(columnNames = { "MERCHANT_ID", "SKU" }))
+@Table(name = "PRODUCT", uniqueConstraints = @UniqueConstraint(columnNames = { "MERCHANT_ID", "SKU", }))
 public class Product extends SalesManagerEntity<Long, Product> implements Auditable {
 	private static final long serialVersionUID = 1L;
 
@@ -78,10 +80,10 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	/**
 	 * Attributes of a product Decorates the product with additional properties
 	 */
-	
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private Set<ProductAttribute> attributes = new HashSet<ProductAttribute>();
-	
+
 	/**
 	 * Default product images
 	 */
@@ -105,14 +107,27 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	private MerchantStore merchantStore;
 
 	// Long add some lines here (21/4/2023)
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
 	@JoinTable(name = "SKILL_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_SKILL"))
 	private Set<SkillDescription> skillDescriptions = new HashSet<SkillDescription>();
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
 	@JoinTable(name = "LOCATION_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_LOCATION"))
 	private Set<LocationDescription> locationDescriptions = new HashSet<LocationDescription>();
-	//end
+
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@JoinTable(name = "PAYCYCLE_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_PAY_CIRCLE"))
+//	private Set<PayCycleDescription> payCycleDescriptions = new HashSet<PayCycleDescription>();
 	
+	@Column(name = "ID_PAY_CIRCL")
+	private String idPayCycle;
+	// end
+
+//	Long add some lines here(14/05/2023)
+	@ManyToMany(fetch = FetchType.LAZY, cascade =  {CascadeType.PERSIST, CascadeType.DETACH})
+	@JoinTable(name = "POSITION_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_POSITION"))
+	private Set<PositionDescription> positionDescriptions = new HashSet<PositionDescription>();
+//	end
+
 	/**
 	 * Product to category
 	 */
@@ -132,27 +147,27 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	 */
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private Set<ProductVariant> variants = new HashSet<ProductVariant>();
-	
+
 	@Column(name = "DATE_AVAILABLE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateAvailable = new Date();
-	
-	//Long add some lines here(6/5/2023)
-	@Column(name="DATE_EXPERIENCE")
-	@Temporal(TemporalType.DATE)
+
+	// Long add some lines here(6/5/2023)
+	@Column(name = "DATE_EXPERIENCE")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateExperience;
-	//end
+	// end
 
 	@Column(name = "AVAILABLE")
 	private boolean available = true;
-	
-	//Long add some lines here(4/5/2023)
+
+	// Long add some lines here(4/5/2023)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_EXPERIENCE" , nullable = false)
+	@JoinColumn(name = "ID_EXPERIENCE", nullable = false)
 	private ExperienceDescription experience;
-	//end
-	
-	//Long add some lines here(6/5/2023)
+	// end
+
+	// Long add some lines here(6/5/2023)
 	@Column(name = "GENDER")
 	private String gender;
 
@@ -164,7 +179,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "MANUFACTURER_ID", nullable = true)
 	private Manufacturer manufacturer;
-	
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "PRODUCT_TYPE_ID", nullable = true)
@@ -196,7 +210,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 //	@Column(name = "PRODUCT_WEIGHT")
 //	private BigDecimal productWeight;
 //	end
-	
 
 	@Column(name = "REVIEW_AVG")
 	private BigDecimal productReviewAvg;
@@ -207,10 +220,8 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	@Column(name = "QUANTITY_ORDERED")
 	private Integer productOrdered;
 
-//	Long hide some lines here(4/5/2023)
-//	@Column(name = "SORT_ORDER")
-//	private Integer sortOrder = new Integer(0);
-//	end
+	@Column(name = "SORT_ORDER")
+	private Integer sortOrder = new Integer(0);
 
 	@NotEmpty
 	@Pattern(regexp = "^[a-zA-Z0-9_]*$")
@@ -230,7 +241,7 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	 * RENTAL ADDITIONAL FIELDS
 	 */
 
-	//Long hide some lines here(21/4/2023)
+	// Long hide some lines here(21/4/2023)
 //	@Column(name = "RENTAL_STATUS", nullable = true)
 //	private RentalStatus rentalStatus;
 
@@ -255,7 +266,7 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 //	public void setRentalDuration(Integer rentalDuration) {
 //		this.rentalDuration = rentalDuration;
 //	}
-	//end
+	// end
 
 	/**
 	 * End rental fields
@@ -466,15 +477,13 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 		this.dateAvailable = dateAvailable;
 	}
 
-//	Long hide some lines here(4/5/2023)
-//	public void setSortOrder(Integer sortOrder) {
-//		this.sortOrder = sortOrder;
-//	}
-//
-//	public Integer getSortOrder() {
-//		return sortOrder;
-//	}
-//	end
+	public void setSortOrder(Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+	public Integer getSortOrder() {
+		return sortOrder;
+	}
 
 	public void setAvailable(Boolean available) {
 		this.available = available;
@@ -582,7 +591,7 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 //	}
 //	end
 
-	//Long add some lines here (21/4/2023)
+	// Long add some lines here (21/4/2023)
 	public Set<SkillDescription> getSkillDescriptions() {
 		return skillDescriptions;
 	}
@@ -598,9 +607,9 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	public void setLocationDescriptions(Set<LocationDescription> locationDescriptions) {
 		this.locationDescriptions = locationDescriptions;
 	}
-	//end
+	// end
 
-	//Long add some lines here(6/5/2023)
+	// Long add some lines here(6/5/2023)
 
 	public String getGender() {
 		return gender;
@@ -625,5 +634,22 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	public void setDateExperience(Date dateExperience) {
 		this.dateExperience = dateExperience;
 	}
-	//end
+
+	public Set<PositionDescription> getPositionDescriptions() {
+		return positionDescriptions;
+	}
+
+	public void setPositionDescriptions(Set<PositionDescription> positionDescriptions) {
+		this.positionDescriptions = positionDescriptions;
+	}
+
+	public String getIdPayCycle() {
+		return idPayCycle;
+	}
+
+	public void setIdPayCycle(String idPayCycle) {
+		this.idPayCycle = idPayCycle;
+	}
+
+	// end
 }

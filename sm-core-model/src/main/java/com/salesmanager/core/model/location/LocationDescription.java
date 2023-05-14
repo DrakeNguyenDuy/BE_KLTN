@@ -22,8 +22,8 @@ public class LocationDescription {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID_LOCATION;
-	@Column(name = "CODE")
-	private String CODE;
+	@Column(name = "CODE", unique = true)
+	private String code;
 	@Column(name = "DETAIL_ADDRESS")
 	private String DETAIL_ADDRESS;
 	@Column(name = "WARD")
@@ -43,12 +43,20 @@ public class LocationDescription {
 		ID_LOCATION = iD_LOCATION;
 	}
 
-	public String getCODE() {
-		return CODE;
+	public String getCode() {
+		return code;
 	}
 
-	public void setCODE(String cODE) {
-		CODE = cODE;
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
 	}
 
 	public String getDETAIL_ADDRESS() {
@@ -91,8 +99,9 @@ public class LocationDescription {
 		this.auditSection = auditSection;
 	}
 
-	@ManyToMany(targetEntity = Product.class)
-	@JoinColumn(name = "PRODUCT_ID", nullable = false)
+//	@ManyToMany(targetEntity = Product.class)
+//	@JoinColumn(name = "PRODUCT_ID", nullable = false)
+	@ManyToMany(mappedBy = "skillDescriptions")
 	private Set<Product> products = new HashSet<Product>();
 
 }

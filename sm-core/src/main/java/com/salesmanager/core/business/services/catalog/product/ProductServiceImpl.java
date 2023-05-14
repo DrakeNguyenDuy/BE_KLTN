@@ -1,6 +1,5 @@
 package com.salesmanager.core.business.services.catalog.product;
 
-
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,9 +29,13 @@ import com.salesmanager.core.business.services.catalog.product.attribute.Product
 import com.salesmanager.core.business.services.catalog.product.attribute.ProductOptionValueService;
 import com.salesmanager.core.business.services.catalog.product.availability.ProductAvailabilityService;
 import com.salesmanager.core.business.services.catalog.product.image.ProductImageService;
+import com.salesmanager.core.business.services.catalog.product.location.ProductLocationEntryService;
+import com.salesmanager.core.business.services.catalog.product.location.ProductLocationService;
 import com.salesmanager.core.business.services.catalog.product.price.ProductPriceService;
 import com.salesmanager.core.business.services.catalog.product.relationship.ProductRelationshipService;
 import com.salesmanager.core.business.services.catalog.product.review.ProductReviewService;
+import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillEntryService;
+import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillService;
 import com.salesmanager.core.business.services.common.generic.SalesManagerEntityServiceImpl;
 import com.salesmanager.core.business.utils.CatalogServiceHelper;
 import com.salesmanager.core.business.utils.CoreConfiguration;
@@ -45,8 +49,10 @@ import com.salesmanager.core.model.catalog.product.relationship.ProductRelations
 import com.salesmanager.core.model.catalog.product.review.ProductReview;
 import com.salesmanager.core.model.content.FileContentType;
 import com.salesmanager.core.model.content.ImageContentFile;
+import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
+import com.salesmanager.core.model.skill.SkillDescription;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 
 @Service("productService")
@@ -86,6 +92,13 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	@Inject
 	ProductReviewService productReviewService;
 
+//	Long add some lines here()14/5/2023)
+	@Autowired
+	private ProductSkillEntryService productSkillServiceEntryService;
+	@Autowired
+	private ProductLocationEntryService productLocationServiceEntryService;
+//	end
+
 	@Inject
 	public ProductServiceImpl(ProductRepository productRepository) {
 		super(productRepository);
@@ -94,7 +107,7 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 	@Override
 	public Optional<Product> retrieveById(Long id, MerchantStore store) {
-		return Optional.ofNullable(findOne(id,store));
+		return Optional.ofNullable(findOne(id, store));
 	}
 
 	@Override
@@ -210,7 +223,6 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		return productRepository.listByTaxClass(taxClass);
 	}
 
-
 	@Override
 	public void delete(Product product) throws ServiceException {
 		Validate.notNull(product, "Product cannot be null");
@@ -238,9 +250,8 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		for (ProductRelationship relationship : relationships) {
 			productRelationshipService.deleteRelationship(relationship);
 		}
-
 		super.delete(product);
-		//searchService.deleteIndex(product.getMerchantStore(), product);
+		// searchService.deleteIndex(product.getMerchantStore(), product);
 
 	}
 
@@ -253,8 +264,6 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	public void update(Product product) throws ServiceException {
 		saveOrUpdate(product);
 	}
-	
-	
 
 	private Product saveOrUpdate(Product product) throws ServiceException {
 		Validate.notNull(product, "product cannot be null");
@@ -324,13 +333,11 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 					}
 				}
 			}
-			
-
 
 		} catch (Exception e) {
 			LOGGER.error("Cannot save images " + e.getMessage());
 		}
-		
+
 		return product;
 
 	}
@@ -349,25 +356,25 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		criteria.setPageSize(page);
 		criteria.setPageSize(count);
 		criteria.setLegacyPagination(false);
-		
+
 		ProductList productList = productRepository.listByStore(store, language, criteria);
-		
+
 		PageRequest pageRequest = PageRequest.of(page, count);
-		
+
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		Page<Product> p = new PageImpl(productList.getProducts(),pageRequest, productList.getTotalCount());
-		
+		Page<Product> p = new PageImpl(productList.getProducts(), pageRequest, productList.getTotalCount());
+
 		return p;
 	}
 
 	@Override
-	public Product saveProduct(Product product) throws ServiceException{
+	public Product saveProduct(Product product) throws ServiceException {
 		try {
 			return this.saveOrUpdate(product);
 		} catch (ServiceException e) {
 			throw new ServiceException("Cannot create product [" + product.getId() + "]", e);
 		}
-		
+
 	}
 
 	@Override
@@ -375,7 +382,7 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 		try {
 			List<Object> products = productRepository.findBySku(productCode, merchant.getId());
-			if(products.isEmpty()) {
+			if (products.isEmpty()) {
 				throw new ServiceException("Cannot get product with sku [" + productCode + "]");
 			}
 			BigInteger id = (BigInteger) products.get(0);
@@ -383,16 +390,14 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		} catch (Exception e) {
 			throw new ServiceException("Cannot get product with sku [" + productCode + "]", e);
 		}
-		
-
 
 	}
-	
+
 	public Product getBySku(String productCode, MerchantStore merchant) throws ServiceException {
 
 		try {
 			List<Object> products = productRepository.findBySku(productCode, merchant.getId());
-			if(products.isEmpty()) {
+			if (products.isEmpty()) {
 				throw new ServiceException("Cannot get product with sku [" + productCode + "]");
 			}
 			BigInteger id = (BigInteger) products.get(0);
@@ -400,8 +405,6 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		} catch (Exception e) {
 			throw new ServiceException("Cannot get product with sku [" + productCode + "]", e);
 		}
-		
-
 
 	}
 
@@ -410,6 +413,20 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		return productRepository.existsBySku(sku, store.getId());
 	}
 
+	@Override
+	public Page<Product> listByStoreV2(ProductCriteria criteria, int page, int count) {
+		criteria.setPageSize(page);
+		criteria.setPageSize(count);
+		criteria.setLegacyPagination(false);
 
+		ProductList productList = productRepository.listByStore(criteria);
+
+		PageRequest pageRequest = PageRequest.of(page, count);
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		Page<Product> p = new PageImpl(productList.getProducts(), pageRequest, productList.getTotalCount());
+
+		return p;
+	}
 
 }

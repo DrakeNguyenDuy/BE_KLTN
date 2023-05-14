@@ -239,58 +239,87 @@ public class ProductApiV2 {
 
 	}
 
-	/**
-	 * >>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243 List products Filtering
-	 * product lists based on product option and option value ?category=1
-	 * &manufacturer=2 &type=... &lang=en|fr NOT REQUIRED, will use request language
-	 * &start=0 NOT REQUIRED, can be used for pagination &count=10 NOT REQUIRED, can
-	 * be used to limit item count
-	 *
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
+//	Long hide some lines here(14/5/2023)
+//	/**
+//	 * >>>>>>> 4ddd9b6fa72533376a7bc28085d67eb7a9c8d243 List products Filtering
+//	 * product lists based on product option and option value ?category=1
+//	 * &manufacturer=2 &type=... &lang=en|fr NOT REQUIRED, will use request language
+//	 * &start=0 NOT REQUIRED, can be used for pagination &count=10 NOT REQUIRED, can
+//	 * be used to limit item count
+//	 *
+//	 * @param request
+//	 * @param response
+//	 * @return
+//	 * @throws Exception
+//	 */
+//	@RequestMapping(value = "/products", method = RequestMethod.GET)
+//	@ResponseBody
+//	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+//			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+//	public ReadableProductList list(@RequestParam(value = "lang", required = false) String lang,
+//			ProductCriteria searchCriterias,
+//
+//			// page
+//			// 0
+//			// ..
+//			// n
+//			// allowing
+//			// navigation
+//			
+////			Long add some lines here (22/04/2023)
+//			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, //paging
+////			end
+//			
+//			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count, // count
+//			// per
+//			// page
+//			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
+//
+//		if (!StringUtils.isBlank(searchCriterias.getSku())) {
+//			searchCriterias.setCode(searchCriterias.getSku());
+//		}
+//
+//		if (!StringUtils.isBlank(searchCriterias.getName())) {
+//			searchCriterias.setProductName(searchCriterias.getName());
+//		}
+//
+//		searchCriterias.setMaxCount(count);
+//		searchCriterias.setLanguage(language.getCode());
+//		
+//		//Long add some lines here (22/4/2023)
+//		searchCriterias.setStartPage(page);
+//		//end
+//
+//		try {
+//			return productFacadeV2.getProductListsByCriterias(merchantStore, language, searchCriterias);
+//
+//		} catch (Exception e) {
+//			LOGGER.error("Error while filtering products product", e);
+//			throw new ServiceRuntimeException(e);
+//
+//		}
+//	}
+//	end
+	
+//	Long add some lines here(14/5/2023)
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
-			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public ReadableProductList list(@RequestParam(value = "lang", required = false) String lang,
+	public ReadableProductList list(
 			ProductCriteria searchCriterias,
-
-			// page
-			// 0
-			// ..
-			// n
-			// allowing
-			// navigation
 			
 //			Long add some lines here (22/04/2023)
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, //paging
 //			end
 			
-			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count, // count
+			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count // count
 			// per
 			// page
-			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
-
-		if (!StringUtils.isBlank(searchCriterias.getSku())) {
-			searchCriterias.setCode(searchCriterias.getSku());
-		}
-
-		if (!StringUtils.isBlank(searchCriterias.getName())) {
-			searchCriterias.setProductName(searchCriterias.getName());
-		}
-
+			) {
 		searchCriterias.setMaxCount(count);
-		searchCriterias.setLanguage(language.getCode());
-		
-		//Long add some lines here (22/4/2023)
 		searchCriterias.setStartPage(page);
-		//end
 
 		try {
-			return productFacadeV2.getProductListsByCriterias(merchantStore, language, searchCriterias);
+			return productFacadeV2.getProductLists(searchCriterias);
 
 		} catch (Exception e) {
 			LOGGER.error("Error while filtering products product", e);
@@ -298,6 +327,7 @@ public class ProductApiV2 {
 
 		}
 	}
+//	end
 
 	/** updates price quantity **/
 	@ResponseStatus(HttpStatus.OK)

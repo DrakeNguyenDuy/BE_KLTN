@@ -84,13 +84,16 @@ public class ProductCommonFacadeImpl implements ProductCommonFacade {
 	@Override
 	public Long saveProduct(MerchantStore store, PersistableProduct product, Language language) {
 
-		String manufacturer = Manufacturer.DEFAULT_MANUFACTURER;
-		if (product.getProductSpecifications() != null) {
-			manufacturer = product.getProductSpecifications().getManufacturer();
-		} else {
-			ProductSpecification specifications = new ProductSpecification();
-			specifications.setManufacturer(manufacturer);
-		}
+//		Long hide some lines here(13/05/2023)
+//		String manufacturer = Manufacturer.DEFAULT_MANUFACTURER;
+		
+//		if (product.getProductSpecifications() != null) {
+//			manufacturer = product.getProductSpecifications().getManufacturer();
+//		} else {
+//			ProductSpecification specifications = new ProductSpecification();
+//			specifications.setManufacturer(manufacturer);
+//		}
+//		end
 
 		Product target = null;
 		if (product.getId() != null && product.getId().longValue() > 0) {

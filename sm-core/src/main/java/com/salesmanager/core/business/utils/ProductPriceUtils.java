@@ -564,8 +564,9 @@ public class ProductPriceUtils {
 		 * we use availability from variant Otherwise we use price
 		 */
 
-//		Long hide some lines here(6/5/2023)
-//		Set<ProductAvailability> availabilities = null;
+		Set<ProductAvailability> availabilities = null;
+		
+//		Long hide some lines here(13/5/2023)
 //		if (!CollectionUtils.isEmpty(product.getVariants())) {
 //			Optional<ProductVariant> variants = product.getVariants().stream().filter(i -> i.isDefaultSelection())
 //					.findFirst();
@@ -575,33 +576,31 @@ public class ProductPriceUtils {
 //
 //			}
 //		}
-//
-//		if (CollectionUtils.isEmpty(availabilities)) {
-//			availabilities = product.getAvailabilities();
-//			availabilities = this.applicableAvailabilities(availabilities);
-//		}
 //		end
 
-//		Long hide some lines here(6/5/2023)
-//		for (ProductAvailability availability : availabilities) {
-//			if (!StringUtils.isEmpty(availability.getRegion())
-//					&& availability.getRegion().equals(Constants.ALL_REGIONS)) {// TODO REL 2.1 accept a region
-//				Set<ProductPrice> prices = availability.getPrices();
-//				for (ProductPrice price : prices) {
-//
-//					FinalPrice p = finalPrice(price);
-//					if (price.isDefaultPrice()) {
-//						finalPrice = p;
-//					} else {
-//						if (otherPrices == null) {
-//							otherPrices = new ArrayList<FinalPrice>();
-//						}
-//						otherPrices.add(p);
-//					}
-//				}
-//			}
-//		}
-//		end
+		if (CollectionUtils.isEmpty(availabilities)) {
+			availabilities = product.getAvailabilities();
+			availabilities = this.applicableAvailabilities(availabilities);
+		}
+
+		for (ProductAvailability availability : availabilities) {
+			if (!StringUtils.isEmpty(availability.getRegion())
+					&& availability.getRegion().equals(Constants.ALL_REGIONS)) {// TODO REL 2.1 accept a region
+				Set<ProductPrice> prices = availability.getPrices();
+				for (ProductPrice price : prices) {
+
+					FinalPrice p = finalPrice(price);
+					if (price.isDefaultPrice()) {
+						finalPrice = p;
+					} else {
+						if (otherPrices == null) {
+							otherPrices = new ArrayList<FinalPrice>();
+						}
+						otherPrices.add(p);
+					}
+				}
+			}
+		}
 
 		if (finalPrice != null) {
 			finalPrice.setAdditionalPrices(otherPrices);

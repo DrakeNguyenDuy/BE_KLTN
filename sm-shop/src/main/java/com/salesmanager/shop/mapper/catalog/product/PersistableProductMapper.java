@@ -97,7 +97,10 @@ public class PersistableProductMapper implements Mapper<PersistableProduct, Prod
 			//core properties
 			destination.setSku(source.getSku());
 
-			destination.setAvailable(source.isVisible());
+//			Long hide some lines here(13/5/2023)
+//			destination.setAvailable(source.isVisible());
+//			end
+			
 			destination.setDateAvailable(new Date());
 
 			destination.setRefSku(source.getRefSku());
@@ -109,36 +112,37 @@ public class PersistableProductMapper implements Mapper<PersistableProduct, Prod
 				destination.setId(source.getId());
 			}
 			
-			
-			/**
-			 * SPEIFICATIONS
-			 */
-			if(source.getProductSpecifications()!=null) {
-				
-//				Long hide some line here(4/5/2023)
-//				destination.setProductHeight(source.getProductSpecifications().getHeight());
-//				destination.setProductLength(source.getProductSpecifications().getLength());
-//				destination.setProductWeight(source.getProductSpecifications().getWeight());
-//				destination.setProductWidth(source.getProductSpecifications().getWidth());
-//				end
-				
-				 /**
-				  * BRANDING
-				  */
-
-    	         if(source.getProductSpecifications().getManufacturer()!=null) {
-    	        	 
-    					Manufacturer manufacturer = manufacturerService.getByCode(store, source.getProductSpecifications().getManufacturer());
-    					if(manufacturer == null) {
-    						throw new ConversionException("Manufacturer [" + source.getProductSpecifications().getManufacturer() + "] does not exist");
-    					}
-    					
-//    					Long hide some lines here(end)
-//    					destination.setManufacturer(manufacturer);
-//    					end
-    					
-               }
-			}
+//			Long hide some lines here(13/5/2023)
+//			/**
+//			 * SPEIFICATIONS
+//			 */
+//			if(source.getProductSpecifications()!=null) {
+//				
+////				Long hide some line here(4/5/2023)
+////				destination.setProductHeight(source.getProductSpecifications().getHeight());
+////				destination.setProductLength(source.getProductSpecifications().getLength());
+////				destination.setProductWeight(source.getProductSpecifications().getWeight());
+////				destination.setProductWidth(source.getProductSpecifications().getWidth());
+////				end
+//				
+//				 /**
+//				  * BRANDING
+//				  */
+//
+//    	         if(source.getProductSpecifications().getManufacturer()!=null) {
+//    	        	 
+//    					Manufacturer manufacturer = manufacturerService.getByCode(store, source.getProductSpecifications().getManufacturer());
+//    					if(manufacturer == null) {
+//    						throw new ConversionException("Manufacturer [" + source.getProductSpecifications().getManufacturer() + "] does not exist");
+//    					}
+//    					
+////    					Long hide some lines here(end)
+////    					destination.setManufacturer(manufacturer);
+////    					end
+//    					
+//               }
+//			}
+//			end
 			
 			
 			//PRODUCT TYPE
@@ -200,17 +204,18 @@ public class PersistableProductMapper implements Mapper<PersistableProduct, Prod
 				destination.setDescriptions(descriptions);
 			}
 			
+			destination.setSortOrder(source.getSortOrder());
 //			Long hide some lines here(4/5/2023)
-//			destination.setSortOrder(source.getSortOrder());
 //			destination.setProductVirtual(source.isProductVirtual());
 //			destination.setProductShipeable(source.isProductShipeable());
 //			end
 			
-			if(source.getRating() != null) {
-				destination.setProductReviewAvg(new BigDecimal(source.getRating()));
-			}
-			destination.setProductReviewCount(source.getRatingCount());
-			
+//			Long hide some lines here(13/5/2023)
+//			if(source.getRating() != null) {
+//				destination.setProductReviewAvg(new BigDecimal(source.getRating()));
+//			}
+//			destination.setProductReviewCount(source.getRatingCount());
+//			end
 
 			
 			/**
