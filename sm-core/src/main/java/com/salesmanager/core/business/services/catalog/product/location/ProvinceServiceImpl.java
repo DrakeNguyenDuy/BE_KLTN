@@ -1,5 +1,7 @@
 package com.salesmanager.core.business.services.catalog.product.location;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,10 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Override
 	public Province findByIdProvince(Long id) {
 		return provinceReposistory.findByIdProvince(id);
+	}
+
+	@Override
+	public List<Province> findAll() {
+		return provinceReposistory.findAll();
 	}
 }
