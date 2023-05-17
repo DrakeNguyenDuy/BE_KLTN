@@ -905,9 +905,9 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		ReadableLocationDescription rld = new ReadableLocationDescription();
 		rld.setIdLocation(ld.getID_LOCATION());
 		rld.setDetailAddress(ld.getDETAIL_ADDRESS());
-		rld.setWard(ld.getWARD());
-		rld.setDistrict(ld.getDISTRICT());
-		rld.setProvince(ld.getPROVINCE());
+		rld.setWard(ld.getWard().getName());
+		rld.setDistrict(ld.getDistrict().getName());
+		rld.setProvince(ld.getProvince().getName());
 		return rld;
 	}
 	// end

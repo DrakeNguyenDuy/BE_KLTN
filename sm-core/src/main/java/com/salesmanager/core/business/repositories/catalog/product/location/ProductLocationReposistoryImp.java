@@ -1,5 +1,7 @@
 package com.salesmanager.core.business.repositories.catalog.product.location;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -23,6 +25,12 @@ public class ProductLocationReposistoryImp implements ProductLocationReposistory
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public List<LocationDescription> getLocations() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

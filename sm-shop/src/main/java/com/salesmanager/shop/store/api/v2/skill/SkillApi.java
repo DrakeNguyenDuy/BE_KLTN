@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.salesmanager.shop.model.entity.ReadableEntityList;
+import com.salesmanager.shop.model.entity.ReadableEntityListV2;
 import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 import com.salesmanager.shop.store.facade.skill.SkillFacade;
 
@@ -24,7 +25,7 @@ public class SkillApi {
 	@GetMapping(value = "/private/skills")
 	@ResponseStatus(HttpStatus.OK)
 	@ApiOperation(httpMethod = "GET", value = "Get all skill", notes = "", response = ReadableEntityList.class)
-	public ReadableEntityList<ReadableSkillDescription> getSkills() {
+	public ReadableEntityListV2<ReadableSkillDescription> getSkills() {
 		return skillFacade.getSkills();
 	}
 }

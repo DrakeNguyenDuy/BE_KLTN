@@ -35,7 +35,7 @@ public class PersistableProductDefinition extends ProductDefinition {
 	private String experence;
 	private List<String> positionCode;
 	private List<String> skillsDecription = new ArrayList<String>();
-	private List<String> locationsDecription = new ArrayList<String>();
+	private List<PersistableLocationDescription> locationsDecription = new ArrayList<PersistableLocationDescription>();
 	private String  idPayCycle;
 	// end
 	//Long add some lines here
@@ -130,11 +130,11 @@ public class PersistableProductDefinition extends ProductDefinition {
 		this.skillsDecription = skillsDecription;
 	}
 
-	public List<String> getLocationsDecription() {
+	public List<PersistableLocationDescription> getLocationsDecription() {
 		return locationsDecription;
 	}
 
-	public void setLocationsDecription(List<String> locationsDecription) {
+	public void setLocationsDecription(List<PersistableLocationDescription> locationsDecription) {
 		this.locationsDecription = locationsDecription;
 	}
 

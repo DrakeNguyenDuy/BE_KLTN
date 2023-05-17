@@ -7,11 +7,19 @@ public class PersistableLocationDescription implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String code;
+	private Long idLocation;
 	private String detailAddress;
-	private String ward;
-	private String district;
-	private String province;
+	private Long ward;
+	private Long district;
+	private Long province;
+
+	public Long getIdLocation() {
+		return idLocation;
+	}
+
+	public void setIdLocation(Long idLocation) {
+		this.idLocation = idLocation;
+	}
 
 	public String getDetailAddress() {
 		return detailAddress;
@@ -21,36 +29,28 @@ public class PersistableLocationDescription implements Serializable {
 		this.detailAddress = detailAddress;
 	}
 
-	public String getWard() {
+	public Long getWard() {
 		return ward;
 	}
 
-	public void setWard(String ward) {
+	public void setWard(Long ward) {
 		this.ward = ward;
 	}
 
-	public String getDistrict() {
+	public Long getDistrict() {
 		return district;
 	}
 
-	public void setDistrict(String district) {
+	public void setDistrict(Long district) {
 		this.district = district;
 	}
 
-	public String getProvince() {
+	public Long getProvince() {
 		return province;
 	}
 
-	public void setProvince(String province) {
+	public void setProvince(Long province) {
 		this.province = province;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 }
