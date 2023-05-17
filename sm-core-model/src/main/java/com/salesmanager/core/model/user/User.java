@@ -38,118 +38,107 @@ import com.salesmanager.core.model.reference.language.Language;
 
 /**
  * User management
+ * 
  * @author carlsamson
  *
  */
 @Entity
 @EntityListeners(value = AuditListener.class)
-@Table(name = "USERS", 
-    indexes = { @Index(name="USR_NAME_IDX", columnList = "ADMIN_NAME")},
-	uniqueConstraints=
-	@UniqueConstraint(columnNames = {"MERCHANT_ID", "ADMIN_NAME"}))
+@Table(name = "USERS", indexes = {
+		@Index(name = "USR_NAME_IDX", columnList = "ADMIN_NAME") }, uniqueConstraints = @UniqueConstraint(columnNames = {
+				"MERCHANT_ID", "ADMIN_NAME" }))
 public class User extends SalesManagerEntity<Long, User> implements Auditable {
-	
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@Column(name = "USER_ID", unique=true, nullable=false)
+	@Column(name = "USER_ID", unique = true, nullable = false)
 	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "USER_SEQ_NEXT_VAL")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	private Long id;
-	
+
 	public User() {
-		
+
 	}
-	
-	public User(String userName,String password, String email) {
-		
+
+	public User(String userName, String password, String email) {
+
 		this.adminName = userName;
 		this.adminPassword = password;
 		this.adminEmail = email;
 	}
-	
+
 	@NotEmpty
-	@Column(name="ADMIN_NAME", length=100)
+	@Column(name = "ADMIN_NAME", length = 100)
 	private String adminName;
-	
-	@ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.REFRESH})
-	@JoinTable(name = "USER_GROUP", joinColumns = { 
-			@JoinColumn(name = "USER_ID", nullable = false, updatable = false) }
-			, 
-			inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", 
-					nullable = false, updatable = false) }
-	)
-	@Cascade({
-		org.hibernate.annotations.CascadeType.DETACH,
-		org.hibernate.annotations.CascadeType.LOCK,
-		org.hibernate.annotations.CascadeType.REFRESH,
-		org.hibernate.annotations.CascadeType.REPLICATE
-		
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinTable(name = "USER_GROUP", joinColumns = {
+			@JoinColumn(name = "USER_ID", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "GROUP_ID", nullable = false, updatable = false) })
+	@Cascade({ org.hibernate.annotations.CascadeType.DETACH, org.hibernate.annotations.CascadeType.LOCK,
+			org.hibernate.annotations.CascadeType.REFRESH, org.hibernate.annotations.CascadeType.REPLICATE
+
 	})
 	private List<Group> groups = new ArrayList<Group>();
-	
+
 	@NotEmpty
 	@Email
-	@Column(name="ADMIN_EMAIL")
+	@Column(name = "ADMIN_EMAIL")
 	private String adminEmail;
-	
+
 	@NotEmpty
-	@Column(name="ADMIN_PASSWORD", length=60)
+	@Column(name = "ADMIN_PASSWORD", length = 60)
 	private String adminPassword;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MERCHANT_ID", nullable=false)
+	@JoinColumn(name = "MERCHANT_ID", nullable = false)
 	private MerchantStore merchantStore;
-	
-	
-	@Column(name="ADMIN_FIRST_NAME")
+
+	@Column(name = "ADMIN_FIRST_NAME")
 	private String firstName;
-	
-	@Column(name="ACTIVE")
+
+	@Column(name = "ACTIVE")
 	private boolean active = true;
-	
-	
-	@Column(name="ADMIN_LAST_NAME")
+
+	@Column(name = "ADMIN_LAST_NAME")
 	private String lastName;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
 	@JoinColumn(name = "LANGUAGE_ID")
 	private Language defaultLanguage;
-	
-	
-	@Column(name="ADMIN_Q1")
+
+	@Column(name = "ADMIN_Q1")
 	private String question1;
-	
-	@Column(name="ADMIN_Q2")
+
+	@Column(name = "ADMIN_Q2")
 	private String question2;
-	
-	@Column(name="ADMIN_Q3")
+
+	@Column(name = "ADMIN_Q3")
 	private String question3;
-	
-	@Column(name="ADMIN_A1")
+
+	@Column(name = "ADMIN_A1")
 	private String answer1;
-	
-	@Column(name="ADMIN_A2")
+
+	@Column(name = "ADMIN_A2")
 	private String answer2;
-	
-	@Column(name="ADMIN_A3")
+
+	@Column(name = "ADMIN_A3")
 	private String answer3;
 
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "LAST_ACCESS")
 	private Date lastAccess;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "LOGIN_ACCESS")
 	private Date loginTime;
-	
+
 	@Embedded
 	private CredentialsReset credentialsResetRequest = null;
-
 
 	public CredentialsReset getCredentialsResetRequest() {
 		return credentialsResetRequest;
@@ -177,7 +166,7 @@ public class User extends SalesManagerEntity<Long, User> implements Auditable {
 	@Override
 	public void setAuditSection(AuditSection audit) {
 		auditSection = audit;
-		
+
 	}
 
 	public String getAdminName() {
@@ -316,21 +305,16 @@ public class User extends SalesManagerEntity<Long, User> implements Auditable {
 		return loginTime;
 	}
 
-/*	public String getResetPasswordToken() {
-		return resetPasswordToken;
-	}
-
-	public void setResetPasswordToken(String resetPasswordToken) {
-		this.resetPasswordToken = resetPasswordToken;
-	}
-
-	public Date getTokenPasswordExpiration() {
-		return tokenPasswordExpiration;
-	}
-
-	public void setTokenPasswordExpiration(Date tokenPasswordExpiration) {
-		this.tokenPasswordExpiration = tokenPasswordExpiration;
-	}*/
-	
+	/*
+	 * public String getResetPasswordToken() { return resetPasswordToken; }
+	 * 
+	 * public void setResetPasswordToken(String resetPasswordToken) {
+	 * this.resetPasswordToken = resetPasswordToken; }
+	 * 
+	 * public Date getTokenPasswordExpiration() { return tokenPasswordExpiration; }
+	 * 
+	 * public void setTokenPasswordExpiration(Date tokenPasswordExpiration) {
+	 * this.tokenPasswordExpiration = tokenPasswordExpiration; }
+	 */
 
 }

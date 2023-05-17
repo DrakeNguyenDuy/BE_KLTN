@@ -141,7 +141,7 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
-	@JoinColumn(name = "LANGUAGE_ID", nullable = false)
+	@JoinColumn(name = "LANGUAGE_ID", nullable = true)
 	private Language defaultLanguage;
 
 	@JsonIgnore

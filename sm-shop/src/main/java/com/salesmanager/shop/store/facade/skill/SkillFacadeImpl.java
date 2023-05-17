@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillService;
 import com.salesmanager.core.model.skill.SkillDescription;
 import com.salesmanager.shop.model.entity.ReadableEntityList;
+import com.salesmanager.shop.model.entity.ReadableEntityListV2;
 import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 
 @Service
@@ -17,10 +18,10 @@ public class SkillFacadeImpl implements SkillFacade{
 	private ProductSkillService productSkillService;
 	
 	@Override
-	public ReadableEntityList<ReadableSkillDescription> getSkills() {
+	public ReadableEntityListV2<ReadableSkillDescription> getSkills() {
 		List<ReadableSkillDescription> readableSkillDescriptions = productSkillService.getSkills().stream().map(item->this.convertToReadleSkill(item) ).toList();
-		ReadableEntityList<ReadableSkillDescription> entityList = new ReadableEntityList<ReadableSkillDescription>();
-		entityList.setItems(readableSkillDescriptions);
+		ReadableEntityListV2<ReadableSkillDescription> entityList = new ReadableEntityListV2<ReadableSkillDescription>();
+		entityList.setData(readableSkillDescriptions);
 		return entityList;
 	}
 	

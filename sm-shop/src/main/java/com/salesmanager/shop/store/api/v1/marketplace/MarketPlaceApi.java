@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.salesmanager.core.business.exception.ServiceException;
+import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.mapper.store.StoreMapper;
@@ -56,6 +58,9 @@ public class MarketPlaceApi {
 	private StoreMapper storeMapper;
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private MerchantStoreService merchantStoreService;
 	//end
 
 	/**
@@ -106,7 +111,14 @@ public class MarketPlaceApi {
 		// create user
 		PersistableUser persistableUser = userMapper.convert(store, null, null);
 		persistableUser.setStore(merchantStore.getCode());
-		MerchantStore merchantStore2 = storeMapper.convert(store);
+//		MerchantStore merchantStore2 = storeMapper.convert(store);
+		MerchantStore merchantStore2=null;
+		try {
+			merchantStore2 = merchantStoreService.getByCode(store.getCode());
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		userFacade.create(persistableUser, merchantStore2);
 		// send notification
 		return "OK";

@@ -148,7 +148,7 @@ public class UserFacadeImpl implements UserFacade {
 		try {
 			ReadableUser readableUser = new ReadableUser();
 			readableUser = populator.populate(user, readableUser, user.getMerchantStore(), lang);
-
+			readableUser = populator.populate(user, readableUser, lang);
 			List<Integer> groupIds = readableUser.getGroups().stream().map(ReadableGroup::getId).map(Long::intValue)
 					.collect(Collectors.toList());
 			List<ReadablePermission> permissions = findPermissionsByGroups(groupIds);

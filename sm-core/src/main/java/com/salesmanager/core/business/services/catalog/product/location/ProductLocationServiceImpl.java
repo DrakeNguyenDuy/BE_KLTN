@@ -1,5 +1,7 @@
 package com.salesmanager.core.business.services.catalog.product.location;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,11 @@ public class ProductLocationServiceImpl implements ProductLocationService {
 	@Override
 	public LocationDescription getLocationDescriptionByCode(String codeLocaltion) {
 		return locationReposistory.getLocationDescriptionByCode(codeLocaltion);
+	}
+
+	@Override
+	public List<LocationDescription> getLocations() {
+		return locationReposistory.getLocations();
 	}
 
 }

@@ -70,7 +70,6 @@ public class PersistableUserPopulator extends AbstractDataPopulator<PersistableU
     	target.setMerchantStore(store);
     }
     
-    
     target.setActive(source.isActive());
     
     Language lang = null;

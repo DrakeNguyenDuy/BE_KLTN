@@ -20,7 +20,10 @@ import com.salesmanager.core.business.exception.ConversionException;
 import com.salesmanager.core.business.repositories.catalog.product.paycycle.PayCycleReposistory;
 import com.salesmanager.core.business.services.catalog.category.CategoryService;
 import com.salesmanager.core.business.services.catalog.product.experience.ProductExperienceService;
+import com.salesmanager.core.business.services.catalog.product.location.DistrictService;
 import com.salesmanager.core.business.services.catalog.product.location.ProductLocationService;
+import com.salesmanager.core.business.services.catalog.product.location.ProvinceService;
+import com.salesmanager.core.business.services.catalog.product.location.WardService;
 import com.salesmanager.core.business.services.catalog.product.manufacturer.ManufacturerService;
 import com.salesmanager.core.business.services.catalog.product.paycycle.PayCycleService;
 import com.salesmanager.core.business.services.catalog.product.position.ProductPositionService;
@@ -28,6 +31,8 @@ import com.salesmanager.core.business.services.catalog.product.relationship.Prod
 import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillService;
 import com.salesmanager.core.business.services.catalog.product.type.ProductTypeService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
+import com.salesmanager.core.model.address.District;
+import com.salesmanager.core.model.address.Province;
 import com.salesmanager.core.model.catalog.category.Category;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.availability.ProductAvailability;
@@ -85,6 +90,16 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 
 	@Autowired
 	private PayCycleService payCycleService;
+
+	@Autowired
+	private WardService wardService;
+
+	@Autowired
+	private DistrictService districtService;
+
+	@Autowired
+	private ProvinceService provinceService;
+
 //	end
 
 	@Override
@@ -365,10 +380,12 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 			// location
 			if (!CollectionUtils.isEmpty(source.getLocationsDecription())) {
 				Set<LocationDescription> locationDescriptions = new HashSet<LocationDescription>();
-				List<String> codeLocations = source.getLocationsDecription();
-				for (String string : codeLocations) {
-					locationDescriptions.add(locationService.getLocationDescriptionByCode(string));
-				}
+//				List<PersistableLocationDescription> codeLocations = source.getLocationsDecription();
+//				for (PersistableLocationDescription description : codeLocations) {
+////					locationDescriptions.add(locationService.getLocationDescriptionByCode(string));
+//				}
+				List<LocationDescription> ld = source.getLocationsDecription().stream().map(item->this.convertToLocationDescription(item)).toList();
+				locationDescriptions.addAll(ld);
 				destination.setLocationDescriptions(locationDescriptions);
 			}
 			// skill
@@ -408,4 +425,17 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 		}
 	}
 
+	// convert from PersistableLocation to LocationDescription
+	private LocationDescription convertToLocationDescription(PersistableLocationDescription pld) {
+		LocationDescription ld = new LocationDescription();
+//		when update
+		if(pld.getIdLocation()!=null) {
+			ld.setID_LOCATION(pld.getIdLocation());
+		}
+		ld.setDETAIL_ADDRESS(pld.getDetailAddress());
+		ld.setWard(wardService.findByIdWard(pld.getWard()));
+		ld.setDistrict(districtService.findByIdDistrict(pld.getDistrict()));
+		ld.setProvince(provinceService.findByIdProvince(pld.getProvince()));
+		return ld;
+	}
 }

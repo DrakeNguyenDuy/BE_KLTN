@@ -21,55 +21,96 @@ import com.salesmanager.shop.utils.DateUtil;
  */
 public class ReadableUserPopulator extends AbstractDataPopulator<User, ReadableUser> {
 
-  @Override
-  public ReadableUser populate(User source, ReadableUser target, MerchantStore store,
-      Language language) throws ConversionException {
-    Validate.notNull(source, "User cannot be null");
+	@Override
+	public ReadableUser populate(User source, ReadableUser target, MerchantStore store, Language language)
+			throws ConversionException {
+		Validate.notNull(source, "User cannot be null");
 
-    if (target == null) {
-      target = new ReadableUser();
-    }
+		if (target == null) {
+			target = new ReadableUser();
+		}
 
-    target.setFirstName(source.getFirstName());
-    target.setLastName(source.getLastName());
-    target.setEmailAddress(source.getAdminEmail());
-    target.setUserName(source.getAdminName());
-    target.setActive(source.isActive());
+		target.setFirstName(source.getFirstName());
+		target.setLastName(source.getLastName());
+		target.setEmailAddress(source.getAdminEmail());
+		target.setUserName(source.getAdminName());
+		target.setActive(source.isActive());
 
-    if (source.getLastAccess() != null) {
-      target.setLastAccess(DateUtil.formatLongDate(source.getLastAccess()));
-    }
+		if (source.getLastAccess() != null) {
+			target.setLastAccess(DateUtil.formatLongDate(source.getLastAccess()));
+		}
 
-    // set default language
-    target.setDefaultLanguage(Constants.DEFAULT_LANGUAGE);
+		// set default language
+		target.setDefaultLanguage(Constants.DEFAULT_LANGUAGE);
 
-    if (source.getDefaultLanguage() != null)
-      target.setDefaultLanguage(source.getDefaultLanguage().getCode());
-    target.setMerchant(store.getCode());
-    target.setId(source.getId());
+		if (source.getDefaultLanguage() != null)
+			target.setDefaultLanguage(source.getDefaultLanguage().getCode());
+		target.setMerchant(store.getCode());
+		target.setId(source.getId());
 
+		for (Group group : source.getGroups()) {
 
-    for (Group group : source.getGroups()) {
+			ReadableGroup g = new ReadableGroup();
+			g.setName(group.getGroupName());
+			g.setId(group.getId().longValue());
+			target.getGroups().add(g);
+		}
 
-      ReadableGroup g = new ReadableGroup();
-      g.setName(group.getGroupName());
-      g.setId(group.getId().longValue());
-      target.getGroups().add(g);
-    }
+		/**
+		 * dates DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
+		 * myObjectMapper.setDateFormat(df);
+		 */
 
-    /**
-     * dates DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
-     * myObjectMapper.setDateFormat(df);
-     */
+		return target;
+	}
 
+	@Override
+	protected ReadableUser createTarget() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    return target;
-  }
+//Long add some lines here(16/5/2023)
+	public ReadableUser populate(User source, ReadableUser target,  Language language)
+			throws ConversionException {
+		Validate.notNull(source, "User cannot be null");
 
-  @Override
-  protected ReadableUser createTarget() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+		if (target == null) {
+			target = new ReadableUser();
+		}
+
+		target.setFirstName(source.getFirstName());
+		target.setLastName(source.getLastName());
+		target.setEmailAddress(source.getAdminEmail());
+		target.setUserName(source.getAdminName());
+		target.setActive(source.isActive());
+
+		if (source.getLastAccess() != null) {
+			target.setLastAccess(DateUtil.formatLongDate(source.getLastAccess()));
+		}
+
+		// set default language
+		target.setDefaultLanguage(Constants.DEFAULT_LANGUAGE);
+
+		if (source.getDefaultLanguage() != null)
+			target.setDefaultLanguage(source.getDefaultLanguage().getCode());
+		target.setId(source.getId());
+
+		for (Group group : source.getGroups()) {
+
+			ReadableGroup g = new ReadableGroup();
+			g.setName(group.getGroupName());
+			g.setId(group.getId().longValue());
+			target.getGroups().add(g);
+		}
+
+		/**
+		 * dates DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
+		 * myObjectMapper.setDateFormat(df);
+		 */
+
+		return target;
+	}
+//	end
 
 }
