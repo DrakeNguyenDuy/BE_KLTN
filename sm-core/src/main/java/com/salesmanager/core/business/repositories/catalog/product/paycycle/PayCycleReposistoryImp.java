@@ -18,13 +18,13 @@ public class PayCycleReposistoryImp implements PayCycleReposistory {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PayCycleDescription> getAll() {
-		String query = "selec distinct pcd from PayCycleDescription as pcd";
+		String query = "select pcd from PayCycleDescription as pcd";
 		return (List<PayCycleDescription>) entityManager.createQuery(query).getResultList();
 	}
 
 	@Override
 	public PayCycleDescription getPayCycleByCode(String code) {
-		String query = "selec distinct pcd from PayCycleDescription as pcd where pcd.code=:code";
+		String query = "select pcd from PayCycleDescription as pcd where pcd.code=:code";
 		return (PayCycleDescription) entityManager.createQuery(query).setParameter("code", code).getSingleResult();
 	}
 

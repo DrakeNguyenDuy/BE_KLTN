@@ -26,13 +26,45 @@ public class PositionDescription {
 	@Column(name = "CODE")
 	private String code;
 
-	@Column(name="NAME")
+	@Column(name = "NAME")
 	private String name;
 
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
-	
+
 	@ManyToMany(mappedBy = "positionDescriptions")
 	Set<Product> products = new HashSet<Product>();
+
+	public Long getID_POSITION() {
+		return ID_POSITION;
+	}
+
+	public void setID_POSITION(Long iD_POSITION) {
+		ID_POSITION = iD_POSITION;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
 
 }
