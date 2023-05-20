@@ -28,6 +28,7 @@ import com.salesmanager.core.model.catalog.product.relationship.ProductRelations
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
+import com.salesmanager.shop.model.catalog.product.ReadableProductDetail;
 import com.salesmanager.shop.model.catalog.product.ReadableProductList;
 import com.salesmanager.shop.model.catalog.product.product.PersistableProduct;
 import com.salesmanager.shop.populator.catalog.ReadableProductPopulator;
@@ -271,6 +272,12 @@ public class ProductFacadeImpl implements ProductFacade {
 
 	@Override
 	public ReadableProductList getProductLists(ProductCriteria criterias) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ReadableProductDetail getProductByCode(String uniqueCode) {
 		// TODO Auto-generated method stub
 		return null;
 	}

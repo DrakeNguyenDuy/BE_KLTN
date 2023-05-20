@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.salesmanager.shop.model.entity.ReadableEntityListV2;
-import com.salesmanager.shop.model.position.ReadablePostion;
+import com.salesmanager.shop.model.position.ReadablePosition;
 import com.salesmanager.shop.store.facade.position.PositionFacade;
 
 @RestController
@@ -20,7 +20,7 @@ public class PositionApi {
 
 	@GetMapping(value = "/private/positions")
 	@ResponseStatus(code = HttpStatus.OK)
-	public ReadableEntityListV2<ReadablePostion> getAllPositions(){
+	public ReadableEntityListV2<ReadablePosition> getAllPositions(){
 		return positionFacade.getAll();
 	}
 }

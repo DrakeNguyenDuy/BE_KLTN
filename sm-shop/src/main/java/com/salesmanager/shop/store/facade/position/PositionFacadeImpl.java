@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.salesmanager.core.business.services.catalog.product.position.ProductPositionService;
 import com.salesmanager.shop.mapper.position.ReadablePositionMapper;
 import com.salesmanager.shop.model.entity.ReadableEntityListV2;
-import com.salesmanager.shop.model.position.ReadablePostion;
+import com.salesmanager.shop.model.position.ReadablePosition;
 
 @Service
 public class PositionFacadeImpl implements PositionFacade {
@@ -20,10 +20,10 @@ public class PositionFacadeImpl implements PositionFacade {
 	private ReadablePositionMapper positionMapper;
 
 	@Override
-	public ReadableEntityListV2<ReadablePostion> getAll() {
-		List<ReadablePostion> postions = positionService.getAll().stream()
+	public ReadableEntityListV2<ReadablePosition> getAll() {
+		List<ReadablePosition> postions = positionService.getAll().stream()
 				.map(item -> positionMapper.convert(item, null, null)).toList();
-		ReadableEntityListV2<ReadablePostion> readableEntityList = new ReadableEntityListV2<ReadablePostion>();
+		ReadableEntityListV2<ReadablePosition> readableEntityList = new ReadableEntityListV2<ReadablePosition>();
 		readableEntityList.setData(postions);
 		return readableEntityList;
 	}

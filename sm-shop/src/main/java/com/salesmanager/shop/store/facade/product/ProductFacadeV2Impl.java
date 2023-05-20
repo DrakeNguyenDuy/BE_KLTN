@@ -33,6 +33,7 @@ import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.mapper.catalog.product.ReadableProductMapper;
 import com.salesmanager.shop.mapper.catalog.product.ReadableProductVariantMapper;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
+import com.salesmanager.shop.model.catalog.product.ReadableProductDetail;
 import com.salesmanager.shop.model.catalog.product.ReadableProductList;
 import com.salesmanager.shop.model.catalog.product.product.variant.ReadableProductVariant;
 import com.salesmanager.shop.populator.catalog.ReadableProductPopulator;
@@ -256,6 +257,23 @@ public class ProductFacadeV2Impl implements ProductFacade {
 		return productList;
 	}
 
+//	Long add some lines here(20/5/20223)
+	@Override
+	public ReadableProductDetail getProductByCode(String sku) {
+		Product product = null;
+		try {
+			product = productService.getBySku(sku);
+		} catch (ServiceException e) {
+			throw new ServiceRuntimeException(e);
+		}
+
+		if (product == null) {
+			throw new ResourceNotFoundException("Product " + sku + " not found");
+		}
+		ReadableProductDetail readableProduct = readableProductMapper.convertDetail(product);
+		return readableProduct;
+	}
+//	end
 
 	/**
 	@Override
