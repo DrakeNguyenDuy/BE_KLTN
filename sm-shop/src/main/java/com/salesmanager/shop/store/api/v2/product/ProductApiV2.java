@@ -34,6 +34,7 @@ import com.salesmanager.shop.model.catalog.category.ReadableCategory;
 
 import com.salesmanager.shop.model.catalog.product.LightPersistableProduct;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
+import com.salesmanager.shop.model.catalog.product.ReadableProductDetail;
 import com.salesmanager.shop.model.catalog.product.ReadableProductList;
 import com.salesmanager.shop.model.catalog.product.product.PersistableProduct;
 import com.salesmanager.shop.model.catalog.product.product.definition.PersistableProductDefinition;
@@ -300,21 +301,20 @@ public class ProductApiV2 {
 //		}
 //	}
 //	end
-	
+
 //	Long add some lines here(14/5/2023)
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	@ResponseBody
-	public ReadableProductList list(
-			ProductCriteria searchCriterias,
-			
+	public ReadableProductList list(ProductCriteria searchCriterias,
+
 //			Long add some lines here (22/04/2023)
-			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, //paging
+			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, // paging
 //			end
-			
+
 			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count // count
-			// per
-			// page
-			) {
+	// per
+	// page
+	) {
 		searchCriterias.setMaxCount(count);
 		searchCriterias.setStartPage(page);
 
@@ -342,36 +342,48 @@ public class ProductApiV2 {
 
 	}
 
-	/**
-	 * API for getting a product using sku in v2
-	 *
-	 * @param id
-	 * @param lang     ?lang=fr|en|...
-	 * @param response
-	 * @return ReadableProduct
-	 * @throws Exception
-	 *                   <p>
-	 *                   /api/products/123
-	 */
+//	Long hide some lines here(20/5/2023)
+//	/**
+//	 * API for getting a product using sku in v2
+//	 *
+//	 * @param id
+//	 * @param lang     ?lang=fr|en|...
+//	 * @param response
+//	 * @return ReadableProduct
+//	 * @throws Exception
+//	 *                   <p>
+//	 *                   /api/products/123
+//	 */
+//	@RequestMapping(value = "/product/{sku}", method = RequestMethod.GET)
+//	@ApiOperation(httpMethod = "GET", value = "Get a product by sku", notes = "For Shop purpose. Specifying ?merchant is required otherwise it falls back to DEFAULT")
+//	@ApiResponses(value = {
+//			@ApiResponse(code = 200, message = "Single product found", response = ReadableProduct.class) })
+//	@ResponseBody
+//	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+//			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+//	public ReadableProduct get(@PathVariable final String sku,
+//			@RequestParam(value = "lang", required = false) String lang, @ApiIgnore MerchantStore merchantStore,
+//			@ApiIgnore Language language) {
+//		ReadableProduct product = productFacadeV2.getProductByCode(merchantStore, sku, language);
+//
+//		return product;
+//	}
+//	end
+
 	@RequestMapping(value = "/product/{sku}", method = RequestMethod.GET)
 	@ApiOperation(httpMethod = "GET", value = "Get a product by sku", notes = "For Shop purpose. Specifying ?merchant is required otherwise it falls back to DEFAULT")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Single product found", response = ReadableProduct.class) })
 	@ResponseBody
-	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
-			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public ReadableProduct get(@PathVariable final String sku,
-			@RequestParam(value = "lang", required = false) String lang, @ApiIgnore MerchantStore merchantStore,
-			@ApiIgnore Language language) {
-		ReadableProduct product = productFacadeV2.getProductByCode(merchantStore, sku, language);
-
+	public ReadableProductDetail get(@PathVariable final String sku) {
+		ReadableProductDetail product = productFacadeV2.getProductByCode(sku);
 		return product;
 	}
-	
-	@GetMapping(value = "/product/{identifier}")
-//	@ApiOperation(httpMethod = "GET", value = "Check indentifier is exits", notes = "Check a indentifier code of a product is exits")
-	@ResponseStatus(HttpStatus.OK)
-	public String checkExitIdentifier(@PathVariable final String identifier) {
-		return "OK";
-	}
+
+//	@GetMapping(value = "/product/{identifier}")
+////	@ApiOperation(httpMethod = "GET", value = "Check indentifier is exits", notes = "Check a indentifier code of a product is exits")
+//	@ResponseStatus(HttpStatus.OK)
+//	public String checkExitIdentifier(@PathVariable final String identifier) {
+//		return "OK";
+//	}
 }

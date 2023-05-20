@@ -429,4 +429,19 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		return p;
 	}
 
+//	Long add some lines here(20/5/2023)
+	@Override
+	public Product getBySku(String productCode) throws ServiceException {
+		try {
+			List<Product> products = productRepository.findBySku(productCode);
+			if (products.isEmpty()) {
+				throw new ServiceException("Cannot get product with sku [" + productCode + "]");
+			}
+			return products.get(0);
+		} catch (Exception e) {
+			throw new ServiceException("Cannot get product with sku [" + productCode + "]", e);
+		}
+	}
+//	end
+
 }

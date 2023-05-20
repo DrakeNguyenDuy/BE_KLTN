@@ -7,19 +7,19 @@ import com.salesmanager.core.model.catalog.product.position.PositionDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.mapper.Mapper;
-import com.salesmanager.shop.model.position.ReadablePostion;
+import com.salesmanager.shop.model.position.ReadablePosition;
 
 @Component
-public class ReadablePositionMapper implements Mapper<PositionDescription, ReadablePostion> {
+public class ReadablePositionMapper implements Mapper<PositionDescription, ReadablePosition> {
 
 	@Override
-	public ReadablePostion convert(PositionDescription source, MerchantStore store, Language language) {
-		ReadablePostion readablePostion = new ReadablePostion();
+	public ReadablePosition convert(PositionDescription source, MerchantStore store, Language language) {
+		ReadablePosition readablePostion = new ReadablePosition();
 		return this.merge(source, readablePostion, store, language);
 	}
 
 	@Override
-	public ReadablePostion merge(PositionDescription source, ReadablePostion destination, MerchantStore store,
+	public ReadablePosition merge(PositionDescription source, ReadablePosition destination, MerchantStore store,
 			Language language) {
 		Validate.notNull(source, "Position can be not null");
 		Validate.notNull(destination, "Readable position can be not null");

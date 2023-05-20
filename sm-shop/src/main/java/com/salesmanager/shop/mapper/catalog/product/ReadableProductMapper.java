@@ -1,6 +1,5 @@
 package com.salesmanager.shop.mapper.catalog.product;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -14,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.catalog.pricing.PricingService;
-import com.salesmanager.core.model.catalog.category.Category;
+import com.salesmanager.core.business.services.catalog.product.paycycle.PayCycleService;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.attribute.ProductAttribute;
 import com.salesmanager.core.model.catalog.product.attribute.ProductOption;
@@ -26,10 +24,12 @@ import com.salesmanager.core.model.catalog.product.attribute.ProductOptionValueD
 import com.salesmanager.core.model.catalog.product.availability.ProductAvailability;
 import com.salesmanager.core.model.catalog.product.description.ProductDescription;
 import com.salesmanager.core.model.catalog.product.image.ProductImage;
+import com.salesmanager.core.model.catalog.product.position.PositionDescription;
 import com.salesmanager.core.model.catalog.product.price.FinalPrice;
 import com.salesmanager.core.model.catalog.product.price.ProductPrice;
 import com.salesmanager.core.model.catalog.product.price.ProductPriceDescription;
 import com.salesmanager.core.model.catalog.product.variant.ProductVariant;
+import com.salesmanager.core.model.experience.ExperienceDescription;
 import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -38,24 +38,20 @@ import com.salesmanager.shop.mapper.Mapper;
 import com.salesmanager.shop.mapper.catalog.ReadableCategoryMapper;
 import com.salesmanager.shop.mapper.catalog.ReadableManufacturerMapper;
 import com.salesmanager.shop.mapper.catalog.ReadableProductTypeMapper;
-import com.salesmanager.shop.model.catalog.category.ReadableCategory;
-import com.salesmanager.shop.model.catalog.manufacturer.ReadableManufacturer;
+import com.salesmanager.shop.mapper.experience.ReadableExperienceMapper;
 import com.salesmanager.shop.model.catalog.product.ReadableImage;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
+import com.salesmanager.shop.model.catalog.product.ReadableProductDetail;
 import com.salesmanager.shop.model.catalog.product.ReadableProductPrice;
-import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductAttribute;
-import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductAttributeValue;
 import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductOption;
 import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductProperty;
 import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductPropertyValue;
 import com.salesmanager.shop.model.catalog.product.attribute.api.ReadableProductOptionValue;
-import com.salesmanager.shop.model.catalog.product.product.ProductSpecification;
 import com.salesmanager.shop.model.catalog.product.product.variant.ReadableProductVariant;
-import com.salesmanager.shop.model.catalog.product.type.ReadableProductType;
 import com.salesmanager.shop.model.location.ReadableLocationDescription;
-import com.salesmanager.shop.model.references.DimensionUnitOfMeasure;
-import com.salesmanager.shop.model.references.WeightUnitOfMeasure;
+import com.salesmanager.shop.model.position.ReadablePosition;
 import com.salesmanager.shop.model.skill.ReadableSkillDescription;
+import com.salesmanager.shop.model.store.ReadableMerchantStoreV2;
 import com.salesmanager.shop.store.api.exception.ConversionRuntimeException;
 import com.salesmanager.shop.utils.DateUtil;
 import com.salesmanager.shop.utils.ImageFilePath;
@@ -85,6 +81,13 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 	@Autowired
 	private ReadableManufacturerMapper readableManufacturerMapper;
+	
+//	Long add some lines here(20/5/2023)
+	@Autowired
+	private ReadableExperienceMapper readableExperienceMapper;
+	@Autowired 
+	private PayCycleService payCycleService;
+//	end
 
 	@Autowired
 	private PricingService pricingService;
@@ -99,6 +102,13 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 	public ReadableProduct convert(Product source) {
 		ReadableProduct product = new ReadableProduct();
 		return this.merge(source, product);
+	}
+//	end
+	
+//	Long add some lines here(20/5/2023)
+	public ReadableProductDetail convertDetail(Product source) {
+		ReadableProductDetail product = new ReadableProductDetail();
+		return this.mergeDetail(source, product);
 	}
 //	end
 
@@ -671,6 +681,94 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		return destination;
 	}
 //	end
+	
+//	Long add some lines here(20/5/2023)
+	public ReadableProductDetail mergeDetail(Product source, ReadableProductDetail destination) {
+
+		Validate.notNull(source, "Product cannot be null");
+		Validate.notNull(destination, "Product destination cannot be null");
+		destination.setSku(source.getSku());
+		destination.setRefSku(source.getRefSku());
+		destination.setId(source.getId());
+		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
+		if (source.getMerchantStore() != null) {
+			String storeName=source.getMerchantStore().getStorename();
+			String phoneNumber = source.getMerchantStore().getStorephone();
+			String logo = source.getMerchantStore().getStoreLogo();
+			ReadableMerchantStoreV2 store = new ReadableMerchantStoreV2();
+			store.setStoreName(storeName != null?storeName:"blank");
+			store.setPhoneNumber(phoneNumber!=null?phoneNumber:"blank");
+			store.setLogo(logo!=null? logo:"blank");
+			destination.setMerchantStore(store);
+		}
+
+		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
+			for (ProductDescription desc : source.getDescriptions()) {
+				destination.setDescription(desc.getDescription());
+				break;
+			}
+		}
+		destination.setId(source.getId());
+		destination.setAvailable(source.isAvailable());
+		destination.setRefSku(source.getRefSku());
+		destination.setSortOrder(source.getSortOrder());
+
+		if (source.getDateAvailable() != null) {
+			destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+		}
+
+		// temp store
+		MerchantStore store = new MerchantStore();
+		store.setCode(source.getMerchantStore().getCode());
+
+		// images
+		Set<ProductImage> images = source.getImages();
+		if (CollectionUtils.isNotEmpty(images)) {
+			List<ReadableImage> imageList = images.stream().map(i -> this.convertImage(source, i, store))
+					.collect(Collectors.toList());
+		}
+
+		Set<SkillDescription> skills = source.getSkillDescriptions();
+		if (CollectionUtils.isNotEmpty(skills)) {
+			List<ReadableSkillDescription> skillDescriptions = skills.stream().map(i -> this.convertSkill(i))
+					.collect(Collectors.toList());
+			destination.setSkills(skillDescriptions);
+		}
+		
+		Set<LocationDescription> locations = source.getLocationDescriptions();
+		if (CollectionUtils.isNotEmpty(locations)) {
+			List<ReadableLocationDescription> locationDescriptions = locations.stream()
+					.map(i -> this.convertLocation(i)).collect(Collectors.toList());
+			destination.setLocations(locationDescriptions);
+		}
+		
+		ExperienceDescription experiences = source.getExperience();
+		destination.setExperience(readableExperienceMapper.convert(experiences, null, null));
+		
+		destination.setPaycycles(payCycleService.getPayCycleByCode(source.getIdPayCycle()).getName());
+		
+		Set<PositionDescription> positions = source.getPositionDescriptions();
+		if (CollectionUtils.isNotEmpty(positions)) {
+			List<ReadablePosition> readablePostions = positions.stream()
+					.map(i -> this.convertPosition(i)).collect(Collectors.toList());
+			destination.setPositions(readablePostions);
+		}
+
+		// availability
+		ProductAvailability availability = null;
+		for (ProductAvailability a : source.getAvailabilities()) {
+			availability = a;
+			destination.setQuantity(availability.getProductQuantity() == null ? 1 : availability.getProductQuantity());
+		}
+
+		// if default instance
+		destination.setSku(source.getSku());
+		destination.setSortOrder(source.getSortOrder());
+
+		return destination;
+	}
+//	end
 
 	private ReadableImage convertImage(Product product, ProductImage image, MerchantStore store) {
 		ReadableImage prdImage = new ReadableImage();
@@ -892,7 +990,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 	}
 
-	// Long add some here
+	// Long add some here (18/5/2023)
 	private ReadableSkillDescription convertSkill(SkillDescription sd) {
 		ReadableSkillDescription rsd = new ReadableSkillDescription();
 		rsd.setCode(sd.getCode());
@@ -911,4 +1009,13 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		return rld;
 	}
 	// end
+	
+	// Long add some here (18/5/2023)
+		private ReadablePosition convertPosition(PositionDescription ld) {
+			ReadablePosition readablePostion = new ReadablePosition();
+			readablePostion.setCode(ld.getCode());
+			readablePostion.setName(ld.getName());
+			return readablePostion;
+		}
+		// end
 }
