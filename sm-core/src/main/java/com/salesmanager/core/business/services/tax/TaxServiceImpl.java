@@ -111,63 +111,77 @@ public class TaxServiceImpl
 			taxConfiguration.setTaxBasisCalculation(TaxBasisCalculation.SHIPPINGADDRESS);
 		}
 		
-		Country country = customer.getBilling().getCountry();
-		Zone zone = customer.getBilling().getZone();
-		String stateProvince = customer.getBilling().getState();
+//		Long hide some lines here(20/5/2023)
+//		Country country = customer.getBilling().getCountry();
+//		Zone zone = customer.getBilling().getZone();
+//		String stateProvince = customer.getBilling().getState();
+//		end
 		
 		TaxBasisCalculation taxBasisCalculation = taxConfiguration.getTaxBasisCalculation();
 		if(taxBasisCalculation.name().equals(TaxBasisCalculation.SHIPPINGADDRESS)){
-			Delivery shipping = customer.getDelivery();
-			if(shipping!=null) {
-				country = shipping.getCountry();
-				zone = shipping.getZone();
-				stateProvince = shipping.getState();
-			}
+//			Long hide some lines here(20/5/2023)
+//			Delivery shipping = customer.getDelivery();
+//			if(shipping!=null) {
+//				country = shipping.getCountry();
+//				zone = shipping.getZone();
+//				stateProvince = shipping.getState();
+//			}
+//			end
 		} else if(taxBasisCalculation.name().equals(TaxBasisCalculation.BILLINGADDRESS)){
-			Billing billing = customer.getBilling();
-			if(billing!=null) {
-				country = billing.getCountry();
-				zone = billing.getZone();
-				stateProvince = billing.getState();
-			}
+//			Long hide some lines here(20/5/2023)
+//			Billing billing = customer.getBilling();
+//			if(billing!=null) {
+//				country = billing.getCountry();
+//				zone = billing.getZone();
+//				stateProvince = billing.getState();
+//			}
+//			end
 		} else if(taxBasisCalculation.name().equals(TaxBasisCalculation.STOREADDRESS)){
-			country = store.getCountry();
-			zone = store.getZone();
-			stateProvince = store.getStorestateprovince();
+//			Long hide some lines here(20/5/2023)
+//			country = store.getCountry();
+//			zone = store.getZone();
+//			stateProvince = store.getStorestateprovince();
+//			end
 		}
 		
 		//check other conditions
 		//do not collect tax on other provinces of same country
 		if(!taxConfiguration.isCollectTaxIfDifferentProvinceOfStoreCountry()) {
-			if((zone!=null && store.getZone()!=null) && (zone.getId().longValue() != store.getZone().getId().longValue())) {
-				return null;
-			}
-			if(!StringUtils.isBlank(stateProvince)) {
-				if(store.getZone()!=null) {
-					if(!store.getZone().getName().equals(stateProvince)) {
-						return null;
-					}
-				}
-				else if(!StringUtils.isBlank(store.getStorestateprovince())) {
-
-					if(!store.getStorestateprovince().equals(stateProvince)) {
-						return null;
-					}
-				}
-			}
+//			Long hide some lines here(20/5/2023)
+//			if((zone!=null && store.getZone()!=null) && (zone.getId().longValue() != store.getZone().getId().longValue())) {
+//				return null;
+//			}
+//			if(!StringUtils.isBlank(stateProvince)) {
+//				if(store.getZone()!=null) {
+//					if(!store.getZone().getName().equals(stateProvince)) {
+//						return null;
+//					}
+//				}
+//				else if(!StringUtils.isBlank(store.getStorestateprovince())) {
+//
+//					if(!store.getStorestateprovince().equals(stateProvince)) {
+//						return null;
+//					}
+//				}
+//			}
+//			end
 		}
 		
 		//collect tax in different countries
 		if(taxConfiguration.isCollectTaxIfDifferentCountryOfStoreCountry()) {
+//			Long hide some lines here(20/5/2023)
 			//use store country
-			country = store.getCountry();
-			zone = store.getZone();
-			stateProvince = store.getStorestateprovince();
+//			country = store.getCountry();
+//			zone = store.getZone();
+//			stateProvince = store.getStorestateprovince();
+//			end
 		}
 		
-		if(zone == null && StringUtils.isBlank(stateProvince)) {
-			return null;
-		}
+//		Long hide some lines here(20/5/2023)
+//		if(zone == null && StringUtils.isBlank(stateProvince)) {
+//			return null;
+//		}
+//		end
 		
 		Map<Long,TaxClass> taxClasses =  new HashMap<Long,TaxClass>();
 			
@@ -227,11 +241,13 @@ public class TaxServiceImpl
 			
 			//get taxRate by tax class
 			List<TaxRate> taxRates = null; 
-			if(!StringUtils.isBlank(stateProvince)&& zone==null) {
-				taxRates = taxRateService.listByCountryStateProvinceAndTaxClass(country, stateProvince, taxClasses.get(taxClassId), store, language);
-			} else {
-				taxRates = taxRateService.listByCountryZoneAndTaxClass(country, zone, taxClasses.get(taxClassId), store, language);
-			}
+//			Long hide some lines here(20/5/2023)
+//			if(!StringUtils.isBlank(stateProvince)&& zone==null) {
+//				taxRates = taxRateService.listByCountryStateProvinceAndTaxClass(country, stateProvince, taxClasses.get(taxClassId), store, language);
+//			} else {
+//				taxRates = taxRateService.listByCountryZoneAndTaxClass(country, zone, taxClasses.get(taxClassId), store, language);
+//			}
+//			end
 			
 			if(taxRates==null || taxRates.size()==0){
 				continue;

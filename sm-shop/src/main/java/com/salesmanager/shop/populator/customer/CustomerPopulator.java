@@ -80,6 +80,15 @@ public class CustomerPopulator extends
 			  target.setNick(source.getUserName());
 			  target.setAnonymous(false);
 			}
+			
+//			Long add some lines here(20/5/2023)
+			if(source.getLastName()!=null) {
+				target.setLastName(source.getLastName());
+			}
+			if(source.getFirstName()!=null) {
+				target.setFirstName(source.getFirstName());
+			}
+//			end
 
 			//Long hide some lines (24/04/2023)
 //			if(source.getBilling() != null) {

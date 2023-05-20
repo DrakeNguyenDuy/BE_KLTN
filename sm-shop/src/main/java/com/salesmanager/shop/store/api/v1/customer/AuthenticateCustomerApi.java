@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.net.MediaType;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -89,6 +90,8 @@ public class AuthenticateCustomerApi {
     @Autowired
     private UserFacade userFacade;
 
+    
+//    Long hide some lines here
     /**
      * Create new customer for a given MerchantStore, then authenticate that customer
      */
@@ -116,7 +119,13 @@ public class AuthenticateCustomerApi {
 //            Validate.notNull(customer.getBilling(),"Requires customer Country code");
 //            Validate.notNull(customer.getBilling().getCountry(),"Requires customer Country code");
             
-            customerFacade.registerCustomer(customer, merchantStore, language);
+//          Long hide some lines here(20/5/2023)
+//            customerFacade.registerCustomer(customer, merchantStore, language);
+//            end
+            
+//            Long add some lines here(20/5/2023)
+            customerFacade.registerCustomer(customer, null, null);
+//            end
             
             // Perform the security
             Authentication authentication = null;
@@ -148,6 +157,53 @@ public class AuthenticateCustomerApi {
 
         
     }
+    
+//    /**
+//     * Create new customer for a given MerchantStore, then authenticate that customer
+//     */
+//    @RequestMapping( value={"/customer/register"}, method=RequestMethod.POST, produces ={ "application/json" })
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ApiOperation(httpMethod = "POST", value = "Registers a customer to the application", notes = "Used as self-served operation",response = AuthenticationResponse.class)
+//    @ResponseBody
+//    public ResponseEntity<?> register(
+//    		@Valid @RequestBody PersistableCustomer customer
+//			) throws Exception {
+//            customer.setUserName(customer.getEmailAddress());
+//            
+//            Validate.notNull(customer.getUserName(),"Username cannot be null");
+//            
+////            customerFacade.registerCustomer(customer, merchantStore, language);
+//            
+//            // Perform the security
+//            Authentication authentication = null;
+//            try {
+//                
+//                authentication = jwtCustomerAuthenticationManager.authenticate(
+//                        new UsernamePasswordAuthenticationToken(
+//                                customer.getUserName(),
+//                                customer.getPassword()
+//                        )
+//                );
+//                
+//            } catch(Exception e) {
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+//            
+//            if(authentication == null) {
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+//
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//            // Reload password post-security so we can generate token
+//            final JWTUser userDetails = (JWTUser)jwtCustomerDetailsService.loadUserByUsername(customer.getUserName());
+//            final String token = jwtTokenUtil.generateToken(userDetails);
+//
+//            // Return the token
+//            return ResponseEntity.ok(new AuthenticationResponse(customer.getId(),token));
+//
+//        
+//    }
 
     /**
      * Authenticate a customer using username & password

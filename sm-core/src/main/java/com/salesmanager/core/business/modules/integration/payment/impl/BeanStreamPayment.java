@@ -525,26 +525,29 @@ public class BeanStreamPayment implements PaymentModule {
 		messageString.append("trnAmount=").append(amnt).append("&");
 		
 		StringBuilder nm = new StringBuilder();
-		nm.append(customer.getBilling().getFirstName()).append(" ").append(customer.getBilling().getLastName());
-		
+//		Long hide some lines here(20/5/2023)
+//		nm.append(customer.getBilling().getFirstName()).append(" ").append(customer.getBilling().getLastName());
+//		end
 		
 		messageString.append("ordName=").append(nm.toString()).append("&");
-		messageString.append("ordAddress1=").append(customer.getBilling().getAddress()).append("&");
-		messageString.append("ordCity=").append(customer.getBilling().getCity()).append("&");
 		
-		String stateProvince = customer.getBilling().getState();
-		if(customer.getBilling().getZone()!=null) {
-			stateProvince = customer.getBilling().getZone().getCode();
-		}
-		
-		String countryName = customer.getBilling().getCountry().getIsoCode();
-		
-		messageString.append("ordProvince=").append(stateProvince).append("&");
-		messageString.append("ordPostalCode=").append(customer.getBilling().getPostalCode().replaceAll("\\s","")).append("&");
-		messageString.append("ordCountry=").append(countryName).append("&");
-		messageString.append("ordPhoneNumber=").append(customer.getBilling().getTelephone()).append("&");
-		messageString.append("ordEmailAddress=").append(customer.getEmailAddress());
-		
+//		Long hide some lines here(20/5/2023)
+//		messageString.append("ordAddress1=").append(customer.getBilling().getAddress()).append("&");
+//		messageString.append("ordCity=").append(customer.getBilling().getCity()).append("&");
+//		
+//		String stateProvince = customer.getBilling().getState();
+//		if(customer.getBilling().getZone()!=null) {
+//			stateProvince = customer.getBilling().getZone().getCode();
+//		}
+//		
+//		String countryName = customer.getBilling().getCountry().getIsoCode();
+//		
+//		messageString.append("ordProvince=").append(stateProvince).append("&");
+//		messageString.append("ordPostalCode=").append(customer.getBilling().getPostalCode().replaceAll("\\s","")).append("&");
+//		messageString.append("ordCountry=").append(countryName).append("&");
+//		messageString.append("ordPhoneNumber=").append(customer.getBilling().getTelephone()).append("&");
+//		messageString.append("ordEmailAddress=").append(customer.getEmailAddress());
+//		end
 		
 		
 		
@@ -600,15 +603,17 @@ public class BeanStreamPayment implements PaymentModule {
 			messageLogString.append("trnAmount=").append(amnt).append("&");
 
 			messageLogString.append("ordName=").append(nm.toString()).append("&");
-			messageLogString.append("ordAddress1=").append(customer.getBilling().getAddress()).append("&");
-			messageLogString.append("ordCity=").append(customer.getBilling().getCity()).append("&");
-			
-
-			
-			messageLogString.append("ordProvince=").append(stateProvince).append("&");
-			messageLogString.append("ordPostalCode=").append(customer.getBilling().getPostalCode()).append("&");
-			messageLogString.append("ordCountry=").append(customer.getBilling().getCountry().getName()).append("&");
-			messageLogString.append("ordPhoneNumber=").append(customer.getBilling().getTelephone()).append("&");
+//			Long hide some lines here(20/5/2023)
+//			messageLogString.append("ordAddress1=").append(customer.getBilling().getAddress()).append("&");
+//			messageLogString.append("ordCity=").append(customer.getBilling().getCity()).append("&");
+//			
+//
+//			
+//			messageLogString.append("ordProvince=").append(stateProvince).append("&");
+//			messageLogString.append("ordPostalCode=").append(customer.getBilling().getPostalCode()).append("&");
+//			messageLogString.append("ordCountry=").append(customer.getBilling().getCountry().getName()).append("&");
+//			messageLogString.append("ordPhoneNumber=").append(customer.getBilling().getTelephone()).append("&");
+//			end
 			messageLogString.append("ordEmailAddress=").append(customer.getEmailAddress());
 			
 			

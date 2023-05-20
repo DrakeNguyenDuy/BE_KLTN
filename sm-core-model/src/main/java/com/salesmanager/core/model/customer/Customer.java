@@ -52,7 +52,11 @@ import com.salesmanager.core.utils.CloneUtils;
 @Entity
 @Table(name = "CUSTOMER", 
 	 uniqueConstraints=
-			@UniqueConstraint(columnNames = {"MERCHANT_ID", "CUSTOMER_NICK"}))
+			@UniqueConstraint(columnNames = {
+//					Long hide some line here (20/5/2023)
+//					"MERCHANT_ID",
+//					end
+					"CUSTOMER_NICK"}))
 public class Customer extends SalesManagerEntity<Long, Customer> implements Auditable {
 	private static final long serialVersionUID = 1L;
 	
@@ -67,8 +71,10 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customer")
-	private Set<CustomerAttribute> attributes = new HashSet<CustomerAttribute>();
+//	Long hide some lines here(14/5/2023)
+//	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customer")
+//	private Set<CustomerAttribute> attributes = new HashSet<CustomerAttribute>();
+//	end
 	
 	@Column(name="CUSTOMER_GENDER", length=1, nullable=true)
 	@Enumerated(value = EnumType.STRING)
@@ -106,35 +112,51 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	@Column(name="PROVIDER")
 	private String provider;
 	
+	//Long add some lines here(20/5/2023)
+	@Column(name="LAST_NAME")
+	private String lastName;
+	@Column(name="FIRST_NAME")
+	private String firstName;
+//	end
+	
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
-	@JoinColumn(name = "LANGUAGE_ID", nullable=true
-//			Long hide some lines here (25/4/2023)
-//			false
-//			end
-			)
-	private Language defaultLanguage;
+//	Long hide some lines here(20/5/2023)
+//	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
+//	@JoinColumn(name = "LANGUAGE_ID", nullable=true
+////			Long hide some lines here (25/4/2023)
+////			false
+////			end
+//			)
+//	private Language defaultLanguage;
+//	end
 	
 
 	@OneToMany(mappedBy = "customer", targetEntity = ProductReview.class)
 	private List<ProductReview> reviews = new ArrayList<ProductReview>();
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MERCHANT_ID", nullable=true
-//			Long hide some lines here (25/4/2023)
-//			false
-//			end
-			)
-	private MerchantStore merchantStore;
 	
+//	Long hide some lines here(20/5/2023)
+//	@JsonIgnore
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name="MERCHANT_ID", nullable=true
+////			Long hide some lines here (25/4/2023)
+////			false
+////			end
+//			)
+//	private MerchantStore merchantStore;
+//	end
 
-	@Embedded
-	private Delivery delivery = null;
+//	Long hide some lines here(20/5/2023)
+//	@Embedded
+//	private Delivery delivery = null;
+//	end
 	
-	@Valid
-	@Embedded
-	private Billing billing = null;
+	
+//	Long hide some lines here(20/5/2023)
+//	@Valid
+//	@Embedded
+//	private Billing billing = null;
+//	end
 	
 	@JsonIgnore
 	@ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.REFRESH})
@@ -242,29 +264,31 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 		this.reviews = reviews;
 	}
 
-	public void setMerchantStore(MerchantStore merchantStore) {
-		this.merchantStore = merchantStore;
-	}
-
-	public MerchantStore getMerchantStore() {
-		return merchantStore;
-	}
-
-	public void setDelivery(Delivery delivery) {
-		this.delivery = delivery;
-	}
-
-	public Delivery getDelivery() {
-		return delivery;
-	}
-
-	public void setBilling(Billing billing) {
-		this.billing = billing;
-	}
-
-	public Billing getBilling() {
-		return billing;
-	}
+//	Long hide some lines here(20/5/2023)
+//	public void setMerchantStore(MerchantStore merchantStore) {
+//		this.merchantStore = merchantStore;
+//	}
+//
+//	public MerchantStore getMerchantStore() {
+//		return merchantStore;
+//	}
+//
+//	public void setDelivery(Delivery delivery) {
+//		this.delivery = delivery;
+//	}
+//
+//	public Delivery getDelivery() {
+//		return delivery;
+//	}
+//
+//	public void setBilling(Billing billing) {
+//		this.billing = billing;
+//	}
+//
+//	public Billing getBilling() {
+//		return billing;
+//	}
+//	end
 
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
@@ -297,21 +321,25 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 		this.showDeliveryStateList = showDeliveryStateList;
 	}
 	
-	public Language getDefaultLanguage() {
-		return defaultLanguage;
-	}
+//	Long hide some lines here(20/5/2023)
+//	public Language getDefaultLanguage() {
+//		return defaultLanguage;
+//	}
+//
+//	public void setDefaultLanguage(Language defaultLanguage) {
+//		this.defaultLanguage = defaultLanguage;
+//	}
+//	end
 
-	public void setDefaultLanguage(Language defaultLanguage) {
-		this.defaultLanguage = defaultLanguage;
-	}
-
-	public void setAttributes(Set<CustomerAttribute> attributes) {
-		this.attributes = attributes;
-	}
-
-	public Set<CustomerAttribute> getAttributes() {
-		return attributes;
-	}
+//	Long hide some lines here(20/5/2023)
+//	public void setAttributes(Set<CustomerAttribute> attributes) {
+//		this.attributes = attributes;
+//	}
+//
+//	public Set<CustomerAttribute> getAttributes() {
+//		return attributes;
+//	}
+//	end
 
 	public void setGender(CustomerGender gender) {
 		this.gender = gender;
@@ -362,5 +390,24 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	public void setCredentialsResetRequest(CredentialsReset credentialsResetRequest) {
 		this.credentialsResetRequest = credentialsResetRequest;
 	}
+//	Long add some lines here(20/5/2023)
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+//	end
 	
 }

@@ -355,8 +355,10 @@ public class OrderFacadeImpl implements OrderFacade {
 
 			Order modelOrder = new Order();
 			modelOrder.setDatePurchased(new Date());
-			modelOrder.setBilling(customer.getBilling());
-			modelOrder.setDelivery(customer.getDelivery());
+//			Long hide some lines here(20/5/2023)
+//			modelOrder.setBilling(customer.getBilling());
+//			modelOrder.setDelivery(customer.getDelivery());
+//			end
 			modelOrder.setPaymentModuleCode(order.getPaymentModule());
 			modelOrder.setPaymentType(PaymentType.valueOf(order.getPaymentMethodType()));
 			modelOrder.setShippingModuleCode(order.getShippingModule());
@@ -567,8 +569,10 @@ public class OrderFacadeImpl implements OrderFacade {
 	private void orderCustomer(Customer customer, Order order, Language language) throws Exception {
 
 		// populate customer
-		order.setBilling(customer.getBilling());
-		order.setDelivery(customer.getDelivery());
+//		Long hide some lines here(20/5/2023)
+//		order.setBilling(customer.getBilling());
+//		order.setDelivery(customer.getDelivery());
+//		end
 		order.setCustomerEmailAddress(customer.getEmailAddress());
 		order.setCustomerId(customer.getId());
 		//set username
@@ -588,7 +592,9 @@ public class OrderFacadeImpl implements OrderFacade {
 		billing.setState(store.getStorestateprovince());
 		/** empty postal code for initial quote **/
 		// billing.setPostalCode(store.getStorepostalcode());
-		customer.setBilling(billing);
+//		Long hide some lines here(20/5/2023)
+//		customer.setBilling(billing);
+//		end
 
 		Delivery delivery = new Delivery();
 		delivery.setCountry(store.getCountry());
@@ -596,7 +602,9 @@ public class OrderFacadeImpl implements OrderFacade {
 		delivery.setState(store.getStorestateprovince());
 		/** empty postal code for initial quote **/
 		// delivery.setPostalCode(store.getStorepostalcode());
-		customer.setDelivery(delivery);
+//		Long hide some lines here(20/5/2023)
+//		customer.setDelivery(delivery);
+//		end
 
 		return customer;
 	}
@@ -636,21 +644,24 @@ public class OrderFacadeImpl implements OrderFacade {
 
 		// adjust shipping and billing
 		if (order.isShipToBillingAdress() && !order.isShipToDeliveryAddress()) {
-
-			Billing billing = customer.getBilling();
-
-			String postalCode = billing.getPostalCode();
-			postalCode = validatePostalCode(postalCode);
-
-			delivery.setAddress(billing.getAddress());
-			delivery.setCompany(billing.getCompany());
-			delivery.setCity(billing.getCity());
-			delivery.setPostalCode(billing.getPostalCode());
-			delivery.setState(billing.getState());
-			delivery.setCountry(billing.getCountry());
-			delivery.setZone(billing.getZone());
+//			Long hide some lines here(20/5/2023)
+//			Billing billing = customer.getBilling();
+//
+//			String postalCode = billing.getPostalCode();
+//			postalCode = validatePostalCode(postalCode);
+//
+//			delivery.setAddress(billing.getAddress());
+//			delivery.setCompany(billing.getCompany());
+//			delivery.setCity(billing.getCity());
+//			delivery.setPostalCode(billing.getPostalCode());
+//			delivery.setState(billing.getState());
+//			delivery.setCountry(billing.getCountry());
+//			delivery.setZone(billing.getZone());
+//			end
 		} else {
-			delivery = customer.getDelivery();
+//			Long hide some lines here(20/5/2023)
+//			delivery = customer.getDelivery();
+//			end
 		}
 
 		ShippingQuote quote = shippingService.getShippingQuote(cart.getId(), store, delivery, shippingProducts,
@@ -986,16 +997,20 @@ public class OrderFacadeImpl implements OrderFacade {
 
 		// adjust shipping and billing
 		if (order.isShipToBillingAdress()) {
-			Billing billing = customer.getBilling();
-			delivery.setAddress(billing.getAddress());
-			delivery.setCity(billing.getCity());
-			delivery.setCompany(billing.getCompany());
-			delivery.setPostalCode(billing.getPostalCode());
-			delivery.setState(billing.getState());
-			delivery.setCountry(billing.getCountry());
-			delivery.setZone(billing.getZone());
+//			Long hide some lines here(20/5/2023)
+//			Billing billing = customer.getBilling();
+//			delivery.setAddress(billing.getAddress());
+//			delivery.setCity(billing.getCity());
+//			delivery.setCompany(billing.getCompany());
+//			delivery.setPostalCode(billing.getPostalCode());
+//			delivery.setState(billing.getState());
+//			delivery.setCountry(billing.getCountry());
+//			delivery.setZone(billing.getZone());
+//			end
 		} else {
-			delivery = customer.getDelivery();
+//			Long hide some lines here(20/5/2023)
+//			delivery = customer.getDelivery();
+//			end
 		}
 
 		ShippingQuote quote = shippingService.getShippingQuote(cart.getId(), store, delivery, shippingProducts,
@@ -1168,21 +1183,23 @@ public class OrderFacadeImpl implements OrderFacade {
 		billing.setCountry(store.getCountry());
 
 
+//		Long hide some lines here(20/5/2023)
 		// adjust shipping and billing
-		if (customer.getDelivery() == null || StringUtils.isBlank(customer.getDelivery().getPostalCode())) {
-			if(customer.getBilling()!=null) {
-				billing = customer.getBilling();
-			}
-			delivery.setAddress(billing.getAddress());
-			delivery.setCity(billing.getCity());
-			delivery.setCompany(billing.getCompany());
-			delivery.setPostalCode(billing.getPostalCode());
-			delivery.setState(billing.getState());
-			delivery.setCountry(billing.getCountry());
-			delivery.setZone(billing.getZone());
-		} else {
-			delivery = customer.getDelivery();
-		}
+//		if (customer.getDelivery() == null || StringUtils.isBlank(customer.getDelivery().getPostalCode())) {
+//			if(customer.getBilling()!=null) {
+//				billing = customer.getBilling();
+//			}
+//			delivery.setAddress(billing.getAddress());
+//			delivery.setCity(billing.getCity());
+//			delivery.setCompany(billing.getCompany());
+//			delivery.setPostalCode(billing.getPostalCode());
+//			delivery.setState(billing.getState());
+//			delivery.setCountry(billing.getCountry());
+//			delivery.setZone(billing.getZone());
+//		} else {
+//			delivery = customer.getDelivery();
+//		}
+//		end
 
 		ShippingQuote quote = shippingService.getShippingQuote(cart.getId(), store, delivery, shippingProducts,
 				language);

@@ -367,4 +367,11 @@ public class ProductApiV2 {
 
 		return product;
 	}
+	
+	@GetMapping(value = "/product/{identifier}")
+//	@ApiOperation(httpMethod = "GET", value = "Check indentifier is exits", notes = "Check a indentifier code of a product is exits")
+	@ResponseStatus(HttpStatus.OK)
+	public String checkExitIdentifier(@PathVariable final String identifier) {
+		return "OK";
+	}
 }

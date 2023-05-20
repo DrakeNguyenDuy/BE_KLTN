@@ -42,7 +42,9 @@ public class CustomerTest extends com.salesmanager.test.common.AbstractSalesMana
 		
 		/** Core customer attributes **/
 		Customer customer = new Customer();
-		customer.setMerchantStore(store);
+//		Long hide some lines here(20/5/2023)
+//		customer.setMerchantStore(store);
+//		end
 		customer.setEmailAddress("test@test.com");
 		customer.setGender(CustomerGender.M);
 
@@ -51,7 +53,9 @@ public class CustomerTest extends com.salesmanager.test.common.AbstractSalesMana
 		customer.setDateOfBirth(new Date());
 		customer.setNick("My nick");
 		customer.setPassword("123456");
-		customer.setDefaultLanguage(store.getDefaultLanguage());
+//		Long hide some lines here(20/5/2023)
+//		customer.setDefaultLanguage(store.getDefaultLanguage());
+//		end
 		
 	    Delivery delivery = new Delivery();
 	    delivery.setAddress("Shipping address");
@@ -66,8 +70,10 @@ public class CustomerTest extends com.salesmanager.test.common.AbstractSalesMana
 	    billing.setCountry(country);
 	    billing.setZone(zone);
 	    
-	    customer.setBilling(billing);
-	    customer.setDelivery(delivery);
+//		Long hide some lines here(20/5/2023)
+//	    customer.setBilling(billing);
+//	    customer.setDelivery(delivery);
+//	    end
 		
 		customerService.create(customer);
 		customer = customerService.getById(customer.getId());
@@ -208,8 +214,9 @@ public class CustomerTest extends com.salesmanager.test.common.AbstractSalesMana
 		customerAttributeMailingList.setCustomerOption(subscribedToMailingList);
 		customerAttributeMailingList.setCustomerOptionValue(no);
 		
-		customer.getAttributes().add(customerAttributeMailingList);
-		
+//		Long hide some lines here(20/5/2023)
+//		customer.getAttributes().add(customerAttributeMailingList);
+//		end
 		customerService.save(customer);
 		
 		customerService.delete(customer);

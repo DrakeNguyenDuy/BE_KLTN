@@ -74,12 +74,16 @@ public class PersistableOrderPopulator extends
 					if(modelCustomer==null) {
 						throw new ConversionException("Customer id " + customer.getId() + " does not exists");
 					}
-					if(modelCustomer.getMerchantStore().getId().intValue()!=store.getId().intValue()) {
-						throw new ConversionException("Customer id " + customer.getId() + " does not exists for store " + store.getCode());
-					}
+//					Long hide some lines here(20/5/2023)
+//					if(modelCustomer.getMerchantStore().getId().intValue()!=store.getId().intValue()) {
+//						throw new ConversionException("Customer id " + customer.getId() + " does not exists for store " + store.getCode());
+//					}
+//					end
 					target.setCustomerId(modelCustomer.getId());
-					target.setBilling(modelCustomer.getBilling());
-					target.setDelivery(modelCustomer.getDelivery());
+//					Long hide some lines here(20/5/2023)
+//					target.setBilling(modelCustomer.getBilling());
+//					target.setDelivery(modelCustomer.getDelivery());
+//					end
 					target.setCustomerEmailAddress(source.getCustomer().getEmailAddress());
 
 

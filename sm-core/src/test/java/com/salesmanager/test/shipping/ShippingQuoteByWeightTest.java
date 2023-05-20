@@ -220,10 +220,14 @@ public class ShippingQuoteByWeightTest extends com.salesmanager.test.common.Abst
 	    shippingProducts.add(shippingProduct1);
 	    
 		Customer customer = new Customer();
-		customer.setMerchantStore(store);
+//		Long hide some lines here(20/5/2023)
+//		customer.setMerchantStore(store);
+//		end
 		customer.setEmailAddress("test@test.com");
 		customer.setGender(CustomerGender.M);
-		customer.setDefaultLanguage(en);
+//		Long hide some lines here(20/5/2023)
+//		customer.setDefaultLanguage(en);
+//		end
 
 		customer.setAnonymous(true);
 		customer.setCompany("ifactory");
@@ -254,8 +258,10 @@ public class ShippingQuoteByWeightTest extends com.salesmanager.test.common.Abst
 	    billing.setFirstName("Carl");
 	    billing.setLastName("Samson");
 	    
-	    customer.setBilling(billing);
-	    customer.setDelivery(delivery);
+//		Long hide some lines here(20/5/2023)
+//	    customer.setBilling(billing);
+//	    customer.setDelivery(delivery);
+//	    end
 		
 		customerService.create(customer);
 		

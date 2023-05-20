@@ -227,7 +227,9 @@ public class OrderShippingApi {
       
       Customer temp = new Customer();
       temp.setAnonymous(true);
-      temp.setDelivery(addr);
+//		Long hide some lines here(20/5/2023)
+//      temp.setDelivery(addr);
+//      end
       
       ShippingQuote quote = orderFacade.getShippingQuote(temp, cart, merchantStore, language);
 

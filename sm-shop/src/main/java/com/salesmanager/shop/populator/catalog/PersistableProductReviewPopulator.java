@@ -66,7 +66,12 @@ public class PersistableProductReviewPopulator extends
 			Customer customer = customerService.getById(source.getCustomerId());
 			
 			//check if customer belongs to store
-			if(customer ==null || customer.getMerchantStore().getId().intValue()!=store.getId().intValue()) {
+			if(customer ==null 
+//					||
+//					Long hide some lines here(20/5/2023)
+//					customer.getMerchantStore().getId().intValue()!=store.getId().intValue()
+//					end
+					) {
 				throw new ConversionException("Invalid customer id for the given store");
 			}
 			
