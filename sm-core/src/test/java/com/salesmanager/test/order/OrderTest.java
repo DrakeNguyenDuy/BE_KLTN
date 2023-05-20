@@ -70,8 +70,10 @@ public class OrderTest extends com.salesmanager.test.common.AbstractSalesManager
 	
 		/** Create a customer **/
 		Customer customer = new Customer();	
-		customer.setMerchantStore(merchant);
-		customer.setDefaultLanguage(en);
+//		Long hide some lines here(20/5/2023)
+//		customer.setMerchantStore(merchant);
+//		customer.setDefaultLanguage(en);
+//		end
 		customer.setEmailAddress("email@email.com");
 		customer.setPassword("-1999");
 		customer.setNick("My New nick");
@@ -95,8 +97,10 @@ public class OrderTest extends com.salesmanager.test.common.AbstractSalesManager
 	    delivery.setCountry(country);
 	    delivery.setZone(zone);	    
 	    
-	    customer.setBilling(billing);
-	    customer.setDelivery(delivery);
+//		Long hide some lines here(20/5/2023)
+//	    customer.setBilling(billing);
+//	    customer.setDelivery(delivery);
+//	    end
 	    
 		customerService.create(customer);	
 		

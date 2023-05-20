@@ -368,9 +368,15 @@ public class EmailTemplatesUtils {
 				Map<String, String> templateTokens = emailUtils.createEmailObjectsMap(contextPath, merchantStore, messages, customerLocale);
 				
 		        templateTokens.put(EmailConstants.LABEL_HI, messages.getMessage("label.generic.hi", customerLocale));
-		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
-		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
-				
+//		        Long hide some lines here(20/5/2023)
+//		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
+//		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
+//		        end
+		        
+//		        Long add some lines here(20/5/2023)
+		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getFirstName());
+		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getLastName());
+//		        end
 		        String[] statusMessageText = {String.valueOf(order.getId()),DateUtil.formatDate(order.getDatePurchased())};
 		        String status = messages.getMessage("label.order." + order.getStatus().name(), customerLocale, order.getStatus().name());
 		        String[] statusMessage = {DateUtil.formatDate(lastHistory.getDateAdded()),status};
@@ -421,8 +427,15 @@ public class EmailTemplatesUtils {
 
 	           Map<String, String> templateTokens = emailUtils.createEmailObjectsMap(contextPath, merchantStore, messages, customerLocale);
 	           templateTokens.put(EmailConstants.LABEL_HI, messages.getMessage("label.generic.hi", customerLocale));
-	           templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
-	           templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
+//		        Long hide some lines here(20/5/2023)
+//		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
+//		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
+//		        end
+		        
+//		        Long add some lines here(20/5/2023)
+		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getFirstName());
+		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getLastName());
+//		        end
 	           String[] downloadMessage = {String.valueOf(ApplicationConstants.MAX_DOWNLOAD_DAYS), String.valueOf(order.getId()), filePathUtils.buildCustomerUri(merchantStore, contextPath), merchantStore.getStoreEmailAddress()};
 	           templateTokens.put(EmailConstants.EMAIL_ORDER_DOWNLOAD, messages.getMessage("email.order.download.text", downloadMessage, customerLocale));
 	           templateTokens.put(EmailConstants.CUSTOMER_ACCESS_LABEL, messages.getMessage("label.customer.accessportal",customerLocale));
@@ -469,8 +482,15 @@ public class EmailTemplatesUtils {
 				Map<String, String> templateTokens = emailUtils.createEmailObjectsMap(contextPath, merchantStore, messages, customerLocale);
 				
 		        templateTokens.put(EmailConstants.LABEL_HI, messages.getMessage("label.generic.hi", customerLocale));
-		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
-		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
+//		        Long hide some lines here(20/5/2023)
+//		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
+//		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
+//		        end
+		        
+//		        Long add some lines here(20/5/2023)
+		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getFirstName());
+		        templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getLastName());
+//		        end
 				
 		        String[] date = {DateUtil.formatLongDate(new Date())};
 		        

@@ -36,6 +36,10 @@ public abstract class AbstractDataPopulator<Source,Target> implements DataPopula
 	}
 	protected abstract Target createTarget();
 
-   
+	@Override
+	public Target populate(Source source) throws ConversionException {
+//		return populate(source,createTarget());
+		return null;
+	}
 
 }

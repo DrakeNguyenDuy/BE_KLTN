@@ -489,37 +489,42 @@ public class CustomerFacadeImpl implements CustomerFacade {
 			PersistableCustomerBillingAddressPopulator billingAddressPopulator = new PersistableCustomerBillingAddressPopulator();
 			customerModel = billingAddressPopulator.populate(address, customerModel, merchantStore,
 					merchantStore.getDefaultLanguage());
-			customerModel.getBilling().setCountry(country);
-			if (StringUtils.isNotBlank(address.getZone())) {
-				Zone zone = zoneService.getByCode(address.getZone());
-				if (zone == null) {
-					throw new ConversionException("Unsuported zone code " + address.getZone());
-				}
-				customerModel.getBilling().setZone(zone);
-				customerModel.getBilling().setState(null);
-
-			} else {
-				customerModel.getBilling().setZone(null);
-			}
+//			Long hide some lines here(20/5/2023)
+//			customerModel.getBilling().setCountry(country);
+//			if (StringUtils.isNotBlank(address.getZone())) {
+//				Zone zone = zoneService.getByCode(address.getZone());
+//				if (zone == null) {
+//					throw new ConversionException("Unsuported zone code " + address.getZone());
+//				}
+//				customerModel.getBilling().setZone(zone);
+//				customerModel.getBilling().setState(null);
+//
+//			} else {
+//				customerModel.getBilling().setZone(null);
+//			}
+//			end
 
 		} else {
 			LOG.info("updating customer shipping address..");
 			PersistableCustomerShippingAddressPopulator shippingAddressPopulator = new PersistableCustomerShippingAddressPopulator();
 			customerModel = shippingAddressPopulator.populate(address, customerModel, merchantStore,
 					merchantStore.getDefaultLanguage());
-			customerModel.getDelivery().setCountry(country);
-			if (StringUtils.isNotBlank(address.getZone())) {
-				Zone zone = zoneService.getByCode(address.getZone());
-				if (zone == null) {
-					throw new ConversionException("Unsuported zone code " + address.getZone());
-				}
-
-				customerModel.getDelivery().setZone(zone);
-				customerModel.getDelivery().setState(null);
-
-			} else {
-				customerModel.getDelivery().setZone(null);
-			}
+			
+//			Long hide some lines here(20/5/2023)
+//			customerModel.getDelivery().setCountry(country);
+//			if (StringUtils.isNotBlank(address.getZone())) {
+//				Zone zone = zoneService.getByCode(address.getZone());
+//				if (zone == null) {
+//					throw new ConversionException("Unsuported zone code " + address.getZone());
+//				}
+//
+//				customerModel.getDelivery().setZone(zone);
+//				customerModel.getDelivery().setState(null);
+//
+//			} else {
+//				customerModel.getDelivery().setZone(null);
+//			}
+//			end
 
 		}
 
@@ -571,7 +576,9 @@ public class CustomerFacadeImpl implements CustomerFacade {
 		saveCustomer(customerToPopulate);
 		customer.setId(customerToPopulate.getId());
 
-		notifyNewCustomer(customer, store, customerToPopulate.getDefaultLanguage());
+//		Long hide some lines here(20/5/2023)
+//		notifyNewCustomer(customer, store, customerToPopulate.getDefaultLanguage());
+//		end
 		// convert to readable
 		return convertCustomerToReadableCustomer(customerToPopulate, store, language);
 
@@ -840,8 +847,11 @@ public class CustomerFacadeImpl implements CustomerFacade {
 			Map<String, String> templateTokens = emailUtils.createEmailObjectsMap(imageUtils.getContextPath(), store,
 					messages, locale);
 			templateTokens.put(EmailConstants.LABEL_HI, messages.getMessage("label.generic.hi", locale));
-			templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
-			templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
+			
+//			Long hide some lines here(20/5/2023)
+//			templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
+//			templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
+//			end
 			templateTokens.put(EmailConstants.EMAIL_RESET_PASSWORD_TXT,
 					messages.getMessage("email.customer.resetpassword.text", locale));
 			templateTokens.put(EmailConstants.EMAIL_CONTACT_OWNER,
@@ -1051,5 +1061,49 @@ public class CustomerFacadeImpl implements CustomerFacade {
 			throw new ServiceRuntimeException("Exception while changing password", e);
 		}
 
+	}
+
+	@Override
+	public PersistableCustomer registerCustomer(PersistableCustomer customer) throws Exception {
+		LOG.info("Starting customer registration process..");
+
+		if (userExist(customer.getUserName())) {
+			throw new UserAlreadyExistException("User already exist");
+		}
+
+//		Customer customerModel = getCustomerModel(customer, merchantStore, language);
+		Customer customerModel= null;
+		if (customerModel == null) {
+			LOG.equals("Unable to create customer in system");
+			// throw new CustomerRegistrationException( "Unable to register customer" );
+			throw new Exception("Unable to register customer");
+		}
+
+		LOG.info("About to persist customer to database.");
+		customerService.saveOrUpdate(customerModel);
+
+		LOG.info("Returning customer data to controller..");
+		// return customerEntityPoulator(customerModel,merchantStore);
+		customer.setId(customerModel.getId());
+		return customer;
+	}
+
+	@Override
+	public Customer getCustomerModel(PersistableCustomer customer) throws Exception {
+		LOG.info("Starting to populate customer model from customer data");
+		Customer customerModel = null;
+
+		customerModel = customerPopulator.populate(customer);
+		// we are creating or resetting a customer
+		if (StringUtils.isBlank(customerModel.getPassword()) && !StringUtils.isBlank(customer.getPassword())) {
+			customerModel.setPassword(customer.getPassword());
+		}
+		// set groups
+		if (!StringUtils.isBlank(customerModel.getPassword()) && !StringUtils.isBlank(customerModel.getNick())) {
+//			customerModel.setPassword(passwordEncoder.encode(customer.getPassword()));
+//			setCustomerModelDefaultProperties(customerModel, merchantStore);
+		}
+
+		return customerModel;
 	}
 }

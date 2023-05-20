@@ -100,13 +100,15 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 	public void delete(Customer customer) throws ServiceException {
 		customer = getById(customer.getId());
 		
-		//delete attributes
-		List<CustomerAttribute> attributes =customerAttributeService.getByCustomer(customer.getMerchantStore(), customer);
-		if(attributes!=null) {
-			for(CustomerAttribute attribute : attributes) {
-				customerAttributeService.delete(attribute);
-			}
-		}
+//		Long hide some lines here(20/5/2023)
+//		//delete attributes
+//		List<CustomerAttribute> attributes =customerAttributeService.getByCustomer(customer.getMerchantStore(), customer);
+//		if(attributes!=null) {
+//			for(CustomerAttribute attribute : attributes) {
+//				customerAttributeService.delete(attribute);
+//			}
+//		}
+//		end
 		customerRepository.delete(customer);
 
 	}

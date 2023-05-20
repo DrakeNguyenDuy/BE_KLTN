@@ -90,8 +90,7 @@ public interface CustomerFacade {
 	public boolean checkIfUserExists(final String userName, final MerchantStore store) throws Exception;
 
 	public PersistableCustomer registerCustomer(final PersistableCustomer customer, final MerchantStore merchantStore,
-			final Language language
-	) throws Exception;
+			final Language language) throws Exception;
 
 	public Address getAddress(final Long userId, final MerchantStore merchantStore, boolean isBillingAddress)
 			throws Exception;
@@ -106,6 +105,10 @@ public interface CustomerFacade {
 	Customer getCustomerModel(PersistableCustomer customer, MerchantStore merchantStore, Language language)
 			throws Exception;
 
+//	Long add some lines here(20/5/2023)
+	Customer getCustomerModel(PersistableCustomer customer) throws Exception;
+//	end
+
 	Customer populateCustomerModel(Customer customerModel, PersistableCustomer customer, MerchantStore merchantStore,
 			Language language) throws Exception;
 
@@ -113,6 +116,11 @@ public interface CustomerFacade {
 	 * Creates a Customer from a PersistableCustomer received from REST API
 	 */
 	ReadableCustomer create(PersistableCustomer customer, MerchantStore store, Language language);
+
+//	Long add some lines here(20/5/2022)
+	public PersistableCustomer registerCustomer(final PersistableCustomer customer) throws Exception;
+
+//	end
 
 	/**
 	 * Reset customer password

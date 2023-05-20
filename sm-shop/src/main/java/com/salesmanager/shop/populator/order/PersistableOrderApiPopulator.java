@@ -114,11 +114,15 @@ public class PersistableOrderApiPopulator extends AbstractDataPopulator<Persista
 			
 			target.setCustomerEmailAddress(customer.getEmailAddress());
 			
-			Delivery delivery = customer.getDelivery();
-			target.setDelivery(delivery);
+//			Long hide some lines here(20/5/2023)
+//			Delivery delivery = customer.getDelivery();
+//			target.setDelivery(delivery);
+//			end
 			
-			Billing billing = customer.getBilling();
-			target.setBilling(billing);
+//			Long hide some lines here(20/5/2023)
+//			Billing billing = customer.getBilling();
+//			target.setBilling(billing);
+//			end
 			
 			if(source.getAttributes() != null && source.getAttributes().size() > 0) {
 				Set<OrderAttribute> attrs = new HashSet<OrderAttribute>();
