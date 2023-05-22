@@ -81,11 +81,11 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 	@Autowired
 	private ReadableManufacturerMapper readableManufacturerMapper;
-	
+
 //	Long add some lines here(20/5/2023)
 	@Autowired
 	private ReadableExperienceMapper readableExperienceMapper;
-	@Autowired 
+	@Autowired
 	private PayCycleService payCycleService;
 //	end
 
@@ -104,7 +104,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		return this.merge(source, product);
 	}
 //	end
-	
+
 //	Long add some lines here(20/5/2023)
 	public ReadableProductDetail convertDetail(Product source) {
 		ReadableProductDetail product = new ReadableProductDetail();
@@ -556,6 +556,8 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 	}
 
 //	Long add some lines here(14/5/2023)
+	private final String DES_FOLDER = "D:\\store\\images";
+
 	public ReadableProduct merge(Product source, ReadableProduct destination) {
 
 		Validate.notNull(source, "Product cannot be null");
@@ -570,6 +572,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setId(source.getId());
 		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
+		destination.setLogo(source.getMerchantStore().getStoreLogo());
 		if (source.getMerchantStore() != null) {
 			destination.setNameCompany(source.getMerchantStore().getStorename());
 		}
@@ -681,7 +684,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		return destination;
 	}
 //	end
-	
+
 //	Long add some lines here(20/5/2023)
 	public ReadableProductDetail mergeDetail(Product source, ReadableProductDetail destination) {
 
@@ -692,14 +695,15 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setId(source.getId());
 		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
+		destination.setLogo(source.getMerchantStore().getStoreLogo());
 		if (source.getMerchantStore() != null) {
-			String storeName=source.getMerchantStore().getStorename();
+			String storeName = source.getMerchantStore().getStorename();
 			String phoneNumber = source.getMerchantStore().getStorephone();
 			String logo = source.getMerchantStore().getStoreLogo();
 			ReadableMerchantStoreV2 store = new ReadableMerchantStoreV2();
-			store.setStoreName(storeName != null?storeName:"blank");
-			store.setPhoneNumber(phoneNumber!=null?phoneNumber:"blank");
-			store.setLogo(logo!=null? logo:"blank");
+			store.setStoreName(storeName != null ? storeName : "blank");
+			store.setPhoneNumber(phoneNumber != null ? phoneNumber : "blank");
+			store.setLogo(logo != null ? logo : "blank");
 			destination.setMerchantStore(store);
 		}
 
@@ -735,23 +739,23 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 					.collect(Collectors.toList());
 			destination.setSkills(skillDescriptions);
 		}
-		
+
 		Set<LocationDescription> locations = source.getLocationDescriptions();
 		if (CollectionUtils.isNotEmpty(locations)) {
 			List<ReadableLocationDescription> locationDescriptions = locations.stream()
 					.map(i -> this.convertLocation(i)).collect(Collectors.toList());
 			destination.setLocations(locationDescriptions);
 		}
-		
+
 		ExperienceDescription experiences = source.getExperience();
 		destination.setExperience(readableExperienceMapper.convert(experiences, null, null));
-		
+
 		destination.setPaycycles(payCycleService.getPayCycleByCode(source.getIdPayCycle()).getName());
-		
+
 		Set<PositionDescription> positions = source.getPositionDescriptions();
 		if (CollectionUtils.isNotEmpty(positions)) {
-			List<ReadablePosition> readablePostions = positions.stream()
-					.map(i -> this.convertPosition(i)).collect(Collectors.toList());
+			List<ReadablePosition> readablePostions = positions.stream().map(i -> this.convertPosition(i))
+					.collect(Collectors.toList());
 			destination.setPositions(readablePostions);
 		}
 
@@ -1009,13 +1013,13 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		return rld;
 	}
 	// end
-	
+
 	// Long add some here (18/5/2023)
-		private ReadablePosition convertPosition(PositionDescription ld) {
-			ReadablePosition readablePostion = new ReadablePosition();
-			readablePostion.setCode(ld.getCode());
-			readablePostion.setName(ld.getName());
-			return readablePostion;
-		}
-		// end
+	private ReadablePosition convertPosition(PositionDescription ld) {
+		ReadablePosition readablePostion = new ReadablePosition();
+		readablePostion.setCode(ld.getCode());
+		readablePostion.setName(ld.getName());
+		return readablePostion;
+	}
+	// end
 }

@@ -49,5 +49,10 @@ public class Constants {
   public final static Currency DEFAULT_CURRENCY = Currency.getInstance(Locale.US);
   
   public final static String PAYMENT_MODULES = "PAYMENT";
+  
+//  Long add some lines here(21/5/2023)
+  public final static String FOLDER_STORE_ROOT="D:\\store";
+  public final static String FOLDER_STORE_IMAGE="\\images";
+//  end
 
 }

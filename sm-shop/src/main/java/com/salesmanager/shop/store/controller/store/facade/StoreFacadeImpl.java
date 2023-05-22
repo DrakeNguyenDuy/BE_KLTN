@@ -1,5 +1,11 @@
 package com.salesmanager.shop.store.controller.store.facade;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.business.exception.ConversionException;
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.content.ContentService;
@@ -72,7 +80,7 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Inject
 	private LanguageUtils languageUtils;
-	
+
 	@Autowired
 	private ReadableMerchantStorePopulator readableMerchantStorePopulator;
 
@@ -142,7 +150,7 @@ public class StoreFacadeImpl implements StoreFacade {
 		/**
 		 * Language is not important for this conversion using default language
 		 */
-		try {			
+		try {
 			readableMerchantStorePopulator.populate(store, readable, store, language);
 		} catch (Exception e) {
 			throw new ConversionRuntimeException("Error while populating MerchantStore " + e.getMessage());
@@ -150,9 +158,9 @@ public class StoreFacadeImpl implements StoreFacade {
 		return readable;
 	}
 
-	private ReadableMerchantStore convertMerchantStoreToReadableMerchantStoreWithFullDetails(Language language, MerchantStore store) {
+	private ReadableMerchantStore convertMerchantStoreToReadableMerchantStoreWithFullDetails(Language language,
+			MerchantStore store) {
 		ReadableMerchantStore readable = new ReadableMerchantStore();
-
 
 		/**
 		 * Language is not important for this conversion using default language
@@ -249,30 +257,24 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Override
 	public ReadableMerchantStoreList getByCriteria(MerchantStoreCriteria criteria, Language lang) {
-		return  getMerchantStoresByCriteria(criteria, lang);
+		return getMerchantStoresByCriteria(criteria, lang);
 
 	}
 
-
-
 	private ReadableMerchantStoreList getMerchantStoresByCriteria(MerchantStoreCriteria criteria, Language language) {
 		try {
-			GenericEntityList<MerchantStore> stores =  Optional.ofNullable(merchantStoreService.getByCriteria(criteria))
+			GenericEntityList<MerchantStore> stores = Optional.ofNullable(merchantStoreService.getByCriteria(criteria))
 					.orElseThrow(() -> new ResourceNotFoundException("Criteria did not match any store"));
-			
-			
+
 			ReadableMerchantStoreList storeList = new ReadableMerchantStoreList();
-			storeList.setData(
-					(List<ReadableMerchantStore>) stores.getList().stream()
-					.map(s -> convertMerchantStoreToReadableMerchantStore(language, s))
-			        .collect(Collectors.toList())
-					);
+			storeList.setData((List<ReadableMerchantStore>) stores.getList().stream()
+					.map(s -> convertMerchantStoreToReadableMerchantStore(language, s)).collect(Collectors.toList()));
 			storeList.setTotalPages(stores.getTotalPages());
 			storeList.setRecordsTotal(stores.getTotalCount());
 			storeList.setNumber(stores.getList().size());
-			
+
 			return storeList;
-			
+
 		} catch (ServiceException e) {
 			throw new ServiceRuntimeException(e);
 		}
@@ -446,7 +448,6 @@ public class StoreFacadeImpl implements StoreFacade {
 				throw new ResourceNotFoundException("Merchant [" + code + "] not a retailer");
 			}
 
-			
 			Page<MerchantStore> children = merchantStoreService.listChildren(code, page, count);
 			List<ReadableMerchantStore> readableStores = new ArrayList<ReadableMerchantStore>();
 			ReadableMerchantStoreList readableList = new ReadableMerchantStoreList();
@@ -459,18 +460,17 @@ public class StoreFacadeImpl implements StoreFacade {
 			readableList.setTotalPages(children.getTotalPages());
 			readableList.setRecordsTotal(children.getTotalElements());
 			readableList.setNumber(children.getNumber());
-			
+
 			return readableList;
-			
-			
-			
-/*			List<MerchantStore> children = merchantStoreService.listChildren(code);
-			List<ReadableMerchantStore> readableStores = new ArrayList<ReadableMerchantStore>();
-			if (!CollectionUtils.isEmpty(children)) {
-				for (MerchantStore store : children)
-					readableStores.add(convertMerchantStoreToReadableMerchantStore(language, store));
-			}
-			return readableStores;*/
+
+			/*
+			 * List<MerchantStore> children = merchantStoreService.listChildren(code);
+			 * List<ReadableMerchantStore> readableStores = new
+			 * ArrayList<ReadableMerchantStore>(); if (!CollectionUtils.isEmpty(children)) {
+			 * for (MerchantStore store : children)
+			 * readableStores.add(convertMerchantStoreToReadableMerchantStore(language,
+			 * store)); } return readableStores;
+			 */
 		} catch (ServiceException e) {
 			throw new ServiceRuntimeException(e);
 		}
@@ -479,26 +479,25 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Override
 	public ReadableMerchantStoreList findAll(MerchantStoreCriteria criteria, Language language, int page, int count) {
-		
+
 		try {
 			Page<MerchantStore> stores = null;
 			List<ReadableMerchantStore> readableStores = new ArrayList<ReadableMerchantStore>();
 			ReadableMerchantStoreList readableList = new ReadableMerchantStoreList();
-			
+
 			Optional<String> code = Optional.ofNullable(criteria.getStoreCode());
 			Optional<String> name = Optional.ofNullable(criteria.getName());
-			if(code.isPresent()) {
-				
+			if (code.isPresent()) {
+
 				stores = merchantStoreService.listByGroup(name, code.get(), page, count);
 
 			} else {
-				if(criteria.isRetailers()) {
+				if (criteria.isRetailers()) {
 					stores = merchantStoreService.listAllRetailers(name, page, count);
 				} else {
 					stores = merchantStoreService.listAll(name, page, count);
 				}
 			}
-
 
 			if (!CollectionUtils.isEmpty(stores.getContent())) {
 				for (MerchantStore store : stores)
@@ -509,15 +508,14 @@ public class StoreFacadeImpl implements StoreFacade {
 			readableList.setTotalPages(stores.getTotalPages());
 			readableList.setNumber(stores.getSize());
 			readableList.setRecordsFiltered(stores.getSize());
-						return readableList;
+			return readableList;
 
 		} catch (ServiceException e) {
 			throw new ServiceRuntimeException("Error while finding all merchant", e);
 		}
 
-
 	}
-	
+
 	private ReadableMerchantStore convertStoreName(MerchantStore store) {
 		ReadableMerchantStore convert = new ReadableMerchantStore();
 		convert.setId(store.getId());
@@ -529,56 +527,88 @@ public class StoreFacadeImpl implements StoreFacade {
 	@Override
 	public List<ReadableMerchantStore> getMerchantStoreNames(MerchantStoreCriteria criteria) {
 		Validate.notNull(criteria, "MerchantStoreCriteria must not be null");
-		
+
 		try {
-			
+
 			List<ReadableMerchantStore> stores = null;
 			Optional<String> code = Optional.ofNullable(criteria.getStoreCode());
-			
-			
-			//TODO Pageable
-			if(code.isPresent()) {
-				
-				stores = merchantStoreService.findAllStoreNames(code.get()).stream()
-						.map(s -> convertStoreName(s))
+
+			// TODO Pageable
+			if (code.isPresent()) {
+
+				stores = merchantStoreService.findAllStoreNames(code.get()).stream().map(s -> convertStoreName(s))
 						.collect(Collectors.toList());
 			} else {
-				stores = merchantStoreService.findAllStoreNames().stream()
-						.map(s -> convertStoreName(s))
+				stores = merchantStoreService.findAllStoreNames().stream().map(s -> convertStoreName(s))
 						.collect(Collectors.toList());
 			}
-			
-			
+
 			return stores;
 		} catch (ServiceException e) {
-			throw new ServiceRuntimeException("Exception while getting store name",e);
+			throw new ServiceRuntimeException("Exception while getting store name", e);
 		}
-		
 
 	}
 
 	@Override
 	public List<Language> supportedLanguages(MerchantStore store) {
-		
+
 		Validate.notNull(store, "MerchantStore cannot be null");
 		Validate.notNull(store.getClass(), "MerchantStore code cannot be null");
-		
-		if(!CollectionUtils.isEmpty(store.getLanguages())) {
+
+		if (!CollectionUtils.isEmpty(store.getLanguages())) {
 			return store.getLanguages();
 		}
-		
-		//refresh
+
+		// refresh
 		try {
 			store = merchantStoreService.getByCode(store.getCode());
 		} catch (ServiceException e) {
 			throw new ServiceRuntimeException("An exception occured when getting store [" + store.getCode() + "]");
 		}
-		
-		if(store!=null) {
+
+		if (store != null) {
 			return store.getLanguages();
 		}
-		
+
 		return Collections.emptyList();
+	}
+
+	private final String DES_FOLDER = "D:\\store\\images";
+
+	@Override
+	public void addStoreLogo(String storeCode, MultipartFile file) {
+		MerchantStore store = getByCode(storeCode);
+		store.setStoreLogo(file.getOriginalFilename());
+		File f = new File(DES_FOLDER+"\\"+ storeCode);
+		if(!f.exists()) {
+			f.mkdir();
+		}
+		File f2 = new File(DES_FOLDER+"\\"+ storeCode+"\\"+file.getOriginalFilename());
+		try {
+			file.transferTo(f2);
+		} catch (IllegalStateException | IOException e) {
+			LOG.info("Save logo for store "+storeCode+" failded");
+			e.printStackTrace();
+		}
+		try {
+			merchantStoreService.save(store);
+		} catch (ServiceException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	@Override
+	public byte[] getStoreLogo(String code) {
+		MerchantStore store = getByCode(code);
+		byte[] images = null;
+		try {
+			images = Files.readAllBytes(new File(DES_FOLDER+"\\"+store.getCode()+"\\"+store.getStoreLogo()).toPath());
+		} catch (IOException e) {
+			LOG.info("Read logo for store "+store.getCode()+" failded");
+			e.printStackTrace();
+		}
+		return images;
 	}
 
 }

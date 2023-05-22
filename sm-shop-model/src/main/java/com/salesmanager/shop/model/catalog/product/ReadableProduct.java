@@ -32,6 +32,7 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	private String originalPrice = null;
 //	private boolean discounted = false;
 	private ReadableImage image;
+	private String logo;
 	private List<ReadableImage> images = new ArrayList<ReadableImage>();
 	
 //	Long hide some lines here(13/5/2023)
@@ -233,5 +234,14 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	public void setNameCompany(String nameCompany) {
 		this.nameCompany = nameCompany;
 	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+	
 //	end
 }
