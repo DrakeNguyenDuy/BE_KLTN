@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.salesmanager.core.model.content.InputContentFile;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.merchant.MerchantStoreCriteria;
@@ -120,6 +122,17 @@ public interface StoreFacade {
 	 * @param cmsContentImage
 	 */
 	void addStoreLogo(String code, InputContentFile cmsContentImage);
+	
+//	Long add some lines here(21/5/2023)
+	/**
+	 * Add MerchantStore logo
+	 * 
+	 * @param code
+	 * @param cmsContentImage
+	 */
+	void addStoreLogo(String code,MultipartFile file) ;
+	byte[] getStoreLogo(String code) ;
+//	end
 
 	/**
 	 * Returns store id, code and name only

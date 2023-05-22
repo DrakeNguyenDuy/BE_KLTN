@@ -32,6 +32,7 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 	private ReadableExperience experience;
 	private ReadableMerchantStoreV2 merchantStore;
 	private String description;
+	private String logo;
 
 	public String getFinalPrice() {
 		return finalPrice;
@@ -127,6 +128,14 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 
 	public void setPositions(List<ReadablePosition> positions) {
 		this.positions = positions;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
 }

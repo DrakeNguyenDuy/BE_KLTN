@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.ws.rs.GET;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -291,6 +292,28 @@ public class MerchantStoreApi {
 		storeFacade.createBrand(code, brand);
 	}
 
+//	Long hide some lines here(21/5/2023)
+//	@ResponseStatus(HttpStatus.CREATED)
+//	@PostMapping(value = { "/private/store/{code}/marketing/logo" })
+//	@ApiOperation(httpMethod = "POST", value = "Add store logo", notes = "")
+//	public void addLogo(@PathVariable String code, @RequestParam("file") MultipartFile uploadfile,
+//			HttpServletRequest request) {
+//
+//		// user doing action must be attached to the store being modified
+//		String userName = getUserFromRequest(request);
+//
+//		validateUserPermission(userName, code);
+//
+//		if (uploadfile.isEmpty()) {
+//			throw new RestApiException("Upload file is empty");
+//		}
+//
+//		InputContentFile cmsContentImage = createInputContentFile(uploadfile);
+//		storeFacade.addStoreLogo(code, cmsContentImage);
+//	}
+//	end
+	
+//	Long add some lines here
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = { "/private/store/{code}/marketing/logo" })
 	@ApiOperation(httpMethod = "POST", value = "Add store logo", notes = "")
@@ -306,9 +329,18 @@ public class MerchantStoreApi {
 			throw new RestApiException("Upload file is empty");
 		}
 
-		InputContentFile cmsContentImage = createInputContentFile(uploadfile);
-		storeFacade.addStoreLogo(code, cmsContentImage);
+		storeFacade.addStoreLogo(code,uploadfile);
 	}
+	
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(value = { "/store/{codeStore}/marketing/logo" })
+	public ResponseEntity<?> getLogo(@PathVariable String codeStore) {
+		byte image[] = storeFacade.getStoreLogo(codeStore);
+		return ResponseEntity.status(HttpStatus.OK)
+				.contentType(MediaType.valueOf("image/png"))
+				.body(image);
+	}
+//	end
 
 	private InputContentFile createInputContentFile(MultipartFile image) {
 
