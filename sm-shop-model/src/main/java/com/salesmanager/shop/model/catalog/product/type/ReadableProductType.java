@@ -1,5 +1,8 @@
 package com.salesmanager.shop.model.catalog.product.type;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReadableProductType extends ProductTypeEntity {
 
 	/**

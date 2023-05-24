@@ -37,16 +37,20 @@ public class ProductType extends SalesManagerEntity<Long, ProductType> implement
   @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME",
       valueColumnName = "SEQ_COUNT", pkColumnValue = "PRD_TYPE_SEQ_NEXT_VAL")
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+
   private Long id;
 
   @Embedded
   private AuditSection auditSection = new AuditSection();
   
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "productType")
-  private Set<ProductTypeDescription> descriptions = new HashSet<ProductTypeDescription>();
+//  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "productType")
+//  private Set<ProductTypeDescription> descriptions = new HashSet<ProductTypeDescription>();
 
-  @Column(name = "PRD_TYPE_CODE")
+  @Column(name = "PRD_TYPE_CODE", unique = true)
   private String code;
+  
+  @Column(name="NAME")
+  private String name;
 
   @Column(name = "PRD_TYPE_ADD_TO_CART")
   private Boolean allowAddToCart;
@@ -112,14 +116,26 @@ public class ProductType extends SalesManagerEntity<Long, ProductType> implement
     this.merchantStore = merchantStore;
   }
 
-public Set<ProductTypeDescription> getDescriptions() {
-	return descriptions;
-}
+//  Long hide some lines here (24/5/2023)
+//	public Set<ProductTypeDescription> getDescriptions() {
+//		return descriptions;
+//	}
+//	
+//	public void setDescriptions(Set<ProductTypeDescription> descriptions) {
+//		this.descriptions = descriptions;
+//	}
+//  end
 
-public void setDescriptions(Set<ProductTypeDescription> descriptions) {
-	this.descriptions = descriptions;
-}
+//  Long add some lines here(24/5/2023)
+  public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+//  end
+  
 public Boolean getVisible() {
 	return visible;
 }

@@ -1,6 +1,7 @@
 package com.salesmanager.core.business.services.catalog.product.type;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -23,7 +24,7 @@ public class ProductTypeServiceImpl extends SalesManagerEntityServiceImpl<Long, 
 		implements ProductTypeService {
 
 	private ProductTypeRepository productTypeRepository;
-	
+
 	@Autowired
 	private PageableProductTypeRepository pageableProductTypeRepository;
 
@@ -43,14 +44,15 @@ public class ProductTypeServiceImpl extends SalesManagerEntityServiceImpl<Long, 
 		productTypeRepository.save(type);
 
 	}
-	
+
 	@Override
 	public ProductType getProductType(String productTypeCode) {
 		return productTypeRepository.findByCode(productTypeCode);
 	}
 
 	@Override
-	public Page<ProductType> getByMerchant(MerchantStore store, Language language, int page, int count) throws ServiceException {
+	public Page<ProductType> getByMerchant(MerchantStore store, Language language, int page, int count)
+			throws ServiceException {
 		Pageable pageRequest = PageRequest.of(page, count);
 		return pageableProductTypeRepository.listByStore(store.getId(), pageRequest);
 	}
@@ -62,12 +64,12 @@ public class ProductTypeServiceImpl extends SalesManagerEntityServiceImpl<Long, 
 
 	@Override
 	public ProductType saveOrUpdate(ProductType productType) throws ServiceException {
-		if(productType.getId()!=null && productType.getId() > 0) {
+		if (productType.getId() != null && productType.getId() > 0) {
 			this.update(productType);
 		} else {
 			productType = super.saveAndFlush(productType);
 		}
-		
+
 		return productType;
 	}
 
@@ -82,5 +84,19 @@ public class ProductTypeServiceImpl extends SalesManagerEntityServiceImpl<Long, 
 		return productTypeRepository.findById(id, store.getId());
 	}
 
+	@Override
+	public ProductType getByCode(String code) throws ServiceException {
+		return productTypeRepository.findByCode(code);
+	}
+
+	@Override
+	public Page<ProductType> getAllTypes(int page, int count) throws ServiceException {
+		Pageable pageRequest = PageRequest.of(page, count);
+		return pageableProductTypeRepository.findAll(pageRequest);
+	}
+//	@Override
+//	public OptionalProductType getById(Long id) {
+//		return productTypeRepository.;
+//	}
 
 }
