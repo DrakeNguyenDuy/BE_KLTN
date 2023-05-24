@@ -12,6 +12,9 @@ public class ProductTypeEntity extends Entity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String code;
+//	Long add some lines here(24/5/2023)
+	private String name;
+//	end
 	private boolean visible;
 	boolean allowAddToCart;
 
@@ -39,5 +42,14 @@ public class ProductTypeEntity extends Entity implements Serializable {
 		this.visible = visible;
 	}
 
+//	Long add some lines here(24/5/2023)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+//	end
 
 }

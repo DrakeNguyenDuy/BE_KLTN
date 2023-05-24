@@ -39,7 +39,7 @@ public class Description implements Auditable, Serializable {
 	private AuditSection auditSection = new AuditSection();
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "LANGUAGE_ID")
+	@JoinColumn(name = "LANGUAGE_ID", nullable = true)
 	private Language language;
 	
 	@NotEmpty

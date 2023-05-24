@@ -48,17 +48,29 @@ public class ProductTypeApi {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductTypeApi.class);
 
+//	Long add some lines here(24/5/2023)
+//	@GetMapping(value = "/private/product/types", produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ApiOperation(httpMethod = "GET", value = "Get product types list", notes = "", produces = "application/json", response = List.class)
+//	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+//			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+//	public ReadableProductTypeList list(@RequestParam(name = "count", defaultValue = "10") int count,
+//			@RequestParam(name = "page", defaultValue = "0") int page, @ApiIgnore MerchantStore merchantStore,
+//			@ApiIgnore Language language) {
+//
+//		return productTypeFacade.getByMerchant(merchantStore, language, count, page);
+//
+//	}
+//	end
+	
+//	Long add some lines here(24/5/2023)
 	@GetMapping(value = "/private/product/types", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "Get product types list", notes = "", produces = "application/json", response = List.class)
-	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
-			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
 	public ReadableProductTypeList list(@RequestParam(name = "count", defaultValue = "10") int count,
-			@RequestParam(name = "page", defaultValue = "0") int page, @ApiIgnore MerchantStore merchantStore,
-			@ApiIgnore Language language) {
+			@RequestParam(name = "page", defaultValue = "0") int page) {
 
-		return productTypeFacade.getByMerchant(merchantStore, language, count, page);
-
+		return productTypeFacade.getAllTypes(count, page);
 	}
+//	end
 
 	@GetMapping(value = "/private/product/type/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "Get product type", notes = "", produces = "application/json", response = ReadableProductType.class)
@@ -83,30 +95,56 @@ public class ProductTypeApi {
 
 	}
 
+//	Long hide some lines here(23/5/2022)
+//	@PostMapping(value = "/private/product/type", produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ApiOperation(httpMethod = "POST", value = "Create product type", notes = "", produces = "application/json", response = Entity.class)
+//	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+//			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+//	public Entity create(@RequestBody PersistableProductType type, @ApiIgnore MerchantStore merchantStore,
+//			@ApiIgnore Language language) {
+//
+//		Long id = productTypeFacade.save(type, merchantStore, language);
+//		Entity entity = new Entity();
+//		entity.setId(id);
+//		return entity;
+//	}
+//	end
+	
+//	Long add some lines here(24/5/2023)
 	@PostMapping(value = "/private/product/type", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "POST", value = "Create product type", notes = "", produces = "application/json", response = Entity.class)
-	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
-			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public Entity create(@RequestBody PersistableProductType type, @ApiIgnore MerchantStore merchantStore,
-			@ApiIgnore Language language) {
+	public Entity create(@RequestBody PersistableProductType type) {
 
-		Long id = productTypeFacade.save(type, merchantStore, language);
+		Long id = productTypeFacade.save(type);
 		Entity entity = new Entity();
 		entity.setId(id);
 		return entity;
-
 	}
+//	end
 
+//	Long hide some lines here(24/5/2023)
+//	@PutMapping(value = "/private/product/type/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ApiOperation(httpMethod = "PUT", value = "Update product type", notes = "", produces = "application/json", response = Void.class)
+//	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+//			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+//	public void update(@RequestBody PersistableProductType type, @PathVariable Long id,
+//			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
+//
+//		productTypeFacade.update(type, id, merchantStore, language);
+//
+//	}
+//	end
+	
+//	Long add some lines here(24/5/2023)
 	@PutMapping(value = "/private/product/type/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "PUT", value = "Update product type", notes = "", produces = "application/json", response = Void.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public void update(@RequestBody PersistableProductType type, @PathVariable Long id,
-			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
+	public void update(@RequestBody PersistableProductType type, @PathVariable Long id) {
 
-		productTypeFacade.update(type, id, merchantStore, language);
+//		productTypeFacade.update(type, id, merchantStore, language);
 
 	}
+//	end
 
 	@DeleteMapping(value = "/private/product/type/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "DELETE", value = "Delete product type", notes = "", produces = "application/json", response = Void.class)

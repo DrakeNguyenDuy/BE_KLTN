@@ -33,25 +33,42 @@ public class ReadableProductTypeMapper implements Mapper<ProductType, ReadablePr
 		return type(source, language);
 	}
 	
+//	Long add some lines here
+	public ReadableProductType convert(ProductType source) {
+		ReadableProductType type = new ReadableProductType();
+		return this.merge(source, type);
+	}
+
+	public ReadableProductType merge(ProductType source, ReadableProductType destination) {
+		Validate.notNull(source, "ProductType cannot be null");
+		Validate.notNull(destination, "ReadableProductType cannot be null");
+		destination.setName(source.getName());
+		destination.setCode(source.getCode());
+		return destination;
+	}
+//	end
+	
 	private ReadableProductType type (ProductType type, Language language) {
 		ReadableProductType readableType = null;
 
 
 		if(language != null) {
 			readableType = new ReadableProductType();
-			if(!CollectionUtils.isEmpty(type.getDescriptions())) {
-				Optional<ProductTypeDescription> desc = type.getDescriptions().stream().filter(t -> t.getLanguage().getCode().equals(language.getCode()))
-				.map(d -> typeDescription(d)).findFirst();
-				if(desc.isPresent()) {
-					readableType.setDescription(desc.get());
-				}
-			}
+//			Long hide some lines here(24/5/2023)
+//			if(!CollectionUtils.isEmpty(type.getDescriptions())) {
+//				Optional<ProductTypeDescription> desc = type.getDescriptions().stream().filter(t -> t.getLanguage().getCode().equals(language.getCode()))
+//				.map(d -> typeDescription(d)).findFirst();
+//				if(desc.isPresent()) {
+//					readableType.setDescription(desc.get());
+//				}
+//			}
+//			end
 		} else {
-			
-			readableType = new ReadableProductTypeFull();
-			List<ProductTypeDescription> descriptions = type.getDescriptions().stream().map(t -> this.typeDescription(t)).collect(Collectors.toList());
-			((ReadableProductTypeFull)readableType).setDescriptions(descriptions);
-			
+//			Long hide some lines here(24/5/2023)
+//			readableType = new ReadableProductTypeFull();
+//			List<ProductTypeDescription> descriptions = type.getDescriptions().stream().map(t -> this.typeDescription(t)).collect(Collectors.toList());
+//			((ReadableProductTypeFull)readableType).setDescriptions(descriptions);
+//			end
 		}
 		
 		readableType.setCode(type.getCode());

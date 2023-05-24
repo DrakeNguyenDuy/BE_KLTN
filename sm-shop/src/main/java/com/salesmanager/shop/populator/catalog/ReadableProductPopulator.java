@@ -652,13 +652,15 @@ public class ReadableProductPopulator extends
 		readableType.setCode(type.getCode());
 		readableType.setId(type.getId());
 
-		if(!CollectionUtils.isEmpty(type.getDescriptions())) {
-			Optional<ProductTypeDescription> desc = type.getDescriptions().stream().filter(t -> t.getLanguage().getCode().equals(language.getCode()))
-			.map(d -> typeDescription(d)).findFirst();
-			if(desc.isPresent()) {
-				readableType.setDescription(desc.get());
-			}
-		}
+//		Long hide some lines here(24/5/2023)
+//		if(!CollectionUtils.isEmpty(type.getDescriptions())) {
+//			Optional<ProductTypeDescription> desc = type.getDescriptions().stream().filter(t -> t.getLanguage().getCode().equals(language.getCode()))
+//			.map(d -> typeDescription(d)).findFirst();
+//			if(desc.isPresent()) {
+//				readableType.setDescription(desc.get());
+//			}
+//		}
+//		end
 
 		return readableType;
 	}

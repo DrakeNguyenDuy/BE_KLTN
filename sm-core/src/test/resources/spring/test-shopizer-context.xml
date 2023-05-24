@@ -54,7 +54,7 @@
 				<beans:prop key="PRODUCT_IMAGE_MAX_SIZE">9000000</beans:prop>
 				<beans:prop key="IMAGE_FORMATS">jpg|png|gif</beans:prop>
 				
-				<beans:prop key="POPULATE_TEST_DATA">true</beans:prop>
+				<beans:prop key="POPULATE_TEST_DATA">false</beans:prop>
 
   </util:properties>
 
