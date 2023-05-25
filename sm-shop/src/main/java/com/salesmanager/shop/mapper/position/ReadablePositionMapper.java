@@ -24,6 +24,7 @@ public class ReadablePositionMapper implements Mapper<PositionDescription, Reada
 		Validate.notNull(source, "Position can be not null");
 		Validate.notNull(destination, "Readable position can be not null");
 		destination.setId(source.getID_POSITION());
+		destination.setCode(source.getCode());
 		destination.setName(source.getName());
 		return destination;
 	}

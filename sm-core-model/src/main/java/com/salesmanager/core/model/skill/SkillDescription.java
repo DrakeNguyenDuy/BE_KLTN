@@ -21,7 +21,8 @@ import com.salesmanager.core.model.common.audit.AuditSection;
 public class SkillDescription {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long ID_SKILL;
+	@Column(name = " ID_SKILL")
+	private Long id;
 	@Column(name = "CODE", unique = true)
 	private String code;
 	@Column(name = "NAME")
@@ -29,12 +30,12 @@ public class SkillDescription {
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
 
-	public Long getID_SKILL() {
-		return ID_SKILL;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID_SKILL(Long iD_SKILL) {
-		ID_SKILL = iD_SKILL;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getCode() {

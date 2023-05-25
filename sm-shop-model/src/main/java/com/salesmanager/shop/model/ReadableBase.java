@@ -1,5 +1,8 @@
 package com.salesmanager.shop.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class ReadableBase {
 	private Long id;
 	private String name;

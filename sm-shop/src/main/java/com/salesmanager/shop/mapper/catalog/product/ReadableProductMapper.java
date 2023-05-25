@@ -998,7 +998,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 	private ReadableSkillDescription convertSkill(SkillDescription sd) {
 		ReadableSkillDescription rsd = new ReadableSkillDescription();
 		rsd.setCode(sd.getCode());
-		rsd.setIdSkill(sd.getID_SKILL());
+		rsd.setId(sd.getId());
 		rsd.setName(sd.getName());
 		return rsd;
 	}

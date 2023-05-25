@@ -16,12 +16,22 @@ public class ProductSkillServiceImpl implements ProductSkillService {
 
 	@Override
 	public SkillDescription getSkillDescriptionByCode(String code) {
-		return productSkillReposistory.getSkillDescriptionByCode(code);
+		return productSkillReposistory.findByCode(code);
 	}
 
 	@Override
 	public List<SkillDescription> getSkills() {
-		return productSkillReposistory.getSkills();
+		return productSkillReposistory.findAll();
+	}
+
+	@Override
+	public SkillDescription saveOrUpdate(SkillDescription skillDescription) {
+		return productSkillReposistory.saveAndFlush(skillDescription);
+	}
+
+	@Override
+	public void delete(Long id) {
+		productSkillReposistory.deleteById(id);
 	}
 
 }
