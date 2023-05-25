@@ -22,6 +22,7 @@ public class ReadableExperienceMapper implements Mapper<ExperienceDescription, R
 	public ReadableExperience merge(ExperienceDescription source, ReadableExperience destination, MerchantStore store,
 			Language language) {
 		Validate.notNull(source,"Experience can be not null");
+		destination.setId(source.getId());
 		destination.setCode(source.getCODE());
 		destination.setName(source.getNAME());
 		return destination;

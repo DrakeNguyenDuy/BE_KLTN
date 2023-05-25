@@ -23,4 +23,14 @@ public class ProductExperienceServiceImpl implements ProductExperienceService {
 		return experienceReposistory.findAll();
 	}
 
+	@Override
+	public void delete(Long id) {
+		experienceReposistory.deleteById(id);
+	}
+
+	@Override
+	public ExperienceDescription saveOrUpdate(ExperienceDescription experienceDescription) {
+		return experienceReposistory.saveAndFlush(experienceDescription);
+	}
+
 }

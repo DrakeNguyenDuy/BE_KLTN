@@ -69,6 +69,7 @@ public class PayCycleFacadeImp implements PaycycleFacade {
 		
 		PayCycleDescription payCycleDescription = persistablePaycycleMapper.convert(persistablePaycycle, null, null);
 		try {
+			payCycleDescription.setId(id);
 			payCycleService.saveOrUpdate(payCycleDescription);
 			return readablePaycircleMapper.convert(payCycleService.getPayCycleByCode(payCycleDescription.getCode()), null, null);
 		} catch (ServiceException e) {

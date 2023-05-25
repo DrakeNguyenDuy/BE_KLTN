@@ -7,4 +7,8 @@ import com.salesmanager.core.model.skill.SkillDescription;
 public interface ProductSkillService {
 	SkillDescription getSkillDescriptionByCode(String code);
 	List<SkillDescription> getSkills();
+	
+	SkillDescription saveOrUpdate(SkillDescription skillDescription);
+	
+	void delete(Long id);
 }
