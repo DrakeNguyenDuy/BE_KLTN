@@ -24,6 +24,7 @@ public interface ProductTypeFacade {
   Long save(PersistableProductType type);
   boolean exists(String code);
   void update(PersistableProductType type, Long id);
+  void delete(Long id);
 //  
   
   void update(PersistableProductType type, Long id, MerchantStore store, Language language);
