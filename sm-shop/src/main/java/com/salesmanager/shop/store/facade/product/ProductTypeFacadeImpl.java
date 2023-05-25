@@ -283,4 +283,23 @@ public class ProductTypeFacadeImpl implements ProductTypeFacade {
 		}
 	}
 
+	@Override
+	public void delete(Long id) {
+		Validate.notNull(id, "id cannot be empty");
+
+		try {
+
+			ProductType t = productTypeService.getById(id);
+			if (t == null) {
+				throw new ResourceNotFoundException(
+						"Product type [" + id + "] does not exist");
+			}
+
+			productTypeService.delete(t);
+
+		} catch (Exception e) {
+			throw new ServiceRuntimeException("An exception occured while saving product type", e);
+		}
+	}
+
 }

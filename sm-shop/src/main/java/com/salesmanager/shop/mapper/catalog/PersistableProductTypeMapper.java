@@ -55,6 +55,9 @@ public class PersistableProductTypeMapper implements Mapper<PersistableProductTy
 		Validate.notNull(destination, "ReadableProductType cannot be null");
 		Validate.notNull(source.getName(), "Name cannot be null");
 		Validate.notNull(source.getCode(), "Code cannot be null");
+		if(source.getId()!=null) {
+			destination.setId(source.getId());
+		}
 		if(source.getCode()!=null) {
 			destination.setCode(source.getCode());
 		}

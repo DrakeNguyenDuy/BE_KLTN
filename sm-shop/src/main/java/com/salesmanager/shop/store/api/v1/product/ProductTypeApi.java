@@ -137,23 +137,27 @@ public class ProductTypeApi {
 //	Long add some lines here(24/5/2023)
 	@PutMapping(value = "/private/product/type/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "PUT", value = "Update product type", notes = "", produces = "application/json", response = Void.class)
-	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
-			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
 	public void update(@RequestBody PersistableProductType type, @PathVariable Long id) {
-
-//		productTypeFacade.update(type, id, merchantStore, language);
-
+		productTypeFacade.update(type, id);
 	}
 //	end
 
+//	Long hide some lines here(25/5/2023)
+//	@DeleteMapping(value = "/private/product/type/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ApiOperation(httpMethod = "DELETE", value = "Delete product type", notes = "", produces = "application/json", response = Void.class)
+//	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+//			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+//	public void delete(@PathVariable Long id, @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
+//
+//		productTypeFacade.delete(id, merchantStore, language);
+//
+//	}
+//	end
+	
 	@DeleteMapping(value = "/private/product/type/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "DELETE", value = "Delete product type", notes = "", produces = "application/json", response = Void.class)
-	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
-			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public void delete(@PathVariable Long id, @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
-
-		productTypeFacade.delete(id, merchantStore, language);
-
+	public void delete(@PathVariable Long id) {
+		productTypeFacade.delete(id);
 	}
 
 }
