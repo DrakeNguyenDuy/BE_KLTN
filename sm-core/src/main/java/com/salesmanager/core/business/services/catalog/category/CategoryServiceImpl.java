@@ -31,55 +31,50 @@ import com.salesmanager.core.model.reference.language.Language;
 @Service("categoryService")
 public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Category> implements CategoryService {
 
+	private CategoryRepository categoryRepository;
 
-  private CategoryRepository categoryRepository;
+	@Inject
+	private ProductService productService;
 
-  @Inject
-  private ProductService productService;
-  
-  @Inject
-  private PageableCategoryRepository pageableCategoryRepository;
-  
-  @Inject
-  private CategoryDescriptionRepository categoryDescriptionRepository;
+	@Inject
+	private PageableCategoryRepository pageableCategoryRepository;
 
+	@Inject
+	private CategoryDescriptionRepository categoryDescriptionRepository;
 
+	@Inject
+	public CategoryServiceImpl(CategoryRepository categoryRepository) {
+		super(categoryRepository);
+		this.categoryRepository = categoryRepository;
+	}
 
-  @Inject
-  public CategoryServiceImpl(CategoryRepository categoryRepository) {
-    super(categoryRepository);
-    this.categoryRepository = categoryRepository;
-  }
+	public void create(Category category) throws ServiceException {
 
-  public void create(Category category) throws ServiceException {
+		super.create(category);
+		StringBuilder lineage = new StringBuilder();
+		Category parent = category.getParent();
+		if (parent != null && parent.getId() != null && parent.getId() != 0) {
+			// get parent category
+			Category p = this.getById(parent.getId());
 
-    super.create(category);
-    StringBuilder lineage = new StringBuilder();
-    Category parent = category.getParent();
-    if (parent != null && parent.getId() != null && parent.getId() != 0) {
-      //get parent category
-      Category p = this.getById(parent.getId());
-
-      lineage.append(p.getLineage()).append(category.getId()).append("/");
-      category.setDepth(p.getDepth() + 1);
-    } else {
-      lineage.append("/").append(category.getId()).append("/");
-      category.setDepth(0);
-    }
-    category.setLineage(lineage.toString());
-    super.update(category);
-
-
-  }
-
-  @Override
-  public List<Object[]> countProductsByCategories(MerchantStore store, List<Long> categoryIds)
-      throws ServiceException {
-
-    return categoryRepository.countProductsByCategories(store, categoryIds);
+			lineage.append(p.getLineage()).append(category.getId()).append("/");
+			category.setDepth(p.getDepth() + 1);
+		} else {
+			lineage.append("/").append(category.getId()).append("/");
+			category.setDepth(0);
+		}
+		category.setLineage(lineage.toString());
+		super.update(category);
 
 	}
 
+	@Override
+	public List<Object[]> countProductsByCategories(MerchantStore store, List<Long> categoryIds)
+			throws ServiceException {
+
+		return categoryRepository.countProductsByCategories(store, categoryIds);
+
+	}
 
 	@Override
 	public List<Category> listByCodes(MerchantStore store, List<String> codes, Language language) {
@@ -171,8 +166,8 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
 	public Category getById(Long id, int merchantId) {
 
 		Category category = categoryRepository.findByIdAndStore(id, merchantId);
-		
-		if(category == null) {
+
+		if (category == null) {
 			return null;
 		}
 
@@ -429,4 +424,14 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
 		return categoryRepository.listByProduct(store, productId);
 	}
 
+	@Override
+	public List<Category> findAll() {
+		return categoryRepository.findAll();
+	}
+
+//	Long add some lines here(30/5/2023)
+	public void delete2(Category category){
+		categoryRepository.delete(category);
+	}
+//	end
 }

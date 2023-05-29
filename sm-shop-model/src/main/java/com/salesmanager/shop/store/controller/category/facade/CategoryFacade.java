@@ -68,6 +68,9 @@ public interface CategoryFacade {
 
 	void deleteCategory(Category category);
 
+//	Long add some lines here(30/5/2023)
+	void deleteCategory(Long categoryId);
+//	end
 
 	/**
 	 * List product options variations for a given category
@@ -110,4 +113,9 @@ public interface CategoryFacade {
 	 * @return
 	 */
 	ReadableCategoryList listByProduct(MerchantStore store, Long product, Language language);
+	
+	//Long add some lines here(30/5/2023)
+	ReadableCategoryList findAll();
+	PersistableCategory saveCategory(PersistableCategory category);
+//	end
 }

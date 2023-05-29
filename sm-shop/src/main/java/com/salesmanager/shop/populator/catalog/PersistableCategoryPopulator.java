@@ -153,6 +153,23 @@ public class PersistableCategoryPopulator extends
 		}
 
 	}
+	
+//	Long add some lines here(30/5/2023)
+	public Category populate(PersistableCategory source, Category target)
+			throws ConversionException {
+
+		try {
+		Validate.notNull(target, "Category target cannot be null");
+
+		target.setCode(source.getCode());
+		target.setName(source.getName());
+
+		return target;
+		} catch(Exception e) {
+			throw new ConversionException(e);
+		}
+
+	}
 
 	private com.salesmanager.core.model.catalog.category.CategoryDescription buildDescription(com.salesmanager.shop.model.catalog.category.CategoryDescription source, com.salesmanager.core.model.catalog.category.CategoryDescription target) throws Exception {
       //com.salesmanager.core.model.catalog.category.CategoryDescription desc = new com.salesmanager.core.model.catalog.category.CategoryDescription();
