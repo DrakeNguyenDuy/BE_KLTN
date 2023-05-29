@@ -73,7 +73,7 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
 	private Integer sortOrder = 0;
 
 	@Column(name = "CATEGORY_STATUS")
-	private boolean categoryStatus=true;
+	private boolean categoryStatus = true;
 
 	@Column(name = "VISIBLE")
 	private boolean visible;
@@ -91,6 +91,12 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
 	@Column(name = "CODE", length = 100, nullable = false)
 	private String code;
 
+//	Long add some lines here(30/5/2023)
+	@NotEmpty
+	@Column(name = "NAME", length = 255, nullable = false)
+	private String name;
+//	end
+	
 	public String getCode() {
 		return code;
 	}
@@ -222,5 +228,15 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
 	public void setDescriptions(Set<CategoryDescription> descriptions) {
 		this.descriptions = descriptions;
 	}
+
+//	Long add some lines here(30/5/2023)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+//	end
 
 }

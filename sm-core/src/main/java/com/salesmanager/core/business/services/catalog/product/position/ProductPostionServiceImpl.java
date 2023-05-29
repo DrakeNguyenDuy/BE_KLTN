@@ -2,6 +2,8 @@ package com.salesmanager.core.business.services.catalog.product.position;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +27,13 @@ public class ProductPostionServiceImpl implements ProductPositionService {
 	}
 
 	@Override
+	@Transactional
 	public PositionDescription saveOrUpdate(PositionDescription positionDescription) {
 		return positionReposistory.saveAndFlush(positionDescription);
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long id) {
 		positionReposistory.deleteById(id);
 	}

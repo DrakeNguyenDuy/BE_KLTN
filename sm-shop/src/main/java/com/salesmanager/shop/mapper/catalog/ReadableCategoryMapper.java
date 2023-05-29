@@ -122,5 +122,14 @@ public class ReadableCategoryMapper implements Mapper<Category, ReadableCategory
 		return current;
 
 	}
+	
+//	Long add some lines here(30/5/2023)
+	public ReadableCategory convert2Readable(Category category) {
+		ReadableCategory readableCategory = new ReadableCategory();
+		readableCategory.setName(category.getName());
+		readableCategory.setCode(category.getCode());
+		return readableCategory;
+	}
+	
 
 }

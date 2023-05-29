@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,6 +22,7 @@ import javax.persistence.TableGenerator;
 import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
+import com.salesmanager.core.model.customer.profile.Profile;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.merchant.MerchantStore;
 
@@ -28,93 +30,98 @@ import com.salesmanager.core.model.merchant.MerchantStore;
 @EntityListeners(value = AuditListener.class)
 @Table(name = "PRODUCT_TYPE")
 public class ProductType extends SalesManagerEntity<Long, ProductType> implements Auditable {
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public final static String GENERAL_TYPE = "GENERAL";
+	public final static String GENERAL_TYPE = "GENERAL";
 
-  @Id
-  @Column(name = "PRODUCT_TYPE_ID", unique = true, nullable = false)
-  @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME",
-      valueColumnName = "SEQ_COUNT", pkColumnValue = "PRD_TYPE_SEQ_NEXT_VAL")
-  @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+	@Id
+	@Column(name = "PRODUCT_TYPE_ID", unique = true, nullable = false)
+	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRD_TYPE_SEQ_NEXT_VAL")
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 
-  private Long id;
+	private Long id;
 
-  @Embedded
-  private AuditSection auditSection = new AuditSection();
-  
+	@Embedded
+	private AuditSection auditSection = new AuditSection();
+
 //  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "productType")
 //  private Set<ProductTypeDescription> descriptions = new HashSet<ProductTypeDescription>();
 
-  @Column(name = "PRD_TYPE_CODE", unique = true)
-  private String code;
-  
-  @Column(name="NAME")
-  private String name;
+	@Column(name = "PRD_TYPE_CODE", unique = true)
+	private String code;
 
-  @Column(name = "PRD_TYPE_ADD_TO_CART")
-  private Boolean allowAddToCart;
-  
-  @Column(name = "PRD_TYPE_VISIBLE")
-  private Boolean visible;
+	@Column(name = "NAME")
+	private String name;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "MERCHANT_ID", nullable = true)
-  private MerchantStore merchantStore;
+	@Column(name = "PRD_TYPE_ADD_TO_CART")
+	private Boolean allowAddToCart;
 
-  public ProductType() {}
+	@Column(name = "PRD_TYPE_VISIBLE")
+	private Boolean visible;
 
-  @Override
-  public Long getId() {
-    return id;
-  }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MERCHANT_ID", nullable = true)
+	private MerchantStore merchantStore;
 
-  @Override
-  public void setId(Long id) {
-    this.id = id;
-  }
+	// Long add some lines here(30/5/2023)
+	@ManyToMany(mappedBy = "")
+	private Profile profile;
+//  end
 
-  @Override
-  public AuditSection getAuditSection() {
-    return auditSection;
-  }
+	public ProductType() {
+	}
 
-  @Override
-  public void setAuditSection(AuditSection auditSection) {
-    this.auditSection = auditSection;
-  }
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-  public boolean isAllowAddToCart() {
-    return allowAddToCart;
-  }
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  public void setAllowAddToCart(boolean allowAddToCart) {
-    this.allowAddToCart = allowAddToCart;
-  }
+	@Override
+	public AuditSection getAuditSection() {
+		return auditSection;
+	}
 
-  public String getCode() {
-    return code;
-  }
+	@Override
+	public void setAuditSection(AuditSection auditSection) {
+		this.auditSection = auditSection;
+	}
 
-  public void setCode(String code) {
-    this.code = code;
-  }
+	public boolean isAllowAddToCart() {
+		return allowAddToCart;
+	}
 
-  public Boolean getAllowAddToCart() {
-    return allowAddToCart;
-  }
+	public void setAllowAddToCart(boolean allowAddToCart) {
+		this.allowAddToCart = allowAddToCart;
+	}
 
-  public void setAllowAddToCart(Boolean allowAddToCart) {
-    this.allowAddToCart = allowAddToCart;
-  }
+	public String getCode() {
+		return code;
+	}
 
-  public MerchantStore getMerchantStore() {
-    return merchantStore;
-  }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-  public void setMerchantStore(MerchantStore merchantStore) {
-    this.merchantStore = merchantStore;
-  }
+	public Boolean getAllowAddToCart() {
+		return allowAddToCart;
+	}
+
+	public void setAllowAddToCart(Boolean allowAddToCart) {
+		this.allowAddToCart = allowAddToCart;
+	}
+
+	public MerchantStore getMerchantStore() {
+		return merchantStore;
+	}
+
+	public void setMerchantStore(MerchantStore merchantStore) {
+		this.merchantStore = merchantStore;
+	}
 
 //  Long hide some lines here (24/5/2023)
 //	public Set<ProductTypeDescription> getDescriptions() {
@@ -127,7 +134,7 @@ public class ProductType extends SalesManagerEntity<Long, ProductType> implement
 //  end
 
 //  Long add some lines here(24/5/2023)
-  public String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -135,14 +142,24 @@ public class ProductType extends SalesManagerEntity<Long, ProductType> implement
 		this.name = name;
 	}
 //  end
-  
-public Boolean getVisible() {
-	return visible;
-}
 
-public void setVisible(Boolean visible) {
-	this.visible = visible;
-}
+	public Boolean getVisible() {
+		return visible;
+	}
 
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
+	}
+//	Long add some lines here(30/5/2023)
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
+
+//end
 
 }

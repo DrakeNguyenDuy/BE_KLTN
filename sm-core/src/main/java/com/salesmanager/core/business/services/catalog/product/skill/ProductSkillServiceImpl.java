@@ -2,6 +2,8 @@ package com.salesmanager.core.business.services.catalog.product.skill;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +27,13 @@ public class ProductSkillServiceImpl implements ProductSkillService {
 	}
 
 	@Override
+	@Transactional
 	public SkillDescription saveOrUpdate(SkillDescription skillDescription) {
 		return productSkillReposistory.saveAndFlush(skillDescription);
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long id) {
 		productSkillReposistory.deleteById(id);
 	}

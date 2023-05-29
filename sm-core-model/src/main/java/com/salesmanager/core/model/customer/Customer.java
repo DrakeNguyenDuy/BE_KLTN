@@ -22,6 +22,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
@@ -43,6 +44,7 @@ import com.salesmanager.core.model.common.Delivery;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
 import com.salesmanager.core.model.customer.attribute.CustomerAttribute;
+import com.salesmanager.core.model.customer.profile.Profile;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -50,75 +52,75 @@ import com.salesmanager.core.model.user.Group;
 import com.salesmanager.core.utils.CloneUtils;
 
 @Entity
-@Table(name = "CUSTOMER", 
-	 uniqueConstraints=
-			@UniqueConstraint(columnNames = {
+@Table(name = "CUSTOMER", uniqueConstraints = @UniqueConstraint(columnNames = {
 //					Long hide some line here (20/5/2023)
 //					"MERCHANT_ID",
 //					end
-					"CUSTOMER_NICK"}))
+		"CUSTOMER_NICK" }))
 public class Customer extends SalesManagerEntity<Long, Customer> implements Auditable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@Column(name = "CUSTOMER_ID", unique=true, nullable=false)
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT",
-	pkColumnValue = "CUSTOMER_SEQ_NEXT_VAL")
+	@Column(name = "CUSTOMER_ID", unique = true, nullable = false)
+	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "CUSTOMER_SEQ_NEXT_VAL")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	private Long id;
-	
+
 	@JsonIgnore
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
-	
+
 //	Long hide some lines here(14/5/2023)
 //	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customer")
 //	private Set<CustomerAttribute> attributes = new HashSet<CustomerAttribute>();
 //	end
-	
-	@Column(name="CUSTOMER_GENDER", length=1, nullable=true)
+
+	@Column(name = "CUSTOMER_GENDER", length = 1, nullable = true)
 	@Enumerated(value = EnumType.STRING)
 	private CustomerGender gender;
 
-
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="CUSTOMER_DOB")
+	@Column(name = "CUSTOMER_DOB")
 	private Date dateOfBirth;
-	
+
 	@Email
 	@NotEmpty
-	@Column(name="CUSTOMER_EMAIL_ADDRESS", length=96, nullable=false)
+	@Column(name = "CUSTOMER_EMAIL_ADDRESS", length = 96, nullable = false)
 	private String emailAddress;
-	
-	@Column(name="CUSTOMER_NICK", length=96)
+
+	@Column(name = "CUSTOMER_NICK", length = 96)
 	private String nick;// unique username per store
 
-	@Column(name="CUSTOMER_COMPANY", length=100)
+	@Column(name = "CUSTOMER_COMPANY", length = 100)
 	private String company;
-	
+
 	@JsonIgnore
-	@Column(name="CUSTOMER_PASSWORD", length=60)
+	@Column(name = "CUSTOMER_PASSWORD", length = 60)
 	private String password;
 
-	@Column(name="CUSTOMER_ANONYMOUS")
+	@Column(name = "CUSTOMER_ANONYMOUS")
 	private boolean anonymous;
-	
+
 	@Column(name = "REVIEW_AVG")
 	private BigDecimal customerReviewAvg;
 
 	@Column(name = "REVIEW_COUNT")
 	private Integer customerReviewCount;
-	
-	@Column(name="PROVIDER")
+
+	@Column(name = "PROVIDER")
 	private String provider;
-	
-	//Long add some lines here(20/5/2023)
-	@Column(name="LAST_NAME")
+
+	// Long add some lines here(20/5/2023)
+	@Column(name = "LAST_NAME")
 	private String lastName;
-	@Column(name="FIRST_NAME")
+	@Column(name = "FIRST_NAME")
 	private String firstName;
-//	end
-	
+	// end
+	// Long add some lines here(20/5/2023)
+	@OneToOne
+	@JoinColumn(name = "profile_id")
+	private Profile profile;
+	// end
 
 //	Long hide some lines here(20/5/2023)
 //	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
@@ -129,12 +131,10 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 //			)
 //	private Language defaultLanguage;
 //	end
-	
 
 	@OneToMany(mappedBy = "customer", targetEntity = ProductReview.class)
 	private List<ProductReview> reviews = new ArrayList<ProductReview>();
-	
-	
+
 //	Long hide some lines here(20/5/2023)
 //	@JsonIgnore
 //	@ManyToOne(fetch = FetchType.LAZY)
@@ -150,39 +150,32 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 //	@Embedded
 //	private Delivery delivery = null;
 //	end
-	
-	
+
 //	Long hide some lines here(20/5/2023)
 //	@Valid
 //	@Embedded
 //	private Billing billing = null;
 //	end
-	
+
 	@JsonIgnore
-	@ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.REFRESH})
-	@JoinTable(name = "CUSTOMER_GROUP", joinColumns = { 
-			@JoinColumn(name = "CUSTOMER_ID", nullable = false, updatable = false) }
-			, 
-			inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", 
-					nullable = false, updatable = false) }
-	)
-	@Cascade({
-		org.hibernate.annotations.CascadeType.DETACH,
-		org.hibernate.annotations.CascadeType.LOCK,
-		org.hibernate.annotations.CascadeType.REFRESH,
-		org.hibernate.annotations.CascadeType.REPLICATE
-		
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinTable(name = "CUSTOMER_GROUP", joinColumns = {
+			@JoinColumn(name = "CUSTOMER_ID", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "GROUP_ID", nullable = false, updatable = false) })
+	@Cascade({ org.hibernate.annotations.CascadeType.DETACH, org.hibernate.annotations.CascadeType.LOCK,
+			org.hibernate.annotations.CascadeType.REFRESH, org.hibernate.annotations.CascadeType.REPLICATE
+
 	})
 	private List<Group> groups = new ArrayList<Group>();
-	
+
 	@JsonIgnore
 	@Transient
 	private String showCustomerStateList;
-	
+
 	@JsonIgnore
 	@Transient
 	private String showBillingStateList;
-	
+
 	@JsonIgnore
 	@Transient
 	private String showDeliveryStateList;
@@ -200,8 +193,6 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 
 	public Date getDateOfBirth() {
 		return CloneUtils.clone(dateOfBirth);
@@ -235,8 +226,6 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 		this.company = company;
 	}
 
-
-
 	public String getPassword() {
 		return password;
 	}
@@ -245,8 +234,6 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 		this.password = password;
 	}
 
-
-
 	public boolean isAnonymous() {
 		return anonymous;
 	}
@@ -254,7 +241,6 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	public void setAnonymous(boolean anonymous) {
 		this.anonymous = anonymous;
 	}
-
 
 	public List<ProductReview> getReviews() {
 		return reviews;
@@ -297,6 +283,7 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	public List<Group> getGroups() {
 		return groups;
 	}
+
 	public String getShowCustomerStateList() {
 		return showCustomerStateList;
 	}
@@ -320,7 +307,7 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	public void setShowDeliveryStateList(String showDeliveryStateList) {
 		this.showDeliveryStateList = showDeliveryStateList;
 	}
-	
+
 //	Long hide some lines here(20/5/2023)
 //	public Language getDefaultLanguage() {
 //		return defaultLanguage;
@@ -374,7 +361,7 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	public void setAuditSection(AuditSection auditSection) {
 		this.auditSection = auditSection;
 	}
-	
+
 	public String getProvider() {
 		return provider;
 	}
@@ -407,7 +394,16 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
+
 //	end
-	
+//	Long add some lines here(30/4/2023)
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
+//	end
+
 }

@@ -17,6 +17,9 @@ public class CategoryEntity extends Category implements Serializable {
 	private boolean featured;
 	private String lineage;
 	private int depth;
+	//Long add some lines here(30/5/2023)
+	private String name;
+//	end
 	private Category parent;
 	
 
@@ -57,4 +60,12 @@ public class CategoryEntity extends Category implements Serializable {
 		this.featured = featured;
 	}
 
+//	Long add some lines here(30/5/2023)
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+//	end
 }

@@ -124,8 +124,8 @@ public interface CategoryService extends SalesManagerEntityService<Long, Categor
 	
 	int count(MerchantStore store);
 
-
+	List<Category> findAll();
 	
-	
+	void delete2(Category category);
 
 }
