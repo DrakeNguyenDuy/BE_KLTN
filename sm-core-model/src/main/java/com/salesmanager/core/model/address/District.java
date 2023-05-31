@@ -1,5 +1,7 @@
 package com.salesmanager.core.model.address;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -8,10 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.salesmanager.core.model.common.audit.AuditSection;
+import com.salesmanager.core.model.customer.profile.Profile;
 
 @Entity
 @Table(name = "DISTRICT_DESCRIPTION")
@@ -31,6 +35,11 @@ public class District {
 
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
+	
+	//Long add some lines here(30/5/2023)
+	@ManyToMany(mappedBy = "districts")
+	private Set<Profile> profiles;
+	//	end
 
 	public Long getIdDistrict() {
 		return idDistrict;
@@ -63,5 +72,15 @@ public class District {
 	public void setProvince(Province province) {
 		this.province = province;
 	}
+	
+//	Long add some lines here(30/5/2023)
+	public Set<Profile> getProfiles() {
+		return profiles;
+	}
+
+	public void setProfiles(Set<Profile> profiles) {
+		this.profiles = profiles;
+	}
+//	end
 
 }

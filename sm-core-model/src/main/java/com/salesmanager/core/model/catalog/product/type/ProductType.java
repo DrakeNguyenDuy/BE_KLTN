@@ -1,9 +1,7 @@
 package com.salesmanager.core.model.catalog.product.type;
 
-import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -13,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -64,8 +61,8 @@ public class ProductType extends SalesManagerEntity<Long, ProductType> implement
 	private MerchantStore merchantStore;
 
 	// Long add some lines here(30/5/2023)
-	@ManyToMany(mappedBy = "")
-	private Profile profile;
+	@OneToMany(mappedBy = "career")
+	private Set<Profile> profiles;
 //  end
 
 	public ProductType() {
@@ -151,13 +148,12 @@ public class ProductType extends SalesManagerEntity<Long, ProductType> implement
 		this.visible = visible;
 	}
 //	Long add some lines here(30/5/2023)
-
-	public Profile getProfile() {
-		return profile;
+	public Set<Profile> getProfiles() {
+		return profiles;
 	}
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
+	public void setProfiles(Set<Profile> profiles) {
+		this.profiles = profiles;
 	}
 
 //end

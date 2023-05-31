@@ -116,9 +116,9 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	@Column(name = "FIRST_NAME")
 	private String firstName;
 	// end
+	
 	// Long add some lines here(20/5/2023)
-	@OneToOne
-	@JoinColumn(name = "profile_id")
+	@OneToOne(mappedBy = "customer")
 	private Profile profile;
 	// end
 
