@@ -1,6 +1,8 @@
 package com.salesmanager.core.model.skill;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -9,12 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.common.audit.AuditSection;
+import com.salesmanager.core.model.customer.profile.Profile;
 
 @Entity
 @Table(name = "SKILL_DESCRIPTION")
@@ -29,6 +31,9 @@ public class SkillDescription {
 	private String name;
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
+	
+	@ManyToMany(mappedBy = "skills")
+	private List<Profile> profiles =new ArrayList<Profile>();
 
 	public Long getId() {
 		return id;

@@ -1,10 +1,8 @@
 package com.salesmanager.core.model.catalog.product;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -37,7 +35,6 @@ import com.salesmanager.core.model.catalog.product.availability.ProductAvailabil
 import com.salesmanager.core.model.catalog.product.description.ProductDescription;
 import com.salesmanager.core.model.catalog.product.image.ProductImage;
 import com.salesmanager.core.model.catalog.product.manufacturer.Manufacturer;
-import com.salesmanager.core.model.catalog.product.paycycle.PayCycleDescription;
 import com.salesmanager.core.model.catalog.product.position.PositionDescription;
 import com.salesmanager.core.model.catalog.product.relationship.ProductRelationship;
 import com.salesmanager.core.model.catalog.product.type.ProductType;
