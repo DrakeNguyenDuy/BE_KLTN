@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -37,12 +38,13 @@ public class Profile {
 
 	@Column(name = "YEAR_OF_BIRTH")
 	private String yearOfBirth;
-	
-	@Column(name ="AVATAR")
-	private String avatar;
 
-	@ManyToOne(fetch = FetchType.LAZY,cascade = { CascadeType.PERSIST, CascadeType.DETACH })
-	@JoinColumn(name = "ENGLISH_LEVEL_ID",referencedColumnName = "ID", nullable = false)
+	@Lob
+	@Column(name = "AVATAR")
+	private byte[] avatar;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
+	@JoinColumn(name = "ENGLISH_LEVEL_ID", referencedColumnName = "ID", nullable = false)
 	private EnglishLevel englishLevel;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
@@ -62,20 +64,20 @@ public class Profile {
 	private Set<District> districts = new HashSet<District>();
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
-	@JoinColumn(name="PAY_CYCLE_ID" , nullable = true)
+	@JoinColumn(name = "PAY_CYCLE_ID", nullable = true)
 	private PayCycleDescription payCycle;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
-	@JoinColumn(name="EXPERIENCE_ID" , nullable = true)
+	@JoinColumn(name = "EXPERIENCE_ID", nullable = true)
 	private ExperienceDescription experience;
 
 	@OneToOne()
 	@JoinColumn(name = "CUSTOMER_ID", nullable = false, unique = true)
 	private Customer customer;
-	
+
 	@Column(columnDefinition = "TEXT")
 	private String introduce;
-	
+
 	@Column(columnDefinition = "TEXT")
 	private String goal;
 
@@ -155,11 +157,11 @@ public class Profile {
 		this.career = career;
 	}
 
-	public String getAvatar() {
+	public byte[] getAvatar() {
 		return avatar;
 	}
 
-	public void setAvatar(String avatar) {
+	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
 	}
 

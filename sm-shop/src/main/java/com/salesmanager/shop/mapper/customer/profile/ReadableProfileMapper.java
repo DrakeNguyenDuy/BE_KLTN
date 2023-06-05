@@ -53,7 +53,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 
 	@Override
 	public ReadableProfile merge(Profile source, ReadableProfile destination, MerchantStore store, Language language) {
-		Validate.notNull(source, "Source can not be nukll");
+		Validate.notNull(source, "Source can not be null");
 		
 		destination.setId(source.getId());
 		String fullName = "";
