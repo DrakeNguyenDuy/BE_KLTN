@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -19,10 +20,11 @@ import com.salesmanager.shop.mapper.location.ReadableDistrictMapper;
 import com.salesmanager.shop.mapper.paycircle.ReadablePaycircleMapper;
 import com.salesmanager.shop.mapper.skill.ReadableSkillMapper;
 import com.salesmanager.shop.model.customer.profile.ReadableProfile;
-import com.salesmanager.shop.model.englishLevel.ReadablEnglishLevel;
+import com.salesmanager.shop.model.englishLevel.ReadableEnglishLevel;
 import com.salesmanager.shop.model.location.ReadableDistrict;
 import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 
+@Component
 public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 
 	@Autowired
@@ -52,7 +54,10 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 	@Override
 	public ReadableProfile merge(Profile source, ReadableProfile destination, MerchantStore store, Language language) {
 		Validate.notNull(source, "Source can not be nukll");
+		
+		destination.setId(source.getId());
 		String fullName = "";
+		
 		if (StringUtils.hasText(source.getCustomer().getLastName())) {
 			fullName += source.getCustomer().getLastName();
 		}
@@ -71,7 +76,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 			destination.setIntroduce(source.getIntroduce());
 		}
 		if (!Objects.isNull(source.getEnglishLevel())) {
-			ReadablEnglishLevel englishLevel = new ReadablEnglishLevel();
+			ReadableEnglishLevel englishLevel = new ReadableEnglishLevel();
 			englishLevel.setId(source.getEnglishLevel().getId());
 			englishLevel.setCode(source.getEnglishLevel().getCode());
 			englishLevel.setName(source.getEnglishLevel().getName());

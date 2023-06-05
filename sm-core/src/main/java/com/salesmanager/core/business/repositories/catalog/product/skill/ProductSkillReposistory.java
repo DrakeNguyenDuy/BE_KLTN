@@ -12,4 +12,6 @@ public interface ProductSkillReposistory
 	SkillDescription findByCode(String code);
 
 	public List<SkillDescription> findAll();
+
+	public List<SkillDescription> findByCodeIn(List<String> codes);
 }

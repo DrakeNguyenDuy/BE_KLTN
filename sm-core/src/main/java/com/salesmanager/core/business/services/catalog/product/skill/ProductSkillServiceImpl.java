@@ -38,4 +38,9 @@ public class ProductSkillServiceImpl implements ProductSkillService {
 		productSkillReposistory.deleteById(id);
 	}
 
+	@Override
+	public List<SkillDescription> findByCodeIn(List<String> codes) {
+		return productSkillReposistory.findByCodeIn(codes);
+	}
+
 }

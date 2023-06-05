@@ -430,8 +430,14 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
 	}
 
 //	Long add some lines here(30/5/2023)
-	public void delete2(Category category){
+	public void delete2(Category category) {
 		categoryRepository.delete(category);
 	}
 //	end
+
+	@Override
+	public Category findByCode(String code) {
+		return categoryRepository.findByCode(code);
+	}
+
 }

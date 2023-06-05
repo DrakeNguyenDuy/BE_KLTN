@@ -127,5 +127,8 @@ public interface CategoryService extends SalesManagerEntityService<Long, Categor
 	List<Category> findAll();
 	
 	void delete2(Category category);
+	
+	//Long add some lines here(2/6/2023)
+	Category findByCode(String code);
 
 }
