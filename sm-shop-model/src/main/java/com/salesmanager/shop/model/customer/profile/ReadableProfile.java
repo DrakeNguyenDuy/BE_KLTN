@@ -4,20 +4,20 @@ import java.util.List;
 
 import com.salesmanager.shop.model.catalog.category.ReadableCategory;
 import com.salesmanager.shop.model.catalog.product.type.ReadableProductType;
-import com.salesmanager.shop.model.englishLevel.ReadablEnglishLevel;
+import com.salesmanager.shop.model.englishLevel.ReadableEnglishLevel;
 import com.salesmanager.shop.model.experience.ReadableExperience;
 import com.salesmanager.shop.model.location.ReadableDistrict;
 import com.salesmanager.shop.model.paycircle.ReadablePaycycle;
 import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 
 public class ReadableProfile {
-	private String id;
+	private Long id;
 	private String fullName;
 	private String avatar;
 	private String introduce;
 	private String goal;
 	private String gender;
-	private ReadablEnglishLevel englishLevel;
+	private ReadableEnglishLevel englishLevel;
 	private ReadableProductType carreer;
 	private List<ReadableSkillDescription> readableSkillDescriptions;
 	private ReadableCategory formWork;
@@ -25,11 +25,11 @@ public class ReadableProfile {
 	private ReadablePaycycle paycycle;
 	private ReadableExperience experience;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -73,11 +73,11 @@ public class ReadableProfile {
 		this.gender = gender;
 	}
 
-	public ReadablEnglishLevel getEnglishLevel() {
+	public ReadableEnglishLevel getEnglishLevel() {
 		return englishLevel;
 	}
 
-	public void setEnglishLevel(ReadablEnglishLevel englishLevel) {
+	public void setEnglishLevel(ReadableEnglishLevel englishLevel) {
 		this.englishLevel = englishLevel;
 	}
 

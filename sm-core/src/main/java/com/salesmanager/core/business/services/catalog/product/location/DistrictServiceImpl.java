@@ -24,4 +24,9 @@ public class DistrictServiceImpl implements DistrictService {
 		return districtReposistory.findAll(idProvince);
 	}
 
+	@Override
+	public List<District> findByIdIn(List<Long> ids) {
+		return districtReposistory.findByIdDistrictIn(ids);
+	}
+
 }

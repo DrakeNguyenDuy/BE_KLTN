@@ -372,7 +372,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 		}
 		// set groups
 		if (!StringUtils.isBlank(customerModel.getPassword()) && !StringUtils.isBlank(customerModel.getNick())) {
-//			customerModel.setPassword(passwordEncoder.encode(customer.getPassword()));
+			customerModel.setPassword(passwordEncoder.encode(customer.getPassword()));
 			setCustomerModelDefaultProperties(customerModel, merchantStore);
 		}
 
@@ -396,13 +396,12 @@ public class CustomerFacadeImpl implements CustomerFacade {
 		}
 
 		if (CollectionUtils.isEmpty(customer.getGroups())) {
-			List<Group> groups = getListOfGroups(GroupType.ADMIN);
+			List<Group> groups = getListOfGroups(GroupType.CUSTOMER);
 			for (Group group : groups) {
-				if (group.getGroupName().equals(Constants.ADMIN_STORE)) {
+				if (group.getGroupName().equals(Constants.GROUP_CUSTOMER)) {
 					customer.getGroups().add(group);
 				}
 			}
-
 		}
 
 	}

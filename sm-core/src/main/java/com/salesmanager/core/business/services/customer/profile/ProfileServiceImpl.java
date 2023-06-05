@@ -30,11 +30,4 @@ public class ProfileServiceImpl implements ProfileService {
 	public Profile saveOrUpdate(Profile profile) {
 		return profileRepository.saveAndFlush(profile);
 	}
-
-	@Override
-	@Transactional
-	public void delete(Long id) {
-		profileRepository.deleteById(id);
-	}
-
 }

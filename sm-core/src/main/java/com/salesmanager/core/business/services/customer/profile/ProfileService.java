@@ -7,6 +7,4 @@ public interface ProfileService {
 	Profile findProfile(Long customerId);
 
 	Profile saveOrUpdate(Profile profile);
-
-	void delete(Long id);
 }

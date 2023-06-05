@@ -15,4 +15,6 @@ public interface DistrictReposistory extends JpaRepository<District, Long> {
 	//find all district belong a province
 	@Query("select d from District d where d.province.idProvince=:idProvince")
 	List<District> findAll(Long idProvince);
+	
+	List<District> findByIdDistrictIn(List<Long> ids);
 }

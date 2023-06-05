@@ -9,4 +9,6 @@ public interface DistrictService {
 	
 	//find all districts belong a province
 	List<District> findAll(Long idProvince);
+	
+	List<District> findByIdIn(List<Long> ids);
 }

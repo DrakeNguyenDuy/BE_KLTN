@@ -47,7 +47,7 @@ public class ProductTypeServiceImpl extends SalesManagerEntityServiceImpl<Long, 
 
 	@Override
 	public ProductType getProductType(String productTypeCode) {
-		return productTypeRepository.findByCode(productTypeCode);
+		return productTypeRepository.findByCode(productTypeCode).get();
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class ProductTypeServiceImpl extends SalesManagerEntityServiceImpl<Long, 
 
 	@Override
 	public ProductType getByCode(String code) throws ServiceException {
-		return productTypeRepository.findByCode(code);
+		return productTypeRepository.findByCode(code).get();
 	}
 
 	@Override

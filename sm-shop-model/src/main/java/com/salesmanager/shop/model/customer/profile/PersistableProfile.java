@@ -2,28 +2,36 @@ package com.salesmanager.shop.model.customer.profile;
 
 import java.util.List;
 
-import com.salesmanager.shop.model.catalog.category.ReadableCategory;
-import com.salesmanager.shop.model.catalog.product.type.ReadableProductType;
-import com.salesmanager.shop.model.englishLevel.ReadablEnglishLevel;
-import com.salesmanager.shop.model.experience.ReadableExperience;
-import com.salesmanager.shop.model.location.ReadableDistrict;
-import com.salesmanager.shop.model.paycircle.ReadablePaycycle;
-import com.salesmanager.shop.model.skill.ReadableSkillDescription;
+import com.salesmanager.shop.model.catalog.category.PersistableCategory;
+import com.salesmanager.shop.model.catalog.product.type.PersistableProductType;
+import com.salesmanager.shop.model.englishLevel.PersistableEnglishLevel;
+import com.salesmanager.shop.model.experience.PersistableExperience;
+import com.salesmanager.shop.model.location.PersistableDistrict;
+import com.salesmanager.shop.model.paycircle.PersistablePaycycle;
+import com.salesmanager.shop.model.skill.PersistableSkillDescription;
 
 public class PersistableProfile {
+	private Long id;
 	private String lastName;
 	private String firstName;
-	private String avatar;
 	private String introduce;
 	private String goal;
 	private String gender;
-	private ReadablEnglishLevel englishLevel;
-	private ReadableProductType carreer;
-	private List<ReadableSkillDescription> readableSkillDescriptions;
-	private ReadableCategory formWork;
-	private List<ReadableDistrict> districts;
-	private ReadablePaycycle paycycle;
-	private ReadableExperience experience;
+	private String englishLevel;
+	private String carreer;
+	private List<String> skills;
+	private String formWork;
+	private List<Long> districts;
+	private String paycycle;
+	private String experience;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getLastName() {
 		return lastName;
@@ -39,14 +47,6 @@ public class PersistableProfile {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
 	}
 
 	public String getIntroduce() {
@@ -73,59 +73,60 @@ public class PersistableProfile {
 		this.gender = gender;
 	}
 
-	public ReadablEnglishLevel getEnglishLevel() {
+	public String getEnglishLevel() {
 		return englishLevel;
 	}
 
-	public void setEnglishLevel(ReadablEnglishLevel englishLevel) {
+	public void setEnglishLevel(String englishLevel) {
 		this.englishLevel = englishLevel;
 	}
 
-	public ReadableProductType getCarreer() {
+	public String getCarreer() {
 		return carreer;
 	}
 
-	public void setCarreer(ReadableProductType carreer) {
+	public void setCarreer(String carreer) {
 		this.carreer = carreer;
 	}
 
-	public List<ReadableSkillDescription> getReadableSkillDescriptions() {
-		return readableSkillDescriptions;
+	public List<String> getSkills() {
+		return skills;
 	}
 
-	public void setReadableSkillDescriptions(List<ReadableSkillDescription> readableSkillDescriptions) {
-		this.readableSkillDescriptions = readableSkillDescriptions;
+	public void setSkills(List<String> skills) {
+		this.skills = skills;
 	}
 
-	public ReadableCategory getFormWork() {
+	public String getFormWork() {
 		return formWork;
 	}
 
-	public void setFormWork(ReadableCategory formWork) {
+	public void setFormWork(String formWork) {
 		this.formWork = formWork;
 	}
 
-	public List<ReadableDistrict> getDistricts() {
+	public List<Long> getDistricts() {
 		return districts;
 	}
 
-	public void setDistricts(List<ReadableDistrict> districts) {
+	public void setDistricts(List<Long> districts) {
 		this.districts = districts;
 	}
 
-	public ReadablePaycycle getPaycycle() {
+	public String getPaycycle() {
 		return paycycle;
 	}
 
-	public void setPaycycle(ReadablePaycycle paycycle) {
+	public void setPaycycle(String paycycle) {
 		this.paycycle = paycycle;
 	}
 
-	public ReadableExperience getExperience() {
+	public String getExperience() {
 		return experience;
 	}
 
-	public void setExperience(ReadableExperience experience) {
+	public void setExperience(String experience) {
 		this.experience = experience;
 	}
+
 }

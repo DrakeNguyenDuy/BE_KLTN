@@ -89,5 +89,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, Categ
 	
 	@Query("select count(distinct c) from Category as c where c.merchantStore.id=?1")
 	int count(Integer storeId);
-	
 }
