@@ -8,7 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import com.salesmanager.core.model.customer.profile.Profile;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-	
-	@Query("select p from Profile p where p.customer.id=:idCustomer")
-	Optional<Profile> findProfileByCustomerId(Long idCustomer);
+
+	@Query("select p from Profile p where p.customer.nick=:customerName")
+	Optional<Profile> findProfileByCustomerName(String customerName);
+
+	@Query("select p from Profile p where p.customer.nick =:username")
+	Optional<Profile> findByCustomerNick(String username);
 }

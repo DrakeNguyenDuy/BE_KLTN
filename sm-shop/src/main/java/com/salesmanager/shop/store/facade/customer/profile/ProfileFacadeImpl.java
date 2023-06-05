@@ -1,7 +1,10 @@
 package com.salesmanager.shop.store.facade.customer.profile;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.salesmanager.core.business.services.customer.profile.ProfileService;
 import com.salesmanager.core.model.customer.profile.Profile;
@@ -22,15 +25,35 @@ public class ProfileFacadeImpl implements ProfileFacade {
 	@Autowired
 	private PersistableProfileMapper persistableProfileMapper;
 
+	//customer name is nick name
 	@Override
-	public ReadableProfile findProfile(Long customerId) {
-		return readableProfileMapper.convert(profileService.findProfile(customerId), null, null);
+	public ReadableProfile findProfile(String customerName) {
+		Profile profile = profileService.findProfileByCustomerName(customerName);
+		if (profile == null)
+			return null;
+		return readableProfileMapper.convert(profile, null, null);
 	}
 
 	@Override
-	public ReadableProfile saveOrUpdate(Long id, PersistableProfile profile) {
-		Profile p = persistableProfileMapper.convertToEntity(id, profile);
-		return readableProfileMapper.convert(profileService.saveOrUpdate(p), null, null);
+	public ReadableProfile saveOrUpdate(String customerName, PersistableProfile profile) {
+		Profile p = persistableProfileMapper.convertToEntity(customerName, profile);
+		p = profileService.saveOrUpdate(p);
+		return readableProfileMapper.convert(p, null, null);
+	}
+
+	@Override
+	public void uploadAvatar(String username, MultipartFile avatar) {
+		try {
+			byte[] byteAvt = avatar.getBytes();
+			profileService.uploadAvatar(username, byteAvt);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public byte[] getAvatar(String username) {
+		return profileService.getAvatar(username);
 	}
 
 }

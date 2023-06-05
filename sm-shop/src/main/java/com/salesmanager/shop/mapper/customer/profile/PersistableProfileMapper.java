@@ -64,11 +64,11 @@ public class PersistableProfileMapper {
 	@Autowired
 	private ProfileRepository profileRepository;
 
-	public Profile convertToEntity(Long id, PersistableProfile source) {
+	public Profile convertToEntity(String customerName, PersistableProfile source) {
 		Validate.notNull(source, "Persistable profile can not be null");
-		Optional<Profile> profileOpt = profileRepository.findProfileByCustomerId(id);
+		Optional<Profile> profileOpt = profileRepository.findProfileByCustomerName(customerName);
 		Profile profile;
-		Optional<Customer> alumnusOpt = customerRepository.findById(id);
+		Optional<Customer> alumnusOpt = Optional.ofNullable(customerRepository.findByNick(customerName));
 
 		if (!alumnusOpt.isPresent()) {
 			throw new NullPointerException();

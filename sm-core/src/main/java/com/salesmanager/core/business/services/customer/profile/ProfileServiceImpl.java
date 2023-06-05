@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.repositories.customer.profile.ProfileRepository;
+import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.profile.Profile;
 
 @Service
@@ -17,8 +18,8 @@ public class ProfileServiceImpl implements ProfileService {
 	private ProfileRepository profileRepository;
 
 	@Override
-	public Profile findProfile(Long customerId) {
-		Optional<Profile> profileOpt = profileRepository.findProfileByCustomerId(customerId);
+	public Profile findProfileByCustomerName(String customerName) {
+		Optional<Profile> profileOpt = profileRepository.findProfileByCustomerName(customerName);
 		if (!profileOpt.isPresent()) {
 			return null;
 		}
@@ -29,5 +30,26 @@ public class ProfileServiceImpl implements ProfileService {
 	@Transactional
 	public Profile saveOrUpdate(Profile profile) {
 		return profileRepository.saveAndFlush(profile);
+	}
+
+	@Override
+	@Transactional
+	public void uploadAvatar(String username, byte[] byteAvt) {
+		Optional<Profile> profileOpt = profileRepository.findByCustomerNick(username);
+		if (!profileOpt.isPresent()) {
+			throw new NullPointerException("Profile is null");
+		}
+		Profile profile = profileOpt.get();
+		profile.setAvatar(byteAvt);
+		profileRepository.save(profile);
+	}
+
+	@Override
+	public byte[] getAvatar(String username) {
+		Optional<Profile> profileOpt = profileRepository.findByCustomerNick(username);
+		if (!profileOpt.isPresent()) {
+			throw new NullPointerException("Profile is null");
+		}
+		return profileOpt.get().getAvatar();
 	}
 }
