@@ -26,10 +26,10 @@ public class WorkExperienceMapper {
 		workExperienceDto.setTitlePosition(workExperience.getTitlePosition());
 		workExperienceDto.setCompanyName(workExperience.getCompanyName());
 		if (workExperience.getEndDate() != null) {
-			workExperienceDto.setEndDate(workExperience.getEndDate().toString());
+			workExperienceDto.setEndDate(ConverterDate.convertDateToString(workExperience.getEndDate().toString()));
 		}
-		if (workExperience.getStartDate() !=null) {
-			workExperienceDto.setStartDate(workExperience.getStartDate().toString());
+		if (workExperience.getStartDate() != null) {
+			workExperienceDto.setStartDate(ConverterDate.convertDateToString(workExperience.getStartDate().toString()));
 		}
 		workExperienceDto.setDescription(workExperience.getDescription());
 		return workExperienceDto;

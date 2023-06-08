@@ -28,7 +28,7 @@ public class CertificateMapper {
 	public Certificate convertToEntity(CV cv, CertificateDto source) {
 		Certificate destination = new Certificate();
 		if ((!Objects.isNull(source.getId()) && StringUtils.hasText(source.getId()))) {
-			destination.setTitle(source.getId());
+			destination.setId(source.getId());
 		}
 		if ((!Objects.isNull(source.getLinkReference()) && StringUtils.hasText(source.getLinkReference()))) {
 			destination.setLinkReference(source.getLinkReference());

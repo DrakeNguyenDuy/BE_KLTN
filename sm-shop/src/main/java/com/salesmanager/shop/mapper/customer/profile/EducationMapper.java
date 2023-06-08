@@ -23,10 +23,10 @@ public class EducationMapper {
 	public EducationDto convertToDto(Education source) {
 		EducationDto educationDto = new EducationDto();
 		if (source.getEndDate() != null) {
-			educationDto.setEndDate(source.getEndDate().toString());
+			educationDto.setEndDate(ConverterDate.convertDateToString(source.getEndDate().toString()));
 		}
 		if (source.getStartDate() != null) {
-			educationDto.setStartDate(source.getStartDate().toString());
+			educationDto.setStartDate(ConverterDate.convertDateToString(source.getStartDate().toString()));
 		}
 		educationDto.setSchool(source.getSchool());
 		educationDto.setMajor(source.getMajor());
@@ -53,7 +53,7 @@ public class EducationMapper {
 			education.setGraduated(source.getIsGraduated());
 		}
 		if (!Objects.isNull(source.getEndDate())) {
-			education.setStartDate(ConverterDate.convertToDate(source.getEndDate()));
+			education.setEndDate(ConverterDate.convertToDate(source.getEndDate()));
 		}
 		education.setCv(cv);
 		return education;

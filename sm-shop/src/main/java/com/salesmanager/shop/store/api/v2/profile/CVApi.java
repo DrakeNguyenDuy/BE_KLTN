@@ -1,6 +1,10 @@
 package com.salesmanager.shop.store.api.v2.profile;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.salesmanager.shop.model.customer.profile.CVDto;
+import com.salesmanager.shop.store.api.exception.RestApiException;
+import com.salesmanager.shop.store.api.exception.RestErrorHandler;
 import com.salesmanager.shop.store.facade.customer.profile.CVFacade;
 
 @RestController
@@ -34,8 +40,13 @@ public class CVApi {
 	}
 
 	@PostMapping("/auth/cv")
-	public ResponseEntity<CVDto> createCv(@RequestBody CVDto cv, HttpServletRequest request) {
+	public ResponseEntity<CVDto> createCv(@RequestBody CVDto cv, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
 		String username = request.getUserPrincipal().getName();
+		if (!Objects.isNull(cvFacade.findCVByAlumnusName(username))) {
+			response.sendError(409, "Alumnus had a cv");
+			return null;
+		}
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
 				.body(cvFacade.saveOrUpdate(username, cv));
 	}

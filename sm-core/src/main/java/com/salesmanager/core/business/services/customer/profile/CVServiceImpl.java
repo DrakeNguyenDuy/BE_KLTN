@@ -1,5 +1,6 @@
 package com.salesmanager.core.business.services.customer.profile;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -31,12 +32,10 @@ public class CVServiceImpl implements CVService {
 
 	@Override
 	@Transactional
-	public CV saveOrUpdate(CV cv) {
-		CV cvEntity = cvRepository.saveAndFlush(cv);
-		educationRepository.saveAllAndFlush(cv.getEducations());
-		workExperienceRepository.saveAllAndFlush(cv.getWorkExperiences());
-		certificateRepository.saveAllAndFlush(cv.getCertificate());
-		return cvEntity;
+	public CV saveOrUpdate(String nickName, CV cv) {
+//		Optional<CV> c = Optional
+//				.ofNullable(cvRepository.findByAlumnusNickName(nickName).orElse(cvRepository.save(cv)));
+		return cvRepository.save(cv);
 	}
 
 	@Override
@@ -53,11 +52,11 @@ public class CVServiceImpl implements CVService {
 	public void delete(String id) {
 		Optional<CV> cvOpt = cvRepository.findById(id);
 		if (cvOpt.isPresent()) {
-			educationRepository.deleteAllById(cvOpt.get().getEducations().stream().map(item -> item.getId()).toList());
-			workExperienceRepository
-					.deleteAllById(cvOpt.get().getWorkExperiences().stream().map(item -> item.getId()).toList());
-			certificateRepository
-					.deleteAllById(cvOpt.get().getCertificate().stream().map(item -> item.getId()).toList());
+//			educationRepository.deleteAllById(cvOpt.get().getEducations().stream().map(item -> item.getId()).toList());
+//			workExperienceRepository
+//					.deleteAllById(cvOpt.get().getWorkExperiences().stream().map(item -> item.getId()).toList());
+//			certificateRepository
+//					.deleteAllById(cvOpt.get().getCertificate().stream().map(item -> item.getId()).toList());
 			cvRepository.deleteById(id);
 		}
 	}

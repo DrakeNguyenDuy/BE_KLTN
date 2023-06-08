@@ -1,11 +1,9 @@
 package com.salesmanager.shop.mapper.customer.profile;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +79,7 @@ public class CVMapper {
 		}
 
 		if (!Objects.isNull(cv.getAlumnus().getDateOfBirth())) {
-			cvDto.setDob(cv.getAlumnus().getDateOfBirth().toString());
+			cvDto.setDob(ConverterDate.convertDateToString(cv.getAlumnus().getDateOfBirth().toString()));
 		}
 
 		if (!Objects.isNull(cv.getTitle())) {
