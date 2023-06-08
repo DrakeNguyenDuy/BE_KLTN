@@ -44,6 +44,7 @@ import com.salesmanager.core.model.common.Delivery;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
 import com.salesmanager.core.model.customer.attribute.CustomerAttribute;
+import com.salesmanager.core.model.customer.profile.CV;
 import com.salesmanager.core.model.customer.profile.Profile;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -116,7 +117,7 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	@Column(name = "FIRST_NAME")
 	private String firstName;
 	// end
-	
+
 	// Long add some lines here(20/5/2023)
 	@OneToOne(mappedBy = "customer")
 	private Profile profile;
@@ -187,6 +188,11 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 
 	@Embedded
 	private CredentialsReset credentialsResetRequest = null;
+
+	// Long add some lines here(6/6/2023)
+	@OneToMany(mappedBy = "alumnus")
+	private List<CV> cvs;
+	// end
 
 	public Customer() {
 	}
@@ -410,5 +416,16 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 		this.profile = profile;
 	}
 //	end
+	// Long add some lines here(6/6/2023)
+
+	public List<CV> getCvs() {
+		return cvs;
+	}
+
+	public void setCvs(List<CV> cvs) {
+		this.cvs = cvs;
+	}
+
+	// end
 
 }
