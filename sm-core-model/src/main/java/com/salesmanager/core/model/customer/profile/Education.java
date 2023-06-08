@@ -36,7 +36,7 @@ public class Education {
 	@Column(name = "END_DATE", nullable = true)
 	private Date endDate;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = CV.class)
 	@JoinColumn(name = "CV_ID")
 	private CV cv;
 

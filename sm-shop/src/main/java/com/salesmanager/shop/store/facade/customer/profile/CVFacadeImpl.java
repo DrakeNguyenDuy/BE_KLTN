@@ -26,7 +26,7 @@ public class CVFacadeImpl implements CVFacade {
 	@Override
 	public CVDto saveOrUpdate(String nickName, CVDto cvDto) {
 		CV cv = cvMapper.convertToEntity(nickName, cvDto);
-		 cv = cvService.saveOrUpdate(cvMapper.convertToEntity(nickName, cvDto));
+		cv = cvService.saveOrUpdate(nickName, cvMapper.convertToEntity(nickName, cvDto));
 		return cvMapper.convertToDto(cv);
 	}
 

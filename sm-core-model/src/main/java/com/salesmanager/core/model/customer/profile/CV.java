@@ -2,6 +2,7 @@ package com.salesmanager.core.model.customer.profile;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,15 +29,15 @@ public class CV {
 	private String title;
 
 	@Column(name = "ADDRESS")
-	private String address;;
+	private String address;
 
-	@OneToMany(mappedBy = "cv")
+	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
 	private List<WorkExperience> workExperiences;
 
-	@OneToMany(mappedBy = "cv")
+	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
 	private List<Education> educations;
 
-	@OneToMany(mappedBy = "cv")
+	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
 	private List<Certificate> certificate;
 
 	@ManyToOne
