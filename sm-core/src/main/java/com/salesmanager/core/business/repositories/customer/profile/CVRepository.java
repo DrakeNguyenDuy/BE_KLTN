@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.salesmanager.core.model.customer.profile.CV;
 
-import ca.canadapost.cpcdp.rating.generated.discovery.Option;
-
 public interface CVRepository extends JpaRepository<CV, String> {
 
 	@Query("select cv from CV cv where cv.alumnus.nick=:nickName")

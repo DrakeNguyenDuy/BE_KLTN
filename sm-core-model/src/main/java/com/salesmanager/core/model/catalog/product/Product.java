@@ -3,6 +3,7 @@ package com.salesmanager.core.model.catalog.product;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -43,10 +44,12 @@ import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
 import com.salesmanager.core.model.customer.Customer;
+import com.salesmanager.core.model.customer.JobRate;
 import com.salesmanager.core.model.experience.ExperienceDescription;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import com.salesmanager.core.model.recruitment.Recruitment;
 import com.salesmanager.core.model.skill.SkillDescription;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 
@@ -272,6 +275,13 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CUSTOMER_ID", nullable = true)
 	private Customer owner;
+	
+	//Long add some lines here(11/6/2023)
+	@OneToMany(mappedBy = "job")
+	private List<Recruitment> recruitments;
+	@OneToMany(mappedBy = "job")
+	private List<JobRate> jobRates;
+	//end
 
 	public Product() {
 	}
@@ -649,4 +659,22 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	}
 
 	// end
+	
+	//Long add some lines here(11/6/2023)
+	public List<Recruitment> getRecruitments() {
+		return recruitments;
+	}
+
+	public void setRecruitments(List<Recruitment> recruitments) {
+		this.recruitments = recruitments;
+	}
+
+	public List<JobRate> getJobRates() {
+		return jobRates;
+	}
+
+	public void setJobRates(List<JobRate> jobRates) {
+		this.jobRates = jobRates;
+	}
+	//	end
 }
