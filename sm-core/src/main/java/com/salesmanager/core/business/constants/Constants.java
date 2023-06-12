@@ -55,4 +55,11 @@ public class Constants {
   public final static String FOLDER_STORE_IMAGE="\\images";
 //  end
 
+	// Long add some lines here(11/6/2023)
+	public final static String APPLY_SUCCESS="Apply success";
+	public final static String APPLY_FAILED="Apply failded";
+	public final static String CAN_NOT_FOUND_JOB_WHEN_FIND_RECRUITMENT_BY_JOB="Can not found job when find recruitment by job";
+	public final static String CAN_NOT_FOUND_ALUMNUS_WHEN_FIND_RECRUITMENT_BY_ALUMNUS="Can not found job when find recruitment by alumnus";
+	//end
+
 }

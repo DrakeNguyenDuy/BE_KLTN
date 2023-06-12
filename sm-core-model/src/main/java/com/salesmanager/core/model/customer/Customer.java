@@ -48,6 +48,7 @@ import com.salesmanager.core.model.customer.profile.CV;
 import com.salesmanager.core.model.customer.profile.Profile;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import com.salesmanager.core.model.recruitment.Recruitment;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.user.Group;
 import com.salesmanager.core.utils.CloneUtils;
@@ -192,6 +193,13 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	// Long add some lines here(6/6/2023)
 	@OneToMany(mappedBy = "alumnus")
 	private List<CV> cvs;
+	// end
+
+	// Long add some lines here(11/6/2023)
+	@OneToMany(mappedBy = "alumnus")
+	private List<Recruitment> recruitments;
+	@OneToMany(mappedBy = "alumnus")
+	private List<JobRate> jobRates;
 	// end
 
 	public Customer() {
@@ -425,7 +433,25 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	public void setCvs(List<CV> cvs) {
 		this.cvs = cvs;
 	}
-
 	// end
+
+	// Long add some lines here(11/6/2023)
+	public List<Recruitment> getRecruitments() {
+		return recruitments;
+	}
+
+	public void setRecruitments(List<Recruitment> recruitments) {
+		this.recruitments = recruitments;
+	}
+
+	public List<JobRate> getJobRates() {
+		return jobRates;
+	}
+
+	public void setJobRates(List<JobRate> jobRates) {
+		this.jobRates = jobRates;
+	}
+
+//	end
 
 }
