@@ -589,13 +589,24 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			destination.setNameCompany(source.getMerchantStore().getStorename());
 		}
 
-		ProductDescription description = null;
-		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
-			for (ProductDescription desc : source.getDescriptions()) {
-				description = desc;
-				break;
-			}
+		// Long hide some lines here(17/6/2023)
+//		ProductDescription description = null;
+//		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
+//			for (ProductDescription desc : source.getDescriptions()) {
+//				description = desc;
+//				break;
+//			}
+//		}
+//		end
+
+		// Long add some lines here(17/6/2023)
+		if (!org.springframework.util.CollectionUtils.isEmpty(source.getDescriptions())
+				&& source.getDescriptions() != null) {
+			destination.setName(source.getProductDescription().getName());
+			destination.setTitle(source.getProductDescription().getTitle());
 		}
+		// end
+
 		destination.setId(source.getId());
 		destination.setAvailable(source.isAvailable());
 		destination.setRefSku(source.getRefSku());
@@ -719,12 +730,12 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			destination.setMerchantStore(store);
 		}
 
-		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
-			for (ProductDescription desc : source.getDescriptions()) {
-				destination.setDescription(desc.getDescription());
-				break;
-			}
+		if (!org.springframework.util.CollectionUtils.isEmpty(source.getDescriptions())
+				&& source.getDescriptions() != null) {
+			destination.setName(source.getProductDescription().getName());
+			destination.setTitle(source.getProductDescription().getTitle());
 		}
+
 		destination.setId(source.getId());
 		destination.setAvailable(source.isAvailable());
 		destination.setRefSku(source.getRefSku());
