@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.salesmanager.core.business.services.catalog.pricing.PricingService;
 import com.salesmanager.core.business.services.catalog.product.paycycle.PayCycleService;
+import com.salesmanager.core.business.services.catalog.product.price.ProductPriceService;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.attribute.ProductAttribute;
 import com.salesmanager.core.model.catalog.product.attribute.ProductOption;
@@ -34,6 +35,7 @@ import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.skill.SkillDescription;
+import com.salesmanager.shop.constants.Constants;
 import com.salesmanager.shop.mapper.Mapper;
 import com.salesmanager.shop.mapper.catalog.ReadableCategoryMapper;
 import com.salesmanager.shop.mapper.catalog.ReadableManufacturerMapper;
@@ -87,6 +89,9 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 	private ReadableExperienceMapper readableExperienceMapper;
 	@Autowired
 	private PayCycleService payCycleService;
+
+	@Autowired
+	private ProductPriceService priceService;
 //	end
 
 	@Autowired
@@ -133,16 +138,19 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		}
 //		end
 
-		ProductDescription description = null;
-		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
-			for (ProductDescription desc : source.getDescriptions()) {
-				if (language != null && desc.getLanguage() != null
-						&& desc.getLanguage().getId().intValue() == language.getId().intValue()) {
-					description = desc;
-					break;
-				}
-			}
-		}
+//			Long hide some lines here(17/5/2023)
+//		ProductDescription description = null;
+//		if (source.getDescriptions() != null && source.getDescriptions().size() > 0) {
+//			for (ProductDescription desc : source.getDescriptions()) {
+//				if (language != null && desc.getLanguage() != null
+//						&& desc.getLanguage().getId().intValue() == language.getId().intValue()) {
+//					description = desc;
+//					break;
+//				}
+//			}
+//		}
+//			end		
+
 		destination.setId(source.getId());
 		destination.setAvailable(source.isAvailable());
 
@@ -215,6 +223,10 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			List<ReadableLocationDescription> locationDescriptions = locations.stream()
 					.map(i -> this.convertLocation(i)).collect(Collectors.toList());
 			destination.setLocationsDecription(locationDescriptions);
+		}
+		if (source.getDescriptions() != null) {
+			destination.setName(source.getProductDescription().getName());
+			destination.setTitle(source.getProductDescription().getTitle());
 		}
 		// end
 
@@ -717,9 +729,22 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setAvailable(source.isAvailable());
 		destination.setRefSku(source.getRefSku());
 		destination.setSortOrder(source.getSortOrder());
+		destination.setPrice(priceService.findByProductSku(source.getSku(), source.getMerchantStore()).get(0)
+				.getProductPriceAmount());
+		destination.setQuantity(source.getAvailabilities().iterator().next().getProductQuantity());
+		if (source.getGender() != null) {
+			String gender = source.getGender().equals(Constants.M) ? Constants.MALE
+					: source.getGender().equals(Constants.FM) ? Constants.FEMALE : Constants.NO_REQUIRE;
+			destination.setGender(gender);
+		}
 
 		if (source.getDateAvailable() != null) {
 			destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+		}
+
+		if (source.getCategories() != null) {
+			destination.setCategories(source.getCategories().stream()
+					.map(item -> readableCategoryMapper.convert2Readable(item)).toList());
 		}
 
 		// temp store

@@ -24,6 +24,11 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 
 //	private ProductDescription description;
 	
+	//Long add some lines here(17/6/2023)
+	private String name;
+	private String title;
+	//	end
+	
 //	Long hide some lines here(13/05/2023)
 //	private ReadableProductPrice productPrice;
 //	end
@@ -243,5 +248,23 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 		this.logo = logo;
 	}
 	
+//	end
+	
+	//Long add some lines here
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 //	end
 }
