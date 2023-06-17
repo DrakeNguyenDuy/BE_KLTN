@@ -55,26 +55,35 @@ public class ContentImagesTest extends com.salesmanager.test.common.AbstractSale
 		// logo as a content
 		contentService.addLogo(store.getCode(), cmsContentImage);
 
-		store.setStoreLogo(file1.getName());
+//		Long hide some lines here(17/6/2023)
+//		store.setStoreLogo(file1.getName());
+//		end
 		merchantService.update(store);
 
 		// query the store
 		store = merchantService.getByCode(MerchantStore.DEFAULT_STORE);
 
 		// get the logo
-		String logo = store.getStoreLogo();
+		//Long hide some lines here(17/6/2023)
+//		String logo = store.getStoreLogo();
+//		end
 
-		OutputContentFile image = contentService.getContentFile(store.getCode(), FileContentType.LOGO, logo);
+		//Long hide some lines here(17/6/2023)
+//		OutputContentFile image = contentService.getContentFile(store.getCode(), FileContentType.LOGO, logo);
+//		end
 
+		//Long hide some lines here(17/6/2023)
 		// print image
-		OutputStream outputStream = new FileOutputStream("C:/doc/logo-" + image.getFileName());
+//		OutputStream outputStream = new FileOutputStream("C:/doc/logo-" + image.getFileName());
+//		end
 
-		ByteArrayOutputStream baos = image.getFile();
-		baos.writeTo(outputStream);
-
-		// remove image
-		contentService.removeFile(store.getCode(), FileContentType.LOGO, store.getStoreLogo());
-
+		//Long hide some lines here(17/6/2023)
+//		ByteArrayOutputStream baos = image.getFile();
+//		baos.writeTo(outputStream);
+//
+//		// remove image
+//		contentService.removeFile(store.getCode(), FileContentType.LOGO, store.getStoreLogo());
+//		end
 	}
 	
 

@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -171,9 +172,15 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 	@Column(name = "STORE_EMAIL", length = 60, nullable = false)
 	private String storeEmailAddress;
 
-	@JsonIgnore
-	@Column(name = "STORE_LOGO", length = 100)
-	private String storeLogo;
+//	Long add some lines here(17/5/2023)
+//	@JsonIgnore
+//	@Column(name = "STORE_LOGO", length = 255)
+//	private String storeLogo;
+//	end
+	
+	@Lob
+	@Column(name = "STORE_LOGO")
+	private byte[] storeLogo;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Currency.class)
@@ -316,13 +323,15 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 		this.languages = languages;
 	}
 
-	public String getStoreLogo() {
-		return storeLogo;
-	}
-
-	public void setStoreLogo(String storeLogo) {
-		this.storeLogo = storeLogo;
-	}
+//	Long add some lines here(17/6/2023)
+//	public String getStoreLogo() {
+//		return storeLogo;
+//	}
+//
+//	public void setStoreLogo(String storeLogo) {
+//		this.storeLogo = storeLogo;
+//	}
+//	end
 
 	public String getStoreTemplate() {
 		return storeTemplate;
@@ -419,9 +428,18 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 		return retailer;
 	}
 
-
 	public void setRetailer(Boolean retailer) {
 		this.retailer = retailer;
 	}
+	//Long add some lines here(17/6/2023)
+
+	public byte[] getStoreLogo() {
+		return storeLogo;
+	}
+
+	public void setStoreLogo(byte[] storeLogo) {
+		this.storeLogo = storeLogo;
+	}
+//	end
 
 }
