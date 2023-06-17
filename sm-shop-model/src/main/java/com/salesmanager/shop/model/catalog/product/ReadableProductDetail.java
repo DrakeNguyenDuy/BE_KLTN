@@ -20,6 +20,9 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private String name;
+	private String title;
+
 	private String finalPrice;
 	private ReadableImage image;
 	private List<ReadableImage> images = new ArrayList<ReadableImage>();
@@ -139,7 +142,7 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 		this.logo = logo;
 	}
 
-	//Long add some lines here(17/5/2023)
+	// Long add some lines here(17/5/2023)
 	public String getGender() {
 		return gender;
 	}
@@ -147,6 +150,23 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	//end
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	// end
 
 }
