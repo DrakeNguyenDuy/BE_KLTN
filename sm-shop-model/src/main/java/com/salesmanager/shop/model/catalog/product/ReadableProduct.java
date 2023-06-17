@@ -23,27 +23,28 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 //	private ProductDescription description;
-	
-	//Long add some lines here(17/6/2023)
+
+	// Long add some lines here(17/6/2023)
 	private String name;
 	private String title;
-	//	end
-	
+	private String payCycle;
+	// end
+
 //	Long hide some lines here(13/05/2023)
 //	private ReadableProductPrice productPrice;
 //	end
-	
+
 	private String finalPrice = "0";
 	private String originalPrice = null;
 //	private boolean discounted = false;
 	private ReadableImage image;
 	private String logo;
 	private List<ReadableImage> images = new ArrayList<ReadableImage>();
-	
+
 //	Long hide some lines here(13/5/2023)
 //	private ReadableManufacturer manufacturer;
 //	end
-	
+
 //	private List<ReadableProductAttribute> attributes = new ArrayList<ReadableProductAttribute>();
 //	private List<ReadableProductOption> options = new ArrayList<ReadableProductOption>();
 //	private List<ReadableProductVariant> variants = new ArrayList<ReadableProductVariant>();
@@ -54,22 +55,21 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 //	Long hide some lines here(13/5/2023)
 //	private boolean canBePurchased = false;
 //	end
-	
+
 //	Long hide some lines here(13/5/2023)
 //	// RENTAL
 //	private RentalOwner owner;
 //	end
-	
 
 	// Long add some lines here (21/4/2023)
 	private List<ReadableSkillDescription> skillsDecription = new ArrayList<ReadableSkillDescription>();
 	private List<ReadableLocationDescription> locationsDecription = new ArrayList<ReadableLocationDescription>();
 	// end
-	
+
 //	Long add some lines here(13/05/2023)
 	private String nameCompany;
 //	end
-	
+
 	// Long hide some lines here (21/4/2023)
 //	public ProductDescription getDescription() {
 //		return description;
@@ -154,7 +154,7 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 //		this.owner = owner;
 //	}
 //	end
-	
+
 	public List<ReadableCategory> getCategories() {
 		return categories;
 	}
@@ -163,7 +163,6 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 		this.categories = categories;
 	}
 
-	
 	// Long add some lines here (21/4/2023)
 //	public List<ReadableProductOption> getOptions() {
 //		return options;
@@ -173,7 +172,7 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 //		this.options = options;
 //	}
 //	 end
-	
+
 	public ReadableProductType getType() {
 		return type;
 	}
@@ -247,10 +246,10 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
-	
+
 //	end
-	
-	//Long add some lines here
+
+	// Long add some lines here (17/6/2023)
 	public String getName() {
 		return name;
 	}
@@ -266,5 +265,14 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	public String getPayCycle() {
+		return payCycle;
+	}
+
+	public void setPayCycle(String payCycle) {
+		this.payCycle = payCycle;
+	}
+
 //	end
 }
