@@ -168,7 +168,7 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	// end
 
 	// Long add some lines here(6/5/2023)
-	@Column(name = "GENDER")
+	@Column(name = "GENDER", nullable = false)
 	private String gender;
 
 //	Long hide some lines here (21/4/2023)

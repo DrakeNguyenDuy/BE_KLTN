@@ -132,5 +132,11 @@ public class Constants {
 	public final static String APPLY_SUCCESS="Apply success";
 	public final static String NOT_FOUND_CUSTOMER_WHILE_CREATE_RATE = "Not found customer while create rate";
 	public final static String NOT_FOUND_JOB_WHILE_CREATE_RATE = "Not found job while create rate";
+	public final static String M ="M";
+	public final static String FM = "FM";
+	public final static String NR="NR";
+	public final static String MALE="Nam";
+	public final static String FEMALE="Nữ";
+	public final static String NO_REQUIRE="Không yêu cầu";
 	//end
 }

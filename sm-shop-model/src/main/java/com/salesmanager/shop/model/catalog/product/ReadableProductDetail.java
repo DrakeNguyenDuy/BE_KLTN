@@ -33,6 +33,7 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 	private ReadableMerchantStoreV2 merchantStore;
 	private String description;
 	private String logo;
+	private String gender;
 
 	public String getFinalPrice() {
 		return finalPrice;
@@ -137,5 +138,15 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
+
+	//Long add some lines here(17/5/2023)
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	//end
 
 }
