@@ -87,6 +87,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 //	Long add some lines here(20/5/2023)
 	@Autowired
 	private ReadableExperienceMapper readableExperienceMapper;
+	
 	@Autowired
 	private PayCycleService payCycleService;
 
@@ -604,6 +605,11 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 				&& source.getDescriptions() != null) {
 			destination.setName(source.getProductDescription().getName());
 			destination.setTitle(source.getProductDescription().getTitle());
+		}
+		
+		if(source.getIdPayCycle()!=null && StringUtils.isNoneBlank(source.getIdPayCycle())) {
+			String payCycle= payCycleService.getPayCycleByCode(source.getIdPayCycle()).getName();
+			destination.setPayCycle(payCycle);
 		}
 		// end
 
