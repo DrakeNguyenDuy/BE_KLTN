@@ -304,13 +304,15 @@ public class StoreFacadeImpl implements StoreFacade {
 		MerchantStore mStore = getMerchantStoreByCode(code);
 
 		ReadableBrand readableBrand = new ReadableBrand();
-		if (!StringUtils.isEmpty(mStore.getStoreLogo())) {
-			String imagePath = imageUtils.buildStoreLogoFilePath(mStore);
-			ReadableImage image = createReadableImage(mStore.getStoreLogo(), imagePath);
-			readableBrand.setLogo(image);
-		}
-		List<MerchantConfigEntity> merchantConfigTOs = getMerchantConfigEntities(mStore);
-		readableBrand.getSocialNetworks().addAll(merchantConfigTOs);
+//		Long add some lines here(17/6/2023)
+//		if (!StringUtils.isEmpty(mStore.getStoreLogo())) {
+//			String imagePath = imageUtils.buildStoreLogoFilePath(mStore);
+//			ReadableImage image = createReadableImage(mStore.getStoreLogo(), imagePath);
+//			readableBrand.setLogo(image);
+//		}
+//		List<MerchantConfigEntity> merchantConfigTOs = getMerchantConfigEntities(mStore);
+//		readableBrand.getSocialNetworks().addAll(merchantConfigTOs);
+//		end
 		return readableBrand;
 	}
 
@@ -362,17 +364,20 @@ public class StoreFacadeImpl implements StoreFacade {
 	@Override
 	public void deleteLogo(String code) {
 		MerchantStore store = getByCode(code);
-		String image = store.getStoreLogo();
+//		String image = store.getStoreLogo();
 		store.setStoreLogo(null);
 
-		try {
-			updateMerchantStore(store);
-			if (!StringUtils.isEmpty(image)) {
-				contentService.removeFile(store.getCode(), image);
-			}
-		} catch (ServiceException e) {
-			throw new ServiceRuntimeException(e.getMessage());
-		}
+		updateMerchantStore(store);
+		
+//		Long hide some lines here(17/6/2023)
+//		try {
+//			if (!StringUtils.isEmpty(image)) {
+//				contentService.removeFile(store.getCode(), image);
+//			}
+//		} catch (ServiceException e) {
+//			throw new ServiceRuntimeException(e.getMessage());
+//		}
+//		end
 	}
 
 	@Override
@@ -383,7 +388,9 @@ public class StoreFacadeImpl implements StoreFacade {
 	@Override
 	public void addStoreLogo(String code, InputContentFile cmsContentImage) {
 		MerchantStore store = getByCode(code);
-		store.setStoreLogo(cmsContentImage.getFileName());
+//		Long hide some lines here(17/6/2023)
+//		store.setStoreLogo(cmsContentImage.getFileName());
+//		end
 		saveMerchantStore(store);
 		addLogoToStore(code, cmsContentImage);
 	}
@@ -578,36 +585,50 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Override
 	public void addStoreLogo(String storeCode, MultipartFile file) {
-		MerchantStore store = getByCode(storeCode);
-		store.setStoreLogo(file.getOriginalFilename());
-		File f = new File(DES_FOLDER+"\\"+ storeCode);
-		if(!f.exists()) {
-			f.mkdir();
-		}
-		File f2 = new File(DES_FOLDER+"\\"+ storeCode+"\\"+file.getOriginalFilename());
+//		MerchantStore store = getByCode(storeCode);
+//		store.setStoreLogo(file.getOriginalFilename());
+//		File f = new File(DES_FOLDER+"\\"+ storeCode);
+//		if(!f.exists()) {
+//			f.mkdir();
+//		}
+//		File f2 = new File(DES_FOLDER+"\\"+ storeCode+"\\"+file.getOriginalFilename());
+//		try {
+//			file.transferTo(f2);
+//		} catch (IllegalStateException | IOException e) {
+//			LOG.info("Save logo for store "+storeCode+" failded");
+//			e.printStackTrace();
+//		}
+//		try {
+//			merchantStoreService.save(store);
+//		} catch (ServiceException e1) {
+//			e1.printStackTrace();
+//		}
+		MerchantStore store;
 		try {
-			file.transferTo(f2);
-		} catch (IllegalStateException | IOException e) {
-			LOG.info("Save logo for store "+storeCode+" failded");
-			e.printStackTrace();
-		}
-		try {
+			store = merchantStoreService.getByCode(storeCode);
+			store.setStoreLogo(file.getBytes());
 			merchantStoreService.save(store);
-		} catch (ServiceException e1) {
-			e1.printStackTrace();
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public byte[] getStoreLogo(String code) {
 		MerchantStore store = getByCode(code);
-		byte[] images = null;
-		try {
-			images = Files.readAllBytes(new File(DES_FOLDER+"\\"+store.getCode()+"\\"+store.getStoreLogo()).toPath());
-		} catch (IOException e) {
-			LOG.info("Read logo for store "+store.getCode()+" failded");
-			e.printStackTrace();
-		}
+		byte[] images = store.getStoreLogo();
+		
+//		Long hide some lines here(17/6/2023)
+//		try {
+//			images = Files
+//					.readAllBytes(new File(DES_FOLDER + "\\" + store.getCode() + "\\" + store.getStoreLogo()).toPath());
+//		} catch (IOException e) {
+//			LOG.info("Read logo for store " + store.getCode() + " failded");
+//			e.printStackTrace();
+//		}
+//		end
 		return images;
 	}
 

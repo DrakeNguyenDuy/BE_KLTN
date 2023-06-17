@@ -122,14 +122,24 @@ public class ReadableMerchantStorePopulator extends
 			address.setStateProvince(source.getStorestateprovince());
 		}
 		
-		if(!StringUtils.isBlank(source.getStoreLogo())) {
+//		Long hide some lines here(17/6/2023)
+//		if(!StringUtils.isBlank(source.getStoreLogo())) {
+//			ReadableImage image = new ReadableImage();
+//			image.setName(source.getStoreLogo());
+//			if(filePath!=null) {
+//				image.setPath(filePath.buildStoreLogoFilePath(source));
+//			}
+//			target.setLogo(image);
+//		}
+//		end
+		
+//		Long add some lines here(17/6/2023)
+		if(source.getStoreLogo().length>0) {
 			ReadableImage image = new ReadableImage();
-			image.setName(source.getStoreLogo());
-			if(filePath!=null) {
-				image.setPath(filePath.buildStoreLogoFilePath(source));
-			}
+			image.setName(source.getCode());
 			target.setLogo(image);
 		}
+//		end
 		
 		address.setPostalCode(source.getStorepostalcode());
 
