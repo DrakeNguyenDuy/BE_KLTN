@@ -28,11 +28,8 @@ import com.salesmanager.shop.utils.ImageFilePath;
 @Profile({ "default", "cloud", "gcp", "aws", "mysql", "local" })
 public class ProductDefinitionFacadeImpl implements ProductDefinitionFacade {
 	
-
-
 	@Inject
 	private ProductService productService;
-
 
 	@Autowired
 	private PersistableProductDefinitionMapper persistableProductDefinitionMapper;
