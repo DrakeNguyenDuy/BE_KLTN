@@ -282,6 +282,12 @@ public class ProductFacadeImpl implements ProductFacade {
 		return null;
 	}
 
+	@Override
+	public List<ReadableProduct> getProductsByStoreCode(String storeCode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

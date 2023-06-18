@@ -386,4 +386,24 @@ public class ProductApiV2 {
 //	public String checkExitIdentifier(@PathVariable final String identifier) {
 //		return "OK";
 //	}
+
+//	Long add some lines here(17/7/2023)
+	@RequestMapping(value = "/private/products/{storeCode}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ReadableProduct> getProductByStore(ProductCriteria searchCriterias, @PathVariable String storeCode,
+			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, // paging
+			@RequestParam(value = "count", required = false, defaultValue = "10") Integer count // count per page
+	) {
+		searchCriterias.setMaxCount(count);
+		searchCriterias.setStartPage(page);
+		try {
+			return productFacadeV2.getProductsByStoreCode(storeCode);
+
+		} catch (Exception e) {
+			LOGGER.error("Error while filtering products product", e);
+			throw new ServiceRuntimeException(e);
+
+		}
+	}
+//	end
 }

@@ -92,5 +92,9 @@ public interface ProductFacade {
 	 * @throws Exception
 	 */
 	List<ReadableProduct> relatedItems(MerchantStore store, Product product, Language language) throws Exception;
+	
+	//Long add some lines here(18/6/2023)
+	List<ReadableProduct> getProductsByStoreCode(String storeCode);
+//	end
 
 }

@@ -740,6 +740,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 				&& source.getDescriptions() != null) {
 			destination.setName(source.getProductDescription().getName());
 			destination.setTitle(source.getProductDescription().getTitle());
+			destination.setDescription(source.getProductDescription().getDescription());
 		}
 
 		destination.setId(source.getId());

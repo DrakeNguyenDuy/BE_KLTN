@@ -98,7 +98,7 @@ public class MerchantStoreApi {
 			throw new UnauthorizedException();
 		}
 
-		userFacade.authorizedGroup(authenticatedUser, Stream.of("SUPERADMIN", "ADMIN_RETAILER").collect(Collectors.toList()));
+		userFacade.authorizedGroup(authenticatedUser, Stream.of("SUPERADMIN", "ADMIN_RETAILER", "ADMIN").collect(Collectors.toList()));
 		return storeFacade.getFullByCode(code, language);
 	}
 
