@@ -1,0 +1,146 @@
+id,skill_code,skill_name
+1,communication_skill,Giao tiếp
+2,presentation_skill,Thuyết trình
+3,negotiation_skill,Đàm phán
+4,programming_skill,Lập trình
+5,problem_solving_skill,Giải quyết vấn đề
+6,sales_skill,Bán hàng
+7,leadership_skill,Lãnh đạo
+8,project_management_skill,Quản lý dự án
+9,accounting_software_skill,Sử dụng phần mềm kế toán
+10,financial_management_skill,Quản lý tài chính
+11,teamwork_skill,Làm việc nhóm
+12,repair_skill,Sửa chữa
+13,installation_skill,Lắp đặt
+14,maintenance_skill,Bảo trì
+15,marketing_skill,Tiếp thị
+16,advertising_skill,Quảng cáo
+17,market_analysis_skill,Phân tích thị trường
+18,recruitment_skill,Tuyển dụng
+19,human_resource_management_skill,Quản lý nhân sự
+20,computer_skill,Sử dụng máy tính
+21,work_organization_skill,Tổ chức công việc
+22,python_skill,Python
+23,sql_skill,SQL
+24,etl_skill,ETL
+25,big_data_skill,Big Data
+26,javascript_skill,Javascript
+27,html_css_skill,HTML/CSS
+28,react_skill,React
+29,nodejs_skill,NodeJS
+30,aws_skill,AWS
+31,docker_skill,Docker
+32,kubernetes_skill,Kubernetes
+33,jenkins_skill,Jenkins
+34,tensorflow_skill,Tensorflow
+35,scikit_learn_skill,Scikit-learn
+36,nlp_skill,NLP
+37,penetration_testing_skill,Penetration testing
+38,network_security_skill,Network security
+39,incident_response_skill,Incident response
+40,azure_skill,Azure
+41,google_cloud_platform_skill,Google Cloud Platform
+42,r_language_skill,R
+43,statistics_skill,Statistics
+44,machine_learning_skill,Machine Learning
+45,solidity_skill,Solidity
+46,ethereum_skill,Ethereum
+47,hyperledger_fabric_skill,Hyperledger Fabric
+48,smart_contract_skill,Smart Contract
+49,adobe_creative_suite_skill,Adobe Creative Suite
+50,sketch_skill,Sketch
+51,wireframing_skill,Wireframing
+52,prototyping_skill,Prototyping
+53,testing_methodologies_skill,Testing methodologies
+54,test_automation_skill,Test automation
+55,bug_tracking_skill,Bug tracking
+56,selenium_skill,Selenium
+57,java_skill,Java
+58,swift_skill,Swift
+59,react_native_skill,React Native
+60,kotlin_skill,Kotlin
+61,project_management_skill,Project management
+62,agile_skill,Agile
+63,scrum_skill,Scrum
+64,budgeting_skill,Budgeting
+65,creativity_skill,Creativity
+66,innovation_skill,Innovation
+67,problem_solving_skill,Problem solving
+68,ky_nang_lanh_dao,Lãnh đạo
+69,ky_nang_quyet_dinh,Quyết định
+70,ky_nang_giao_tiep,Giao tiếp
+71,ky_nang_thiet_ke,Thiết kế
+72,ky_nang_hoa_giap,Hỏa giáp
+73,ky_nang_bien_phap_ung_pho,Biện pháp ứng phó
+74,ky_nang_khao_sat,Khảo sát
+75,ky_nang_du_lieu,Dữ liệu
+76,ky_nang_thong_ke,Thống kê
+77,ky_nang_dinh_vi_ao_ao_ao_ao_ao_ao,Định vị áo áo áo áo áo áo
+78,ky_nang_tuong_tac_ao_ao_ao_ao_ao_ao,Tương tác áo áo áo áo áo áo
+79,ky_nang_thiet_ke_ao_ao_ao_ao_ao_ao,Thiết kế áo áo áo áo áo áo
+80,ky_nang_phan_tich,Phân tích
+81,ky_nang_du_bao,Dự báo
+82,ky_nang_thu_thap,Thu thập
+83,ky_nang_quan_tri_du_an,Quản trị dự án
+84,ky_nang_giai_quyet_van_de,Giải quyết vấn đề
+85,ky_nang_theo_doi,Theo dõi
+86,ky_nang_bien_dich,Biên dịch
+87,ky_nang_hieu_bien,Hiểu biện
+88,ky_nang_soan_thao,Soạn thảo
+89,ky_nang_phat_trien_ho_so,Phát triển hồ sơ
+90,ky_nang_kiem_tra,Kiểm tra
+91,ky_nang_dieu_tra,Điều tra
+92,ky_nang_hon_nhan,Hôn nhân
+93,ky_nang_gia_dinh,Gia đình
+94,ky_nang_chi_phi,Chi phí
+95,ky_nang_ky_thuat,Kỹ thuật
+96,ky_nang_sua_chua,Sửa chữa
+97,ky_nang_bao_tri,Bảo trì
+98,ky_nang_dieu_khien,Điều khiển
+99,ky_nang_theo_cham,Theo chấm
+100,ky_nang_can_bang,Cân bằng
+101,ky_nang_marketing,Marketing
+102,ky_nang_quang_cao,Quảng cáo
+103,ky_nang_tu_van,Tư vấn
+104,ky_nang_quan_tri_nhan_su,Quản trị nhân sự
+105,ky_nang_tuyen_dung,Tuyển dụng
+106,ky_nang_phat_triển_nguồn_nhân_lực,Phát triển nguồn nhân lực
+107,ky_nang_quan_tri_kho,Quản trị kho
+108,ky_nang_dieu_chinh,Dịch vụ
+109,ky_nang_luong_dien,Lượng điện
+110,ky_nang_phat_trien_san_pham,Phát triển sản phẩm
+111,ky_nang_quan_tri_chat_luong,Quản trị chất lượng
+112,ky_nang_nang_cao_chat_luong,Nâng cao chất lượng
+113,ky_nang_dau_tu,Đầu tư
+114,ky_nang_quan_tri_tai_chinh,Quản trị tài chính
+115,ky_nang_phan_tich_tai_chinh,Phân tích tài chính
+116,ky_nang_quan_tri,Quản trị
+117,ky_nang_ke_toan,Kế toán
+118,ky_nang_luat_hanh_chinh,Luật hành chính
+119,ky_nang_ban_hang,Bán hàng
+120,ky_nang_giao_hang,Giao hàng
+121,ky_nang_theo_doi_don_hang,Theo dõi đơn hàng
+122,ky_nang_phan_tich_thi_truong,Phân tích thị trường
+123,ky_nang_nghien_cuu_thi_truong,Nghiên cứu thị trường
+124,ky_nang_du_bao_thi_truong,Dự báo thị trường
+125,ky_nang_phan_tich_du_lieu,Phân tích dữ liệu
+126,ky_nang_khai_pha_du_lieu,Khai thác dữ liệu
+127,ky_nang_thong_ke_du_lieu,Thống kê dữ liệu
+128,ky_nang_quan_tri_cong_viec,Quản trị công việc
+129,ky_nang_lap_ke_hoach,Lập kế hoạch
+130,ky_nang_theo_doi_tien_do,Theo dõi tiến độ
+131,ky_nang_quan_tri_ban_hang,Quản trị bán hàng
+132,ky_nang_dinh_gia_sản_phẩm,Định giá sản phẩm
+133,ky_nang_quan_tri_mua_hang,Quản trị mua hàng
+134,ky_nang_phat_trien_ung_dung,Phát triển ứng dụng
+135,ky_nang_thiet_ke_ung_dung,Thiết kế ứng dụng
+136,ky_nang_kiem_thu_ung_dung,Kiểm thử ứng dụng
+137,ky_nang_quan_tri_du_lieu,Quản trị dữ liệu
+138,ky_nang_phan_tich_du_lieu,Phân tích dữ liệu
+139,ky_nang_bao_cao_du_lieu,Báo cáo dữ liệu
+140,ky_nang_quan_tri_thuong_hieu,Quản trị thương hiệu
+141,ky_nang_quang_ba_thuong_hieu,Quảng bá thương hiệu
+142,ky_nang_xay_dung_thuong_hieu,Xây dựng thương hiệu
+143,ky_nang_lap_trinh,  Lập trình
+144,ky_nang_giai_quyet_van_de,Lập trình
+145,ky_nang_thu_thap_yeu_cau, Thu thập yêu cầu

@@ -1,10 +1,10 @@
 package com.salesmanager.shop.model.customer.profile;
 
-import java.util.Date;
 import java.util.List;
 
 public class CVDto {
 	private String id;
+	private String avatar;
 	private String firstName;
 	private String lastName;
 	private String gender;
@@ -111,6 +111,14 @@ public class CVDto {
 
 	public void setCertificates(List<CertificateDto> certificates) {
 		this.certificates = certificates;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.salesmanager.shop.mapper.customer.profile;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,6 +64,10 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 		}
 		if (StringUtils.hasText(source.getCustomer().getFirstName())) {
 			fullName += source.getCustomer().getFirstName();
+		}
+		if(source.getAvatar().length>0) {
+			String base64Image = Base64.getEncoder().encodeToString(source.getAvatar());
+			destination.setAvatar(base64Image);
 		}
 		destination.setFullName(fullName);
 		if (!Objects.isNull(source.getCustomer().getGender())

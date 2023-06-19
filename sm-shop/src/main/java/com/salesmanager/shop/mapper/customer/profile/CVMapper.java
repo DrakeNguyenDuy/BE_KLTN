@@ -1,6 +1,7 @@
 package com.salesmanager.shop.mapper.customer.profile;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,6 +55,11 @@ public class CVMapper {
 		
 		if (!Objects.isNull(cv.getAlumnus().getFirstName()) && StringUtils.hasText(cv.getAlumnus().getFirstName())) {
 			cvDto.setFirstName(cv.getAlumnus().getFirstName());
+		}
+		
+		if(!Objects.isNull(cv.getAlumnus().getProfile().getAvatar().length>0)) {
+			String image = Base64.getEncoder().encodeToString(cv.getAlumnus().getProfile().getAvatar());
+			cvDto.setAvatar(image);
 		}
 
 		if (!Objects.isNull(cv.getAlumnus().getLastName()) && StringUtils.hasText(cv.getAlumnus().getLastName())) {

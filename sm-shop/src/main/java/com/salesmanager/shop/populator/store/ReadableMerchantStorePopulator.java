@@ -2,6 +2,7 @@ package com.salesmanager.shop.populator.store;
 
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -137,6 +138,7 @@ public class ReadableMerchantStorePopulator extends
 		if(source.getStoreLogo().length>0) {
 			ReadableImage image = new ReadableImage();
 			image.setName(source.getCode());
+			image.setPath(Base64.getEncoder().encodeToString(source.getStoreLogo()));
 			target.setLogo(image);
 		}
 //		end
