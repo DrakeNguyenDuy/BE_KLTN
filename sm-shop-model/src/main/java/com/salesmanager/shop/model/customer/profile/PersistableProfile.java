@@ -19,7 +19,7 @@ public class PersistableProfile {
 	private String gender;
 	private String englishLevel;
 	private String carreer;
-	private List<String> skills;
+	private List<ProfileSkillDto> skills;
 	private String formWork;
 	private List<Long> districts;
 	private String paycycle;
@@ -89,16 +89,26 @@ public class PersistableProfile {
 		this.carreer = carreer;
 	}
 
-	public List<String> getSkills() {
-		return skills;
-	}
-
-	public void setSkills(List<String> skills) {
-		this.skills = skills;
-	}
+//	public List<String> getSkills() {
+//		return skills;
+//	}
+//
+//	public void setSkills(List<String> skills) {
+//		this.skills = skills;
+//	}
+	
+	
 
 	public String getFormWork() {
 		return formWork;
+	}
+
+	public List<ProfileSkillDto> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<ProfileSkillDto> skills) {
+		this.skills = skills;
 	}
 
 	public void setFormWork(String formWork) {

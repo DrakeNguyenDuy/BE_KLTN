@@ -20,6 +20,7 @@ import com.salesmanager.shop.mapper.experience.ReadableExperienceMapper;
 import com.salesmanager.shop.mapper.location.ReadableDistrictMapper;
 import com.salesmanager.shop.mapper.paycircle.ReadablePaycircleMapper;
 import com.salesmanager.shop.mapper.skill.ReadableSkillMapper;
+import com.salesmanager.shop.model.customer.profile.ProfileSkillDto;
 import com.salesmanager.shop.model.customer.profile.ReadableProfile;
 import com.salesmanager.shop.model.englishLevel.ReadableEnglishLevel;
 import com.salesmanager.shop.model.location.ReadableDistrict;
@@ -28,8 +29,11 @@ import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 @Component
 public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 
+//	@Autowired
+//	private ReadableSkillMapper readableSkillMapper;
+	
 	@Autowired
-	private ReadableSkillMapper readableSkillMapper;
+	private ProfileSkillEntryMapper profileSkillEntryMapper;
 
 	@Autowired
 	private ReadableProductTypeMapper readableProductTypeMapper;
@@ -55,17 +59,23 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 	@Override
 	public ReadableProfile merge(Profile source, ReadableProfile destination, MerchantStore store, Language language) {
 		Validate.notNull(source, "Source can not be null");
-		
+
 		destination.setId(source.getId());
 		String fullName = "";
-		
+
 		if (StringUtils.hasText(source.getCustomer().getLastName())) {
 			fullName += source.getCustomer().getLastName();
+		}
+		if (StringUtils.hasText(source.getCustomer().getEmailAddress())) {
+			destination.setEmail(source.getCustomer().getEmailAddress());
+		}
+		if (StringUtils.hasText(source.getCustomer().getNick())) {
+			destination.setUsername(source.getCustomer().getNick());
 		}
 		if (StringUtils.hasText(source.getCustomer().getFirstName())) {
 			fullName += source.getCustomer().getFirstName();
 		}
-		if(source.getAvatar().length>0) {
+		if ( source.getAvatar()!=null) {
 			String base64Image = Base64.getEncoder().encodeToString(source.getAvatar());
 			destination.setAvatar(base64Image);
 		}
@@ -91,10 +101,11 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 			destination.setCarreer(readableProductTypeMapper.convert(source.getCareer()));
 		}
 		if (!CollectionUtils.isEmpty(source.getSkills())) {
-			List<ReadableSkillDescription> skills = source.getSkills().stream()
-					.map(item -> this.readableSkillMapper.convert(item, store, language)).toList();
-			destination.setReadableSkillDescriptions(skills);
-
+//			List<ReadableSkillDescription> skills = source.getSkills().stream()
+//					.map(item -> this.readableSkillMapper.convert(item, store, language)).toList();
+//			destination.setReadableSkillDescriptions(skills);
+			List<ProfileSkillDto> skills = source.getSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
+			destination.setSkills(skills);
 		}
 		if (!Objects.isNull(source.getCategory())) {
 			destination.setFormWork(categoryMapper.convert2Readable(source.getCategory()));

@@ -124,6 +124,10 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	private Profile profile;
 	// end
 
+	// Long add some lines here(20/6/2023)
+	@Column(name = "PHONE_NUMBER")
+	private String phoneNumber;
+
 //	Long hide some lines here(20/5/2023)
 //	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
 //	@JoinColumn(name = "LANGUAGE_ID", nullable=true
@@ -450,6 +454,14 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 
 	public void setJobRates(List<JobRate> jobRates) {
 		this.jobRates = jobRates;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 //	end

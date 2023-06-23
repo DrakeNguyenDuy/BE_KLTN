@@ -1,13 +1,16 @@
 package com.salesmanager.shop.store.facade.customer.profile;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.salesmanager.core.business.services.customer.profile.ProfileService;
+import com.salesmanager.core.business.services.customer.profile.ProfileSkillService;
 import com.salesmanager.core.model.customer.profile.Profile;
+import com.salesmanager.core.model.customer.profile.ProfileSkillEntry;
 import com.salesmanager.shop.mapper.customer.profile.PersistableProfileMapper;
 import com.salesmanager.shop.mapper.customer.profile.ReadableProfileMapper;
 import com.salesmanager.shop.model.customer.profile.PersistableProfile;
@@ -18,6 +21,9 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
 	@Autowired
 	private ProfileService profileService;
+	
+	@Autowired
+	private ProfileSkillService profileSkillService;
 
 	@Autowired
 	private ReadableProfileMapper readableProfileMapper;
@@ -37,7 +43,10 @@ public class ProfileFacadeImpl implements ProfileFacade {
 	@Override
 	public ReadableProfile saveOrUpdate(String customerName, PersistableProfile profile) {
 		Profile p = persistableProfileMapper.convertToEntity(customerName, profile);
+		List<ProfileSkillEntry> profileSkillEntries = p.getSkills();
 		p = profileService.saveOrUpdate(p);
+		profileSkillEntries = profileSkillService.saveAll(profileSkillEntries);
+		p.setSkills(profileSkillEntries);
 		return readableProfileMapper.convert(p, null, null);
 	}
 

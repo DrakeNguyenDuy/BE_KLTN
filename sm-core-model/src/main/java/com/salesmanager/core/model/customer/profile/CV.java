@@ -30,9 +30,15 @@ public class CV {
 
 	@Column(name = "ADDRESS")
 	private String address;
+	
+	@Column(name="EMAIL")
+	private String email;
 
 	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
 	private List<WorkExperience> workExperiences;
+
+	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
+	private List<SocialContact> socialContacts;
 
 	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
 	private List<Education> educations;
@@ -98,6 +104,22 @@ public class CV {
 
 	public void setAlumnus(Customer alumnus) {
 		this.alumnus = alumnus;
+	}
+
+	public List<SocialContact> getSocialContacts() {
+		return socialContacts;
+	}
+
+	public void setSocialContacts(List<SocialContact> socialContacts) {
+		this.socialContacts = socialContacts;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

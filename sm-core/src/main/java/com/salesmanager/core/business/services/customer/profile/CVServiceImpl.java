@@ -41,10 +41,7 @@ public class CVServiceImpl implements CVService {
 	@Override
 	public CV findById(String id) {
 		Optional<CV> cvOpt = cvRepository.findById(id);
-		if (!cvOpt.isPresent()) {
-			throw new NullPointerException("Can not find CV by id");
-		}
-		return cvOpt.get();
+		return cvOpt.orElse(null);
 	}
 
 	@Override
@@ -63,10 +60,7 @@ public class CVServiceImpl implements CVService {
 	@Override
 	public CV findByCustomerNickName(String nickName) {
 		Optional<CV> cvOpt = cvRepository.findByAlumnusNickName(nickName);
-		if (!cvOpt.isPresent()) {
-			throw new NullPointerException("Can not find CV by id");
-		}
-		return cvOpt.get();
+		return cvOpt.orElse(null);
 	}
 
 }

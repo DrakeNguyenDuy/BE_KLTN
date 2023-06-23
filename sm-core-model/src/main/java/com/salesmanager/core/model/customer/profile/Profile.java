@@ -1,6 +1,7 @@
 package com.salesmanager.core.model.customer.profile;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,7 +27,6 @@ import com.salesmanager.core.model.catalog.product.type.ProductType;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.englishlevel.EnglishLevel;
 import com.salesmanager.core.model.experience.ExperienceDescription;
-import com.salesmanager.core.model.skill.SkillDescription;
 
 @Entity
 @Table(name = "PROFILE")
@@ -51,9 +52,9 @@ public class Profile {
 	@JoinColumn(name = "PRODUCT_TYPE_ID")
 	private ProductType career;// careers
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
-	@JoinTable(name = "PROFILE_SKILL_ENTRY", joinColumns = @JoinColumn(referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(referencedColumnName = "ID_SKILL"))
-	private Set<SkillDescription> skills = new HashSet<SkillDescription>();
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
+//	@JoinTable(name = "PROFILE_SKILL_ENTRY", joinColumns = @JoinColumn(referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(referencedColumnName = "ID_SKILL"))
+//	private Set<SkillDescription> skills = new HashSet<SkillDescription>();
 
 	@OneToOne
 	@JoinColumn(name = "ID_FORM_WORK")
@@ -105,13 +106,16 @@ public class Profile {
 		this.englishLevel = englishLevel;
 	}
 
-	public Set<SkillDescription> getSkills() {
-		return skills;
-	}
+//	public Set<SkillDescription> getSkills() {
+//		return skills;
+//	}
+//
+//	public void setSkills(Set<SkillDescription> skills) {
+//		this.skills = skills;
+//	}
 
-	public void setSkills(Set<SkillDescription> skills) {
-		this.skills = skills;
-	}
+	@OneToMany(mappedBy = "profile")
+	private List<ProfileSkillEntry> skills;
 
 	public Category getCategory() {
 		return category;
@@ -187,6 +191,14 @@ public class Profile {
 
 	public void setGoal(String goal) {
 		this.goal = goal;
+	}
+
+	public List<ProfileSkillEntry> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<ProfileSkillEntry> skills) {
+		this.skills = skills;
 	}
 
 }

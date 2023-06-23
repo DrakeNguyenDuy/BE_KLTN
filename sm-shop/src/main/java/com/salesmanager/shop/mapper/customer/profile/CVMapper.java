@@ -19,19 +19,30 @@ import com.salesmanager.core.model.customer.CustomerGender;
 import com.salesmanager.core.model.customer.profile.CV;
 import com.salesmanager.core.model.customer.profile.Certificate;
 import com.salesmanager.core.model.customer.profile.Education;
+import com.salesmanager.core.model.customer.profile.ProfileSkillEntry;
+import com.salesmanager.core.model.customer.profile.SocialContact;
 import com.salesmanager.core.model.customer.profile.WorkExperience;
+import com.salesmanager.shop.mapper.catalog.ReadableProductTypeMapper;
 import com.salesmanager.shop.model.customer.profile.CVDto;
 import com.salesmanager.shop.model.customer.profile.CertificateDto;
 import com.salesmanager.shop.model.customer.profile.EducationDto;
+import com.salesmanager.shop.model.customer.profile.ProfileSkillDto;
+import com.salesmanager.shop.model.customer.profile.SocialContactDTO;
 import com.salesmanager.shop.model.customer.profile.WorkExperienceDto;
+import com.salesmanager.shop.model.englishLevel.ReadableEnglishLevel;
 import com.salesmanager.shop.populator.customer.CustomerPopulator;
 import com.salesmanager.shop.utils.ConverterDate;
+
+import javassist.NotFoundException;
 
 @Component
 public class CVMapper {
 
 	@Autowired
 	private WorkExperienceMapper workExperienceMapper;
+	
+	@Autowired
+	private ProfileSkillEntryMapper profileSkillEntryMapper;
 
 	@Autowired
 	private CustomerService customerService;
@@ -43,6 +54,9 @@ public class CVMapper {
 	private CertificateMapper certificateMapper;
 
 	@Autowired
+	private ReadableProductTypeMapper readableProductTypeMapper;
+
+	@Autowired
 	private CVService cvService;
 
 	private static final Logger LOG = LoggerFactory.getLogger(CustomerPopulator.class);
@@ -52,12 +66,42 @@ public class CVMapper {
 		if (!Objects.isNull(cv.getId()) && StringUtils.hasText(cv.getId())) {
 			cvDto.setId(cv.getId());
 		}
+
+		if (StringUtils.hasText(cv.getEmail())) {
+			cvDto.setEmail(cv.getEmail());
+		}
+		if (StringUtils.hasText(cv.getAlumnus().getPhoneNumber())) {
+			cvDto.setPhoneNumber(cv.getAlumnus().getPhoneNumber());
+		}
+
+		if (!CollectionUtils.isEmpty(cv.getSocialContacts())) {
+			List<SocialContactDTO> contactDTOs = new ArrayList<SocialContactDTO>();
+			for (SocialContact sc : cv.getSocialContacts()) {
+				SocialContactDTO contactDTO = new SocialContactDTO();
+				contactDTO.setLink(sc.getLINK());
+				contactDTO.setName(sc.getNameSocial());
+				contactDTOs.add(contactDTO);
+			}
+			cvDto.setContacts(contactDTOs);
+		}
 		
+		if (!Objects.isNull(cv.getAlumnus().getProfile().getCareer())) {
+			cvDto.setCarrer(readableProductTypeMapper.convert(cv.getAlumnus().getProfile().getCareer()));
+		}
+
+		if (!Objects.isNull(cv.getAlumnus().getProfile().getEnglishLevel())) {
+			ReadableEnglishLevel englishLevel = new ReadableEnglishLevel();
+			englishLevel.setId(cv.getAlumnus().getProfile().getEnglishLevel().getId());
+			englishLevel.setCode(cv.getAlumnus().getProfile().getEnglishLevel().getCode());
+			englishLevel.setName(cv.getAlumnus().getProfile().getEnglishLevel().getName());
+			cvDto.setEnglishLevel(englishLevel);
+		}
+
 		if (!Objects.isNull(cv.getAlumnus().getFirstName()) && StringUtils.hasText(cv.getAlumnus().getFirstName())) {
 			cvDto.setFirstName(cv.getAlumnus().getFirstName());
 		}
-		
-		if(!Objects.isNull(cv.getAlumnus().getProfile().getAvatar().length>0)) {
+
+		if (cv.getAlumnus().getProfile().getAvatar() != null) {
 			String image = Base64.getEncoder().encodeToString(cv.getAlumnus().getProfile().getAvatar());
 			cvDto.setAvatar(image);
 		}
@@ -109,6 +153,11 @@ public class CVMapper {
 					.map(item -> this.educationMapper.convertToDto(item)).toList();
 			cvDto.setEducations(educationDtos);
 		}
+		
+		if(!CollectionUtils.isEmpty(cv.getAlumnus().getProfile().getSkills())) {
+			List<ProfileSkillDto> skills = cv.getAlumnus().getProfile().getSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
+			cvDto.setSkills(skills);
+		}
 
 		return cvDto;
 	}
@@ -131,6 +180,10 @@ public class CVMapper {
 
 		if (!Objects.isNull(source.getLastName()) && StringUtils.hasText(source.getLastName())) {
 			destination.getAlumnus().setLastName(source.getLastName());
+		}
+		
+		if(!Objects.isNull(source.getEmail())) {
+			destination.setEmail(source.getEmail());
 		}
 
 		if (!Objects.isNull(source.getAddress()) && StringUtils.hasText(source.getAddress())) {
@@ -169,6 +222,18 @@ public class CVMapper {
 			List<Certificate> certificateDtos = source.getCertificates().stream()
 					.map(item -> this.certificateMapper.convertToEntity(destination, item)).toList();
 			destination.setCertificate(new ArrayList<Certificate>(certificateDtos));
+		}
+
+		if (!CollectionUtils.isEmpty(source.getContacts())) {
+			List<SocialContact> contacts = new ArrayList<SocialContact>();
+			for (SocialContactDTO sc : source.getContacts()) {
+				SocialContact contact = new SocialContact();
+				contact.setNameSocial(sc.getName());
+				contact.setLINK(sc.getLink());
+				contact.setCv(destination);
+				contacts.add(contact);
+			}
+			destination.setSocialContacts(contacts);
 		}
 
 		if (!CollectionUtils.isEmpty(source.getEducations())) {
