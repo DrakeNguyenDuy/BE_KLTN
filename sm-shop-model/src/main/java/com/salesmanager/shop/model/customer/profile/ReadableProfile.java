@@ -12,6 +12,8 @@ import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 
 public class ReadableProfile {
 	private Long id;
+	private String username;
+	private String email;
 	private String fullName;
 	private String avatar;
 	private String introduce;
@@ -19,7 +21,8 @@ public class ReadableProfile {
 	private String gender;
 	private ReadableEnglishLevel englishLevel;
 	private ReadableProductType carreer;
-	private List<ReadableSkillDescription> readableSkillDescriptions;
+//	private List<ReadableSkillDescription> readableSkillDescriptions;
+	private List<ProfileSkillDto> skills;
 	private ReadableCategory formWork;
 	private List<ReadableDistrict> districts;
 	private ReadablePaycycle paycycle;
@@ -89,16 +92,26 @@ public class ReadableProfile {
 		this.carreer = carreer;
 	}
 
-	public List<ReadableSkillDescription> getReadableSkillDescriptions() {
-		return readableSkillDescriptions;
-	}
-
-	public void setReadableSkillDescriptions(List<ReadableSkillDescription> readableSkillDescriptions) {
-		this.readableSkillDescriptions = readableSkillDescriptions;
-	}
+//	public List<ReadableSkillDescription> getReadableSkillDescriptions() {
+//		return readableSkillDescriptions;
+//	}
+//
+//	public void setReadableSkillDescriptions(List<ReadableSkillDescription> readableSkillDescriptions) {
+//		this.readableSkillDescriptions = readableSkillDescriptions;
+//	}
+	
+	
 
 	public ReadableCategory getFormWork() {
 		return formWork;
+	}
+
+	public List<ProfileSkillDto> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<ProfileSkillDto> skills) {
+		this.skills = skills;
 	}
 
 	public void setFormWork(ReadableCategory formWork) {
@@ -127,5 +140,21 @@ public class ReadableProfile {
 
 	public void setExperience(ReadableExperience experience) {
 		this.experience = experience;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

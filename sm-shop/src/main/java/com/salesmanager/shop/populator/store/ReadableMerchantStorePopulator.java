@@ -135,7 +135,7 @@ public class ReadableMerchantStorePopulator extends
 //		end
 		
 //		Long add some lines here(17/6/2023)
-		if(source.getStoreLogo().length>0) {
+		if(source.getStoreLogo().length>0 && source.getStoreLogo() !=null) {
 			ReadableImage image = new ReadableImage();
 			image.setName(source.getCode());
 			image.setPath(Base64.getEncoder().encodeToString(source.getStoreLogo()));

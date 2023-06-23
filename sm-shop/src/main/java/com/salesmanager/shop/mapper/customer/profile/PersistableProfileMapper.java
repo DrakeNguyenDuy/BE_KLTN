@@ -1,5 +1,6 @@
 package com.salesmanager.shop.mapper.customer.profile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -29,10 +30,14 @@ import com.salesmanager.core.model.catalog.product.type.ProductType;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.CustomerGender;
 import com.salesmanager.core.model.customer.profile.Profile;
+import com.salesmanager.core.model.customer.profile.ProfileSkillEntry;
 import com.salesmanager.core.model.englishlevel.EnglishLevel;
 import com.salesmanager.core.model.experience.ExperienceDescription;
 import com.salesmanager.core.model.skill.SkillDescription;
 import com.salesmanager.shop.model.customer.profile.PersistableProfile;
+import com.salesmanager.shop.model.customer.profile.ProfileSkillDto;
+
+import javassist.NotFoundException;
 
 @Component
 public class PersistableProfileMapper {
@@ -63,6 +68,9 @@ public class PersistableProfileMapper {
 
 	@Autowired
 	private ProfileRepository profileRepository;
+	
+	@Autowired
+	private ProfileSkillEntryMapper profileSkillEntryMapper;
 
 	public Profile convertToEntity(String customerName, PersistableProfile source) {
 		Validate.notNull(source, "Persistable profile can not be null");
@@ -134,18 +142,36 @@ public class PersistableProfileMapper {
 			profile.setExperience(experience);
 		}
 
-		if (!CollectionUtils.isEmpty(source.getSkills())) {
-			List<SkillDescription> skillDescriptions = skillService.findByCodeIn(source.getSkills());
-			Set<SkillDescription> setSkills = new HashSet<SkillDescription>();
-			setSkills.addAll(skillDescriptions);
-			profile.setSkills(setSkills);
-		}
-
 		if (!CollectionUtils.isEmpty(source.getDistricts())) {
 			List<District> districts = districtService.findByIdIn(source.getDistricts());
 			Set<District> setDistricts = new HashSet<District>();
 			setDistricts.addAll(districts);
 			profile.setDistricts(setDistricts);
+		}
+		
+		if (!CollectionUtils.isEmpty(source.getSkills())) {
+			List<ProfileSkillEntry> skills = new ArrayList<ProfileSkillEntry>();
+			for (ProfileSkillDto dto : source.getSkills()) {
+				try {
+					skills.add(profileSkillEntryMapper.convertToEntity(profile,dto));
+				} catch (NotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+//			List<ProfileSkillEntry> skills = source.getSkills().stream().map(item -> {
+//				try {
+//					return profileSkillEntryMapper.convertToEntity(profile,item);
+//				} catch (NotFoundException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				return null;
+//			}).toList();
+//			List<SkillDescription> skillDescriptions = skillService.findByCodeIn(source.getSkills());
+//			Set<SkillDescription> setSkills = new HashSet<SkillDescription>();
+//			setSkills.addAll(skillDescriptions);
+			profile.setSkills(skills);
 		}
 
 		return profile;

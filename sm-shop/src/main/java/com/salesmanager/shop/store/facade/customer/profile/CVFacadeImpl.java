@@ -20,6 +20,7 @@ public class CVFacadeImpl implements CVFacade {
 	@Override
 	public CVDto findCVByAlumnusName(String nickName) {
 		CV cv = cvService.findByCustomerNickName(nickName);
+		if(cv==null) return null;
 		return cvMapper.convertToDto(cv);
 	}
 
