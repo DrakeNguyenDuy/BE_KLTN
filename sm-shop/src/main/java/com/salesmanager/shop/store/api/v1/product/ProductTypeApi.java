@@ -63,7 +63,7 @@ public class ProductTypeApi {
 //	end
 	
 //	Long add some lines here(24/5/2023)
-	@GetMapping(value = "/private/product/types", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/product/types", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "Get product types list", notes = "", produces = "application/json", response = List.class)
 	public ReadableProductTypeList list(@RequestParam(name = "count", defaultValue = "10") int count,
 			@RequestParam(name = "page", defaultValue = "0") int page) {

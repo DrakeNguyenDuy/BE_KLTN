@@ -28,20 +28,20 @@ public class LocationApi {
 	@Autowired
 	private LocationFacade locationFacade ;
 
-	@GetMapping(value = "/private/provinces")
+	@GetMapping(value = "/provinces")
 	@ResponseStatus(HttpStatus.OK)
 	@ApiOperation(httpMethod = "GET", value = "Get provinces", notes = "", response = ReadableEntityList.class)
 	public ReadableEntityListV2<ReadableProvince> getAlllProvinces() {
 		return locationFacade.getProvinces();
 	}
 	
-	@GetMapping(value = "/private/districts")
+	@GetMapping(value = "/districts")
 	@ResponseStatus(code = HttpStatus.OK)
 	public ReadableEntityListV2<ReadableDistrict> getAllDistricts(@RequestParam(value = "id_province") Long idProvince){
 		return locationFacade.getDistrict(idProvince);
 	}
 	
-	@GetMapping(value = "/private/wards")
+	@GetMapping(value = "/wards")
 	@ResponseStatus(code = HttpStatus.OK)
 	public ReadableEntityListV2<ReadableWard> getAllWards(@RequestParam(value = "id_district") Long idDistrict){
 		return locationFacade.getWard(idDistrict);

@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
-import org.grouplens.lenskit.scored.ScoredId;
 import org.lenskit.LenskitConfiguration;
 import org.lenskit.LenskitRecommender;
 import org.lenskit.api.ItemRecommender;
@@ -22,6 +21,8 @@ import dao.RatingDAO;
 import dao.UserDao;
 
 public class Main {
+	
+	
 	public static void main(String[] args) {
 		LenskitConfiguration config = configureRecommender();
 		System.out.println("Starting build recommnder");

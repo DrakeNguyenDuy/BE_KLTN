@@ -1,7 +1,5 @@
 package com.salesmanager.shop.store.api.v2.paycycle;
 
-import javax.persistence.Entity;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +24,7 @@ public class PaycycleApi {
 	@Autowired
 	private PaycycleFacade paycycleFacade;
 
-	@GetMapping(value = "/private/paycycles")
+	@GetMapping(value = "/paycycles")
 	@ResponseStatus(code = HttpStatus.OK)
 	public ReadableEntityListV2<ReadablePaycycle> getAll() {
 		return paycycleFacade.findAll();
