@@ -30,7 +30,7 @@ public class SkillApi {
 	@Autowired
 	private SkillFacade skillFacade;
 
-	@GetMapping(value = "/private/skills")
+	@GetMapping(value = "/skills")
 	@ResponseStatus(HttpStatus.OK)
 	@ApiOperation(httpMethod = "GET", value = "Get all skill", notes = "", response = ReadableEntityList.class)
 	public ReadableEntityListV2<ReadableSkillDescription> getSkills() {

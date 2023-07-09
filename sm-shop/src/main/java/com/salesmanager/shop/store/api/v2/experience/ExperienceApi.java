@@ -24,7 +24,7 @@ public class ExperienceApi {
 	@Autowired
 	private ExperienceFacade experienceFacade;
 
-	@GetMapping(value = "/private/experiences")
+	@GetMapping(value = "/experiences")
 	@ResponseStatus(code = HttpStatus.OK)
 	public ReadableEntityListV2<ReadableExperience> getAll() {
 		return experienceFacade.findAll();

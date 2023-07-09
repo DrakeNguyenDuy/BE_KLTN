@@ -20,7 +20,8 @@ public class CVFacadeImpl implements CVFacade {
 	@Override
 	public CVDto findCVByAlumnusName(String nickName) {
 		CV cv = cvService.findByCustomerNickName(nickName);
-		if(cv==null) return null;
+		if (cv == null)
+			return null;
 		return cvMapper.convertToDto(cv);
 	}
 
@@ -34,6 +35,15 @@ public class CVFacadeImpl implements CVFacade {
 	@Override
 	public void delete(String id) {
 		cvService.delete(id);
+	}
+
+	@Override
+	public CVDto findById(String id) {
+		CV cv = cvService.findById(id);
+		if (cv != null) {
+			cvMapper.convertToDto(cv);
+		}
+		return null;
 	}
 
 }

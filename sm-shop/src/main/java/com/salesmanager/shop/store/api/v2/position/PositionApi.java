@@ -25,7 +25,7 @@ public class PositionApi {
 	@Autowired
 	private PositionFacade positionFacade;
 
-	@GetMapping(value = "/private/positions")
+	@GetMapping(value = "/positions")
 	@ResponseStatus(code = HttpStatus.OK)
 	public ReadableEntityListV2<ReadablePosition> getAllPositions(){
 		return positionFacade.getAll();

@@ -12,11 +12,17 @@ import org.lenskit.data.entities.TypedName;
 import org.lenskit.data.events.Event;
 import org.lenskit.data.events.Like;
 import org.lenskit.util.io.ObjectStreams;
+import org.springframework.stereotype.Component;
 
 import contants.AttributesContants;
 import contants.SystemConstants;
 
+//import com.shopizer.modules.shipping.canadapost.module.CanadaPostQuoteModule;
+
+
+@Component
 public class Test5 {
+	
 	public static List<Event> i() {
 		List<Event> events = new ArrayList<Event>();
 		TypedName<?> typeNames[] = { AttributesContants.ID_USER, AttributesContants.ID_ITEM,

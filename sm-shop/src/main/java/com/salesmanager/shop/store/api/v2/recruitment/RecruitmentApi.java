@@ -33,6 +33,7 @@ public class RecruitmentApi {
 		}
 	}
 
+	//get list alumnus applied a job
 	@GetMapping(value = "/private/recruitment/{jobId}")
 	public ResponseEntity<List<RecruitmentDto>> findRecruitmentByJob(@PathVariable Long jobId) {
 		try {
@@ -42,6 +43,7 @@ public class RecruitmentApi {
 		}
 	}
 
+	
 	@GetMapping(value = "/auth/recruitment")
 	public ResponseEntity<List<RecruitmentDto>> findRecruitmentByAlumnus(HttpServletRequest request) {
 		String customerName = request.getUserPrincipal().getName();// is nick name of customer

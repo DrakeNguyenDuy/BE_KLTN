@@ -109,7 +109,7 @@
 				<artifactId>sm-core-modules</artifactId>
 				<version>3.2.5</version>
 			</dependency>
-				<dependency>
+			<dependency>
 				<groupId>com.shopizer</groupId>
 				<artifactId>recruitment-rs</artifactId>
 				<version>3.2.5</version>

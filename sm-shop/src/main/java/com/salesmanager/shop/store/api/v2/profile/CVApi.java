@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.salesmanager.shop.model.customer.profile.CVDto;
 import com.salesmanager.shop.store.api.exception.RestApiException;
-import com.salesmanager.shop.store.api.exception.RestErrorHandler;
 import com.salesmanager.shop.store.facade.customer.profile.CVFacade;
 
 @RestController
@@ -63,5 +62,15 @@ public class CVApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void deleteCv(@PathVariable String idCV) {
 		cvFacade.delete(idCV);
+	}
+
+	// view detail cv
+	@GetMapping(value = "/private/cv/{cvId}")
+	public ResponseEntity<CVDto> detail(@PathVariable String cvId) {
+		try {
+			return ResponseEntity.ok(cvFacade.findById(cvId));
+		} catch (NullPointerException e) {
+			throw new RestApiException(e.getMessage());
+		}
 	}
 }
