@@ -36,6 +36,50 @@ public class ItemDao extends AbstractDao implements ItemDAO {
 		this.file = file;
 	}
 
+//	private void loadFeaturesCache() {
+//		if (featuresCache == null) {// nếu chưa có dữ liệu trong bộ đệm chứa tất cả các đặc trưng
+//			synchronized (this) {// đồng bộ tiếng trình
+//				if (featuresCache == null) {// nếu vẫn null thì thưc hiện load
+//					featuresCache = new Long2ObjectOpenHashMap<List<String>>();
+//					TypedName<?> typeNames[] = { AttributesContants.ENTITY_ID, AttributesContants.NAME,
+//							AttributesContants.SKILLS, AttributesContants.ADDRESS, AttributesContants.FEATURE4,
+//							AttributesContants.FEATURE5, AttributesContants.FEATURE6, AttributesContants.FEATURE7,
+//							AttributesContants.FEATURE8, AttributesContants.FEATURE9, AttributesContants.FEATURE10,
+//							AttributesContants.FEATURE11, AttributesContants.FEATURE12, AttributesContants.FEATURE13,
+//							AttributesContants.FEATURE14, AttributesContants.FEATURE15, AttributesContants.FEATURE16,
+//							AttributesContants.FEATURE17, AttributesContants.FEATURE18, AttributesContants.FEATURE19,
+//							AttributesContants.FEATURE20 };
+//					String[] columnGets = { SystemConstants.ID, SystemConstants.NAME, SystemConstants.SKILLS,
+//							SystemConstants.ADDRESS };
+//					ImmutableSet.Builder<String> featuresSetBuilder = ImmutableSet.builder();
+//					List<String[]> lines = getObjectStream(typeNames, file, columnGets);
+//					for (String[] strings : lines) {
+//						long jobID = Long.parseLong(strings[0]);
+//						List<String> features = featuresCache.get(jobID);
+//						if (features == null) {// nếu tại vị trí đó chưa có dữ liệu thì khởi tạo array list, dành cho
+//												// lần lặp đầu tiên
+//							features = new ArrayList<String>();
+//							featuresCache.put(jobID, features);
+//						}
+//						for (int i = 2; i < strings.length; i++) {
+//							// begin is 2 beacause we will skip id and name
+//							// analys value in each column, value in each cell with format:
+//							// value1;value2;value3
+//							String[] analysh = strings[i].split(SystemConstants.SEMICOMMA);
+//							for (String value : analysh) {
+//								// add value to features
+//								features.add(value);
+//								// add value to set all features
+//								featuresSetBuilder.add(value);
+//							}
+//						}
+//					}
+//					allFeatures = featuresSetBuilder.build();
+//				}
+//			}
+//		}
+//	}
+	
 	private void loadFeaturesCache() {
 		if (featuresCache == null) {// nếu chưa có dữ liệu trong bộ đệm chứa tất cả các đặc trưng
 			synchronized (this) {// đồng bộ tiếng trình

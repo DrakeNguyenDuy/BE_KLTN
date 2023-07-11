@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import com.salesmanager.core.business.repositories.catalog.product.skill.ProductSkillReposistory;
 import com.salesmanager.core.business.repositories.customer.profile.ProfileRepository;
 import com.salesmanager.core.business.repositories.customer.profile.ProfileSkillRepository;
+import com.salesmanager.core.model.customer.profile.CVSkill;
 import com.salesmanager.core.model.customer.profile.Profile;
 import com.salesmanager.core.model.customer.profile.ProfileSkillEntry;
 import com.salesmanager.core.model.skill.SkillDescription;
@@ -38,6 +39,18 @@ public class ProfileSkillEntryMapper {
 		}
 		if (StringUtils.hasText(profileSkillEntry.getDescription())) {
 			dto.setDes(profileSkillEntry.getDescription());
+		}
+		return dto;
+	}
+	
+	public ProfileSkillDto convertToDto(CVSkill cvSkill) {
+		ProfileSkillDto dto = new ProfileSkillDto();
+		dto.setNameSkill(cvSkill.getSkill());
+		if (cvSkill.getRate() != null) {
+			dto.setRate(cvSkill.getRate());
+		}
+		if (StringUtils.hasText(cvSkill.getDescription())) {
+			dto.setDes(cvSkill.getDescription());
 		}
 		return dto;
 	}

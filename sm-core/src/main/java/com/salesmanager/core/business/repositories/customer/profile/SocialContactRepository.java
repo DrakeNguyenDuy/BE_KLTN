@@ -3,8 +3,9 @@ package com.salesmanager.core.business.repositories.customer.profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.salesmanager.core.model.customer.profile.CV;
-import com.salesmanager.core.model.customer.profile.Certificate;
+import com.salesmanager.core.model.customer.profile.SocialContact;
 
-public interface CertificateRepository extends JpaRepository<Certificate, String> {
+public interface SocialContactRepository extends JpaRepository<SocialContact, String>{
+
 	void deleteByCv(CV cv);
 }
