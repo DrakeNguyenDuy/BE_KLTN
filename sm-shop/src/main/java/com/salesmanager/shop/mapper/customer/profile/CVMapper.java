@@ -17,6 +17,7 @@ import com.salesmanager.core.business.services.customer.profile.CVService;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.CustomerGender;
 import com.salesmanager.core.model.customer.profile.CV;
+import com.salesmanager.core.model.customer.profile.CVSkill;
 import com.salesmanager.core.model.customer.profile.Certificate;
 import com.salesmanager.core.model.customer.profile.Education;
 import com.salesmanager.core.model.customer.profile.ProfileSkillEntry;
@@ -155,10 +156,10 @@ public class CVMapper {
 		}
 		
 		if(!CollectionUtils.isEmpty(cv.getAlumnus().getProfile().getSkills())) {
-			List<ProfileSkillDto> skills = cv.getAlumnus().getProfile().getSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
+//			List<ProfileSkillDto> skills = cv.getAlumnus().getProfile().getSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
+			List<ProfileSkillDto> skills = cv.getCvSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
 			cvDto.setSkills(skills);
 		}
-
 		return cvDto;
 	}
 
@@ -240,6 +241,18 @@ public class CVMapper {
 			List<Education> educationDtos = source.getEducations().stream()
 					.map(item -> this.educationMapper.convertToEntity(destination, item)).toList();
 			destination.setEducations(new ArrayList<Education>(educationDtos));
+		}
+		
+		if (!CollectionUtils.isEmpty(source.getSkills())) {
+			List<CVSkill> cvSkills = new ArrayList<CVSkill>();
+			for (ProfileSkillDto profileSkillDto : source.getSkills()) {
+				CVSkill cvSkill = new CVSkill();
+				cvSkill.setDescription(profileSkillDto.getDes());
+				cvSkill.setProfile(alumnus.getProfile());
+				cvSkill.setRate(profileSkillDto.getRate());
+				cvSkills.add(cvSkill );
+			}
+			destination.setCvSkills(cvSkills);
 		}
 		return destination;
 	}

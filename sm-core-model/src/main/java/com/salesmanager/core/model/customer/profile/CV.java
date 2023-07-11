@@ -30,8 +30,8 @@ public class CV {
 
 	@Column(name = "ADDRESS")
 	private String address;
-	
-	@Column(name="EMAIL")
+
+	@Column(name = "EMAIL")
 	private String email;
 
 	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
@@ -45,6 +45,9 @@ public class CV {
 
 	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
 	private List<Certificate> certificate;
+
+	@OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
+	private List<CVSkill> cvSkills;
 
 	@ManyToOne
 	@JoinColumn(name = "ALUMNUS_ID", nullable = false)
@@ -120,6 +123,14 @@ public class CV {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<CVSkill> getCvSkills() {
+		return cvSkills;
+	}
+
+	public void setCvSkills(List<CVSkill> cvSkills) {
+		this.cvSkills = cvSkills;
 	}
 
 }

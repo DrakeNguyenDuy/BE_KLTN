@@ -1,7 +1,5 @@
 package contants;
 
-import java.util.List;
-
 import org.lenskit.data.entities.TypedName;
 
 public class AttributesContants {

@@ -3,8 +3,8 @@ package com.salesmanager.shop.model.customer.profile;
 public class ProfileSkillDto {
 
 	private String id;
-	private Long idSkill;
 	private String nameSkill;
+	private Long idSkill;
 	private Double rate;
 	private String des;
 
