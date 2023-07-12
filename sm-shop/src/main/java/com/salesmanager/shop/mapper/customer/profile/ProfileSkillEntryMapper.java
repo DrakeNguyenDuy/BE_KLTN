@@ -46,6 +46,7 @@ public class ProfileSkillEntryMapper {
 	public ProfileSkillDto convertToDto(CVSkill cvSkill) {
 		ProfileSkillDto dto = new ProfileSkillDto();
 		dto.setNameSkill(cvSkill.getSkill());
+		dto.setId(cvSkill.getId());
 		if (cvSkill.getRate() != null) {
 			dto.setRate(cvSkill.getRate());
 		}

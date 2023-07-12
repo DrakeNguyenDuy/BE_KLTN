@@ -1,5 +1,6 @@
 package com.salesmanager.shop.model.customer.profile;
 
+
 public class ProfileSkillDto {
 
 	private String id;

@@ -65,7 +65,7 @@ public class CVApi {
 	}
 
 	// view detail cv
-	@GetMapping( "/private/cv/{cvId}")
+	@GetMapping( "/auth/cv/{cvId}")
 	public ResponseEntity<CVDto> detail(@PathVariable String cvId) {
 		try {
 			return ResponseEntity.ok(cvFacade.findById(cvId));

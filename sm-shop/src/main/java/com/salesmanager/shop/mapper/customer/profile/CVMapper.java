@@ -248,8 +248,10 @@ public class CVMapper {
 			for (ProfileSkillDto profileSkillDto : source.getSkills()) {
 				CVSkill cvSkill = new CVSkill();
 				cvSkill.setDescription(profileSkillDto.getDes());
+				cvSkill.setSkill(profileSkillDto.getNameSkill());
 				cvSkill.setProfile(alumnus.getProfile());
 				cvSkill.setRate(profileSkillDto.getRate());
+				cvSkill.setCv(destination);
 				cvSkills.add(cvSkill );
 			}
 			destination.setCvSkills(cvSkills);
