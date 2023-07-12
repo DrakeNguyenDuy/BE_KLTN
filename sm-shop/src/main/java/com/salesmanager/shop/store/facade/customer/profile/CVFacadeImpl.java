@@ -1,7 +1,7 @@
 package com.salesmanager.shop.store.facade.customer.profile;
 
-import java.util.List;
-
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import com.salesmanager.core.business.repositories.customer.profile.SocialContac
 import com.salesmanager.core.business.repositories.customer.profile.WorkExperienceRepository;
 import com.salesmanager.core.business.services.customer.profile.CVService;
 import com.salesmanager.core.model.customer.profile.CV;
-import com.salesmanager.core.model.customer.profile.SocialContact;
 import com.salesmanager.shop.mapper.customer.profile.CVMapper;
 import com.salesmanager.shop.model.customer.profile.CVDto;
 
@@ -51,23 +50,34 @@ public class CVFacadeImpl implements CVFacade {
 	}
 
 	@Override
+	@Transactional
 	public CVDto saveOrUpdate(String nickName, CVDto cvDto) {
 		CV cv = cvMapper.convertToEntity(nickName, cvDto);
 		if (cv.getId() != null) {
-			deleteRelateDataOldCV(cv);
+			contactRepository.deleteByCv(cv);
+			experienceRepository.deleteByCv(cv);
+			educationRepository.deleteByCv(cv);
+			certificateRepository.deleteByCv(cv);
+			cvSkillRepository.deleteByCv(cv);
 		}
 		cv = cvService.saveOrUpdate(nickName, cvMapper.convertToEntity(nickName, cvDto));
 		return cvMapper.convertToDto(cv);
 	}
 
-	@Transactional
+//	@Transactional
 	private boolean deleteRelateDataOldCV(CV cv) {
-		contactRepository.deleteByCv(cv);
-		experienceRepository.deleteByCv(cv);
-		educationRepository.deleteByCv(cv);
-		certificateRepository.deleteByCv(cv);
-		cvSkillRepository.deleteByCv(cv);
-		return true;
+		try {
+			contactRepository.deleteByCv(cv);
+			experienceRepository.deleteByCv(cv);
+			educationRepository.deleteByCv(cv);
+			certificateRepository.deleteByCv(cv);
+			cvSkillRepository.deleteByCv(cv);
+			return true;
+		} catch (Exception e) {
+			// Xử lý ngoại lệ nếu cần
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
