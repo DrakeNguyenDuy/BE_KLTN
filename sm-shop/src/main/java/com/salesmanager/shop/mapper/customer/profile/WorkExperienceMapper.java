@@ -54,7 +54,7 @@ public class WorkExperienceMapper {
 			destination.setStartDate(ConverterDate.convertToDate(source.getStartDate()));
 		}
 		if (!Objects.isNull(source.getEndDate())) {
-			destination.setStartDate(ConverterDate.convertToDate(source.getEndDate()));
+			destination.setEndDate(ConverterDate.convertToDate(source.getEndDate()));
 		}
 
 		destination.setCv(cv);

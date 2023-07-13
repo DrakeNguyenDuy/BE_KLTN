@@ -36,6 +36,9 @@ public class Education {
 	@Column(name = "END_DATE", nullable = true)
 	private Date endDate;
 
+	@Column(name = "DESCRIPTION", nullable = true)
+	private String description;
+
 	@ManyToOne(targetEntity = CV.class)
 	@JoinColumn(name = "CV_ID")
 	private CV cv;
@@ -94,6 +97,14 @@ public class Education {
 
 	public void setCv(CV cv) {
 		this.cv = cv;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

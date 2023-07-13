@@ -35,9 +35,9 @@ public class WorkExperience {
 
 	@Column(name = "DESCRIPTION", nullable = false, columnDefinition = "TEXT")
 	private String description;
-	
+
 	@ManyToOne
-	@JoinColumn(name="CV_ID")
+	@JoinColumn(name = "CV_ID")
 	private CV cv;
 
 	public String getId() {
@@ -80,6 +80,14 @@ public class WorkExperience {
 		this.endDate = endDate;
 	}
 
+	public CV getCv() {
+		return cv;
+	}
+
+	public void setCv(CV cv) {
+		this.cv = cv;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -88,12 +96,4 @@ public class WorkExperience {
 		this.description = description;
 	}
 
-	public CV getCv() {
-		return cv;
-	}
-
-	public void setCv(CV cv) {
-		this.cv = cv;
-	}
-	
 }
