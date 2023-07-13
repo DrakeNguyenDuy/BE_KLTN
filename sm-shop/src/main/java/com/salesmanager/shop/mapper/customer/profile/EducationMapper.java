@@ -1,9 +1,7 @@
 package com.salesmanager.shop.mapper.customer.profile;
 
-import java.text.ParseException;
 import java.util.Objects;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -32,6 +30,7 @@ public class EducationMapper {
 		educationDto.setMajor(source.getMajor());
 		educationDto.setIsGraduated(source.isGraduated());
 		educationDto.setId(source.getId());
+		educationDto.setDescription(source.getDescription());
 		return educationDto;
 	}
 
@@ -54,6 +53,9 @@ public class EducationMapper {
 		}
 		if (!Objects.isNull(source.getEndDate())) {
 			education.setEndDate(ConverterDate.convertToDate(source.getEndDate()));
+		}
+		if(StringUtils.hasText(source.getDescription())) {
+			education.setDescription(source.getDescription());
 		}
 		education.setCv(cv);
 		return education;

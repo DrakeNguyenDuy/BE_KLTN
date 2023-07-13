@@ -89,7 +89,7 @@ public class CVFacadeImpl implements CVFacade {
 	public CVDto findById(String id) {
 		CV cv = cvService.findById(id);
 		if (cv != null) {
-			cvMapper.convertToDto(cv);
+			return cvMapper.convertToDto(cv);
 		}
 		return null;
 	}

@@ -1,8 +1,5 @@
 package com.salesmanager.shop.model.customer.profile;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class EducationDto {
 	private String id;
 	private String school;
@@ -10,6 +7,7 @@ public class EducationDto {
 	private String major;
 	private String startDate;
 	private String endDate;
+	private String description;
 
 	public String getId() {
 		return id;
@@ -57,6 +55,14 @@ public class EducationDto {
 
 	public void setIsGraduated(Boolean isGraduated) {
 		this.isGraduated = isGraduated;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

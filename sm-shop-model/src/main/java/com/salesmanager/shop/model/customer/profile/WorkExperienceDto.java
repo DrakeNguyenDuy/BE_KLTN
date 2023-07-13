@@ -1,10 +1,5 @@
 package com.salesmanager.shop.model.customer.profile;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class WorkExperienceDto {
 	private String id;
 	private String titlePosition;

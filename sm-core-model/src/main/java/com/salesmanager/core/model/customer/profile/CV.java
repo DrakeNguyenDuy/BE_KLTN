@@ -46,7 +46,7 @@ public class CV {
 	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
 	private List<Certificate> certificate;
 
-	@OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
 	private List<CVSkill> cvSkills;
 
 	@ManyToOne

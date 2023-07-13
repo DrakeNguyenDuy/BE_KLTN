@@ -155,7 +155,7 @@ public class CVMapper {
 			cvDto.setEducations(educationDtos);
 		}
 		
-		if(!CollectionUtils.isEmpty(cv.getAlumnus().getProfile().getSkills())) {
+		if(!CollectionUtils.isEmpty(cv.getCvSkills())) {
 //			List<ProfileSkillDto> skills = cv.getAlumnus().getProfile().getSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
 			List<ProfileSkillDto> skills = cv.getCvSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
 			cvDto.setSkills(skills);

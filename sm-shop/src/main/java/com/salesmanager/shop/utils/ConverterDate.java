@@ -20,7 +20,7 @@ public class ConverterDate {
 	}
 	
 	public static String convertDateToString(String d) {
-        String inputPattern = "EEE MMM dd HH:mm:ss zzz yyyy";
+        String inputPattern = "yyyy-MM-dd HH:mm:ss.S";
         String outputPattern = "dd/MM/yyyy";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
