@@ -3,12 +3,14 @@ package com.salesmanager.shop.store.api.v2.profile;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,7 +63,7 @@ public class ProfileApi {
 	}
 
 	@PostMapping("/auth/profile/avatar")
-	@ResponseStatus(code = HttpStatus.OK)
+	@ResponseStatus(code = HttpStatus.OK)	
 	public void uploadAvatar(@RequestParam("file") MultipartFile avatar, HttpServletRequest request) {
 		if (avatar.isEmpty()) {
 			throw new RestApiException("Upload file is empty");
@@ -70,10 +72,9 @@ public class ProfileApi {
 		profileFacade.uploadAvatar(username, avatar);
 	}
 
-	@GetMapping("/auth/profile/avatar")
+	@GetMapping("/profile/avatar/{username}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public ResponseEntity<?> getAvatar(HttpServletRequest request) {
-		String username = (request.getUserPrincipal().getName());
+	public ResponseEntity<?> getAvatar(@PathVariable String username) {
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png"))
 				.body(profileFacade.getAvatar(username));
 	}
