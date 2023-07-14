@@ -2,6 +2,7 @@ package com.salesmanager.core.business.repositories.merchant;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -48,4 +49,7 @@ public interface MerchantRepository extends JpaRepository<MerchantStore, Integer
 	  		+ "where m.STORE_CODE = ?1 or ?2 is null or m.PARENT_ID = ?2", 
 	  nativeQuery = true)
 	  List<MerchantStore> listByGroup(String storeCode, Integer id);
+	
+	@Query("select ms from MerchantStore ms ORDER BY ms.totalRating DESC")
+	List<MerchantStore> topEmployer(Pageable pageable);
 }

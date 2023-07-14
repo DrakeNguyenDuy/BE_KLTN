@@ -329,6 +329,12 @@ public class ProductApiV2 {
 	}
 //	end
 
+	@RequestMapping(value = "/products-lastest", method = RequestMethod.GET)
+	@ResponseBody
+	public  List<ReadableProduct> jobLastest() {
+		return productFacadeV2.getProductsLastest();
+	}
+
 	/** updates price quantity **/
 	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping(value = "/private/product/{sku}", produces = { APPLICATION_JSON_VALUE })

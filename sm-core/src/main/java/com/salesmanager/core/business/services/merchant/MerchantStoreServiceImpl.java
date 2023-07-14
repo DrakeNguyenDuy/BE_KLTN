@@ -40,7 +40,7 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	}
 
 	@Override
-	//@CacheEvict(value="store", key="#store.code")
+	// @CacheEvict(value="store", key="#store.code")
 	public void saveOrUpdate(MerchantStore store) throws ServiceException {
 		super.save(store);
 	}
@@ -49,7 +49,7 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	/**
 	 * cache moved in facades
 	 */
-	//@Cacheable(value = "store")
+	// @Cacheable(value = "store")
 	public MerchantStore getByCode(String code) throws ServiceException {
 		return merchantRepository.findByCode(code);
 	}
@@ -107,25 +107,23 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	public MerchantStore getParent(String code) throws ServiceException {
 		Validate.notNull(code, "MerchantStore code cannot be null");
 
-		
-		//get it
+		// get it
 		MerchantStore storeModel = this.getByCode(code);
-		
-		if(storeModel == null) {
+
+		if (storeModel == null) {
 			throw new ServiceException("Store with code [" + code + "] is not found");
 		}
-		
-		if(storeModel.isRetailer() != null && storeModel.isRetailer() && storeModel.getParent() == null) {
+
+		if (storeModel.isRetailer() != null && storeModel.isRetailer() && storeModel.getParent() == null) {
 			return storeModel;
 		}
-		
-		if(storeModel.getParent() == null) {
+
+		if (storeModel.getParent() == null) {
 			return storeModel;
 		}
-	
+
 		return merchantRepository.getById(storeModel.getParent().getId());
 	}
-
 
 	@Override
 	public List<MerchantStore> findAllStoreNames(String code) throws ServiceException {
@@ -133,44 +131,45 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	}
 
 	/**
-	 * Store might be alone (known as retailer)
-	 * A retailer can have multiple child attached
+	 * Store might be alone (known as retailer) A retailer can have multiple child
+	 * attached
 	 * 
-	 * This method from a store code is able to retrieve parent and childs.
-	 * Method can also filter on storeName
+	 * This method from a store code is able to retrieve parent and childs. Method
+	 * can also filter on storeName
 	 */
 	@Override
-	public Page<MerchantStore> listByGroup(Optional<String> storeName, String code, int page, int count) throws ServiceException {
-		
+	public Page<MerchantStore> listByGroup(Optional<String> storeName, String code, int page, int count)
+			throws ServiceException {
+
 		String name = null;
 		if (storeName != null && storeName.isPresent()) {
 			name = storeName.get();
 		}
 
-		
-		MerchantStore store = getByCode(code);//if exist
+		MerchantStore store = getByCode(code);// if exist
 		Optional<Integer> id = Optional.ofNullable(store.getId());
 
-		
 		Pageable pageRequest = PageRequest.of(page, count);
 
-
 		return pageableMerchantRepository.listByGroup(code, id.get(), name, pageRequest);
-		
-		
+
 	}
 
 	@Override
-	public boolean isStoreInGroup(String code) throws ServiceException{
-		
-		MerchantStore store = getByCode(code);//if exist
+	public boolean isStoreInGroup(String code) throws ServiceException {
+
+		MerchantStore store = getByCode(code);// if exist
 		Optional<Integer> id = Optional.ofNullable(store.getId());
-		
+
 		List<MerchantStore> stores = merchantRepository.listByGroup(code, id.get());
-		
-		
+
 		return stores.size() > 0;
 	}
 
+	@Override
+	public List<MerchantStore> topEmployer() {
+		Pageable paging = PageRequest.of(0, 3);
+		return merchantRepository.topEmployer(paging);
+	}
 
 }

@@ -95,6 +95,9 @@ public interface ProductFacade {
 	
 	//Long add some lines here(18/6/2023)
 	List<ReadableProduct> getProductsByStoreCode(String storeCode);
-//	end
+	//	end
 
+	//Long add some lines here(14/7/2023)
+	 List<ReadableProduct> getProductsLastest();
+	//	end
 }

@@ -3,6 +3,7 @@ package com.salesmanager.shop.store.facade.product;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -287,6 +288,12 @@ public class ProductFacadeV2Impl implements ProductFacade {
 			throw new NullPointerException("Not found store");
 		}
 		List<Product> products = productService.listByStore(store);
+		return products.stream().map(item -> readableProductMapper.convert(item)).toList();
+	}
+
+	@Override
+	public List<ReadableProduct> getProductsLastest() {
+		List<Product> products = productService.getProductsLastest();
 		return products.stream().map(item -> readableProductMapper.convert(item)).toList();
 	}
 

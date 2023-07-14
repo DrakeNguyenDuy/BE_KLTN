@@ -288,6 +288,12 @@ public class ProductFacadeImpl implements ProductFacade {
 		return null;
 	}
 
+	@Override
+	public  List<ReadableProduct> getProductsLastest() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

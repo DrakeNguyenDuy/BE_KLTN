@@ -13,6 +13,7 @@ import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableBrand;
+import com.salesmanager.shop.model.store.ReadableEmployer;
 import com.salesmanager.shop.model.store.ReadableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableMerchantStoreList;
 
@@ -140,5 +141,7 @@ public interface StoreFacade {
 	 * @return
 	 */
 	List<ReadableMerchantStore> getMerchantStoreNames(MerchantStoreCriteria criteria);
+	
+	List<ReadableEmployer> topEmployer();
 
 }
