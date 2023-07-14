@@ -103,8 +103,7 @@ public class CVMapper {
 		}
 
 		if (cv.getAlumnus().getProfile().getAvatar() != null) {
-			String image = Base64.getEncoder().encodeToString(cv.getAlumnus().getProfile().getAvatar());
-			cvDto.setAvatar(image);
+			cvDto.setAvatar("/api/v1/profile/avatar/"+cv.getAlumnus().getNick());
 		}
 
 		if (!Objects.isNull(cv.getAlumnus().getLastName()) && StringUtils.hasText(cv.getAlumnus().getLastName())) {

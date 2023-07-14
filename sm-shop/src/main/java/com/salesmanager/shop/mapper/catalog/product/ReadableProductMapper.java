@@ -585,7 +585,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setId(source.getId());
 		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
-		destination.setLogo(source.getMerchantStore().getCode());
+		destination.setLogo("/api/v1/store/"+source.getMerchantStore().getCode()+"/marketing/logo");
 		if (source.getMerchantStore() != null) {
 			destination.setNameCompany(source.getMerchantStore().getStorename());
 		}
@@ -724,7 +724,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setId(source.getId());
 		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
-		destination.setLogo(source.getMerchantStore().getCode());
+		destination.setLogo("/api/v1/store/"+source.getMerchantStore().getCode()+"/marketing/logo");
 		if (source.getMerchantStore() != null) {
 			String storeName = source.getMerchantStore().getStorename();
 			String phoneNumber = source.getMerchantStore().getStorephone();

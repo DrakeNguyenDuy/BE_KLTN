@@ -46,5 +46,4 @@ public interface CustomerService  extends SalesManagerEntityService<Long, Custom
 	Address getCustomerAddress(MerchantStore store, String ipAddress)
 			throws ServiceException;
 
-
 }

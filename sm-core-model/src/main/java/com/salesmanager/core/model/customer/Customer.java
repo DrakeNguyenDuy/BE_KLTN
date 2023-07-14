@@ -19,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -205,9 +206,14 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	private List<Recruitment> recruitments;
 	@OneToMany(mappedBy = "alumnus")
 	private List<JobRate> jobRates;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "alumnus")
 	private Set<EmployerReview> employerReviews = new HashSet<EmployerReview>();
+
+	@Lob
+	@Column(name = "avatar")
+	private byte[] avatar;
+
 	// end
 
 	public Customer() {
@@ -474,6 +480,14 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 
 	public void setEmployerReviews(Set<EmployerReview> employerReviews) {
 		this.employerReviews = employerReviews;
+	}
+
+	public byte[] getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
 	}
 
 //	end

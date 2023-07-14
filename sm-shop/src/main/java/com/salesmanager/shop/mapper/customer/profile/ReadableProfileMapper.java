@@ -76,8 +76,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 			fullName += source.getCustomer().getFirstName();
 		}
 		if ( source.getAvatar()!=null) {
-			String base64Image = Base64.getEncoder().encodeToString(source.getAvatar());
-			destination.setAvatar(base64Image);
+			destination.setAvatar("/api/v1/profile/avatar/"+source.getCustomer().getNick());
 		}
 		destination.setFullName(fullName);
 		if (!Objects.isNull(source.getCustomer().getGender())
