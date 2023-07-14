@@ -32,6 +32,7 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.salesmanager.core.constants.MeasureUnit;
+import com.salesmanager.core.model.catalog.product.attribute.ProductAttribute;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
@@ -42,29 +43,26 @@ import com.salesmanager.core.model.reference.zone.Zone;
 import com.salesmanager.core.utils.CloneUtils;
 
 @Entity
-@Table(name = "MERCHANT_STORE",
-	indexes = @Index(columnList = "LINEAGE"))
+@Table(name = "MERCHANT_STORE", indexes = @Index(columnList = "LINEAGE"))
 public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> implements Auditable {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public final static String DEFAULT_STORE = "DEFAULT";
-  
-  public MerchantStore(Integer id, String code, String name) {
-	  this.id = id;
-	  this.code = code;
-	  this.storename = name;
-	  
-  }
+	public final static String DEFAULT_STORE = "DEFAULT";
 
-  public MerchantStore(Integer id, String code, String name, String storeEmailAddress) {
-    this.id = id;
-    this.code = code;
-    this.storename = name;
-    this.storeEmailAddress = storeEmailAddress;
-  }
+	public MerchantStore(Integer id, String code, String name) {
+		this.id = id;
+		this.code = code;
+		this.storename = name;
 
+	}
 
+	public MerchantStore(Integer id, String code, String name, String storeEmailAddress) {
+		this.id = id;
+		this.code = code;
+		this.storename = name;
+		this.storeEmailAddress = storeEmailAddress;
+	}
 
 	@Id
 	@Column(name = "MERCHANT_ID", unique = true, nullable = false)
@@ -95,9 +93,9 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 	@Pattern(regexp = "^[a-zA-Z0-9_]*$")
 	@Column(name = "STORE_CODE", nullable = false, unique = true, length = 100)
 	private String code;
-	
-    @Column(name = "LINEAGE")
-    private String lineage;
+
+	@Column(name = "LINEAGE")
+	private String lineage;
 
 	@NotEmpty
 	@Column(name = "STORE_PHONE", length = 50)
@@ -177,7 +175,7 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 //	@Column(name = "STORE_LOGO", length = 255)
 //	private String storeLogo;
 //	end
-	
+
 	@Lob
 	@Column(name = "STORE_LOGO")
 	private byte[] storeLogo;
@@ -189,6 +187,15 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 
 	@Column(name = "CURRENCY_FORMAT_NATIONAL")
 	private boolean currencyFormatNational;
+
+	@Column(name = "TOTAL_RATING")
+	private Double totalRating;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employer")
+	private Set<EmployerReview> employerReviews = new HashSet<EmployerReview>();
+
+	@Column(name = "DESCRIPTION", columnDefinition = "TEXT")
+	private String description;
 
 	public MerchantStore() {
 	}
@@ -431,7 +438,7 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 	public void setRetailer(Boolean retailer) {
 		this.retailer = retailer;
 	}
-	//Long add some lines here(17/6/2023)
+	// Long add some lines here(17/6/2023)
 
 	public byte[] getStoreLogo() {
 		return storeLogo;
@@ -440,6 +447,31 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 	public void setStoreLogo(byte[] storeLogo) {
 		this.storeLogo = storeLogo;
 	}
+
+	public Double getTotalRating() {
+		return totalRating;
+	}
+
+	public void setTotalRating(Double totalRating) {
+		this.totalRating = totalRating;
+	}
+
+	public Set<EmployerReview> getEmployerReviews() {
+		return employerReviews;
+	}
+
+	public void setEmployerReviews(Set<EmployerReview> employerReviews) {
+		this.employerReviews = employerReviews;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 //	end
 
 }

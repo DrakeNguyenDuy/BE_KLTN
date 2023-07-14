@@ -101,5 +101,7 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
 	 * @return
 	 */
 	Product findOne(Long id, MerchantStore merchant);
+	
+	List<Product> getProductsLastest();
 
 }

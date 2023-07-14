@@ -2,6 +2,7 @@ package com.salesmanager.core.business.repositories.catalog.product;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,5 +24,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 	@Query(value = "select p from Product as p where p.sku=:sku")
 	List<Product> findBySku(String sku);
 //	end
+
+	// Long add some lines here
+	@Query("SELECT p FROM Product p ORDER BY p.auditSection.dateCreated DESC")
+	List<Product> findLastestAndOrderByCreateAt(Pageable pageable);
+	// end
 
 }

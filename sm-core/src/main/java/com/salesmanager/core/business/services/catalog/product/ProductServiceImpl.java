@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.exception.ServiceException;
@@ -443,5 +444,11 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		}
 	}
 //	end
+
+	@Override
+	public List<Product> getProductsLastest() {
+		Pageable paging = PageRequest.of(0, 18);
+		return productRepository.findLastestAndOrderByCreateAt(paging);
+	}
 
 }

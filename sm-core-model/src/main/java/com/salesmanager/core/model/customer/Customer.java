@@ -47,6 +47,7 @@ import com.salesmanager.core.model.customer.attribute.CustomerAttribute;
 import com.salesmanager.core.model.customer.profile.CV;
 import com.salesmanager.core.model.customer.profile.Profile;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
+import com.salesmanager.core.model.merchant.EmployerReview;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.recruitment.Recruitment;
 import com.salesmanager.core.model.reference.language.Language;
@@ -204,6 +205,9 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	private List<Recruitment> recruitments;
 	@OneToMany(mappedBy = "alumnus")
 	private List<JobRate> jobRates;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "alumnus")
+	private Set<EmployerReview> employerReviews = new HashSet<EmployerReview>();
 	// end
 
 	public Customer() {
@@ -462,6 +466,14 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public Set<EmployerReview> getEmployerReviews() {
+		return employerReviews;
+	}
+
+	public void setEmployerReviews(Set<EmployerReview> employerReviews) {
+		this.employerReviews = employerReviews;
 	}
 
 //	end

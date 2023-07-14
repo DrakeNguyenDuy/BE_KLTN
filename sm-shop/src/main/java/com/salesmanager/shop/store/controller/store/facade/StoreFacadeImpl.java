@@ -41,11 +41,13 @@ import com.salesmanager.core.model.merchant.MerchantStoreCriteria;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.system.MerchantConfiguration;
 import com.salesmanager.core.model.system.MerchantConfigurationType;
+import com.salesmanager.shop.mapper.store.Employer;
 import com.salesmanager.shop.model.content.ReadableImage;
 import com.salesmanager.shop.model.store.MerchantConfigEntity;
 import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableBrand;
+import com.salesmanager.shop.model.store.ReadableEmployer;
 import com.salesmanager.shop.model.store.ReadableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableMerchantStoreList;
 import com.salesmanager.shop.populator.store.PersistableMerchantStorePopulator;
@@ -83,6 +85,9 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Autowired
 	private ReadableMerchantStorePopulator readableMerchantStorePopulator;
+	
+	@Autowired
+	private Employer employerMapper;
 
 	private static final Logger LOG = LoggerFactory.getLogger(StoreFacadeImpl.class);
 
@@ -630,6 +635,11 @@ public class StoreFacadeImpl implements StoreFacade {
 //		}
 //		end
 		return images;
+	}
+
+	@Override
+	public List<ReadableEmployer> topEmployer() {
+		return merchantStoreService.topEmployer().stream().map(item-> employerMapper.convertToDto(item)).toList();
 	}
 
 }
