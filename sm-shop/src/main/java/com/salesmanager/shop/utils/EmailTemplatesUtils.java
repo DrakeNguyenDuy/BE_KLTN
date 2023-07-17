@@ -1,5 +1,26 @@
 package com.salesmanager.shop.utils;
 
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 import com.salesmanager.core.business.modules.email.Email;
 import com.salesmanager.core.business.services.catalog.pricing.PricingService;
 import com.salesmanager.core.business.services.catalog.product.ProductService;
@@ -19,18 +40,6 @@ import com.salesmanager.shop.constants.ApplicationConstants;
 import com.salesmanager.shop.constants.EmailConstants;
 import com.salesmanager.shop.model.customer.PersistableCustomer;
 import com.salesmanager.shop.model.shop.ContactForm;
-import org.apache.commons.lang3.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
 
 
 @Component
@@ -66,6 +75,12 @@ public class EmailTemplatesUtils {
 	@Inject
 	private FilePathUtils filePathUtils;
 	
+	@Autowired
+    private JavaMailSender emailSender;
+
+    @Autowired
+    private TemplateEngine templateEngine;
+    
 	private final static String LINE_BREAK = "<br/>";
 	private final static String TABLE = "<table width=\"100%\">";
 	private final static String CLOSING_TABLE = "</table>";
@@ -515,4 +530,29 @@ public class EmailTemplatesUtils {
 		
 	}
 
+	 public void sendJobApplicationNotification(String toEmail, String to, String jobTitle, String companyName, String applicationDate, String status) {
+		 try {
+	            MimeMessage message = emailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	            helper.setTo(toEmail);
+	            helper.setSubject("Job Application Notification");
+	            helper.setFrom("ndlong28@gmail.com");
+
+	            Context context = new Context();
+	            context.setVariable("name", to);
+	            context.setVariable("jobTitle", jobTitle);
+	            context.setVariable("companyName", companyName);
+	            context.setVariable("applicationDate", applicationDate);
+	            context.setVariable("status", status);
+	            context.setVariable("systemName", "Your System Name");
+
+	            String content = templateEngine.process("apply", context);
+	            helper.setText(content, true);
+
+	            emailSender.send(message);
+	           System.out.println("Send mail success");
+	        } catch (Exception e) {
+	            System.out.println(e);
+	        }
+	 }
 }

@@ -3,6 +3,8 @@ package com.salesmanager.shop.store.facade.recruitment;
 import java.util.List;
 
 import com.salesmanager.shop.model.recruitment.RecruitmentDto;
+import com.salesmanager.shop.model.recruitment.RecruitmentStatusDto;
+import com.salesmanager.shop.model.recruitment.StatusProcessDto;
 
 public interface RecruitmentFacade {
 
@@ -13,4 +15,8 @@ public interface RecruitmentFacade {
 	
 	//get list apply by nick name of alumnus
 	public List<RecruitmentDto> findRecruitmentByAlumnus(String nickname);
+	
+	public String changeStatus(RecruitmentStatusDto recruitmentStatusDto);
+	
+	public List<StatusProcessDto> getListStatusProcess();
 }

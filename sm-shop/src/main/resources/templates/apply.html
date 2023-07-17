@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Application Notification</title>
+</head>
+<body>
+    <h1>Job Application Notification</h1>
+    <p>Dear [[${name}]],</p>
+    <p>We would like to inform you that your job application for the position of [[${jobTitle}]] at [[${companyName}]] has been received on [[${applicationDate}]].</p>
+    <p>Your application status is currently: [[${status}]].</p>
+    <p>Thank you for using our job search system.</p>
+    <p>Best regards,</p>
+    <p>[[${systemName}]]</p>
+</body>
+</html>

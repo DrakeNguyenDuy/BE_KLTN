@@ -2,6 +2,7 @@ package com.salesmanager.core.business.services.recruitment;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -31,10 +32,12 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 	@Override
 	@Transactional
 	public String appy(Recruitment r) {
-		Recruitment recruitment = recruitmentReposistory.saveAndFlush(r);
-		if (recruitment.getId() != null)
-			return Constants.APPLY_SUCCESS;
-		return Constants.APPLY_FAILED;
+		Optional<Recruitment> isExist = recruitmentReposistory.checkExist(r.getAlumnus().getId(), r.getJob().getId());
+		if (isExist.isPresent()) {
+			return Constants.APPLY_DUPLICATE;
+		}
+		recruitmentReposistory.saveAndFlush(r);
+		return Constants.APPLY_SUCCESS;
 	}
 
 	@Override
@@ -53,6 +56,22 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 			throw new NullPointerException(Constants.CAN_NOT_FOUND_ALUMNUS_WHEN_FIND_RECRUITMENT_BY_ALUMNUS);
 		}
 		return recruitmentReposistory.findByAlumnus(alumus);
+	}
+
+	@Override
+	public String changeStatus(Recruitment recruitment) {
+		recruitmentReposistory.save(recruitment);
+		return Constants.CHANGE_STATUS_SUCCESS;
+	}
+
+	@Override
+	public Optional<Recruitment> findById(String id) {
+		return recruitmentReposistory.findById(id);
+	}
+
+	@Override
+	public void update(Recruitment r) {
+		recruitmentReposistory.save(r);
 	}
 
 }
