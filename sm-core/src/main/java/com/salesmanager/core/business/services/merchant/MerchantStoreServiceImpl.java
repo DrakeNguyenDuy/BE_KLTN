@@ -172,4 +172,13 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 		return merchantRepository.topEmployer(paging);
 	}
 
+	@Override
+	public byte[] getBackground(String code) {
+		MerchantStore merchantStore= merchantRepository.findByCode(code);
+		if(merchantStore==null) {
+			return new  byte[0];
+		}
+		return merchantStore.getBackGround();
+	}
+
 }

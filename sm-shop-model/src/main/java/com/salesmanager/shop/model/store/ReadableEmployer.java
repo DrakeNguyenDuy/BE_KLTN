@@ -7,6 +7,8 @@ public class ReadableEmployer {
 	private String address;
 	private String phone;
 	private String description;
+	private String sologan;
+	private String background;
 
 	public Integer getId() {
 		return id;
@@ -54,6 +56,22 @@ public class ReadableEmployer {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getSologan() {
+		return sologan;
+	}
+
+	public void setSologan(String sologan) {
+		this.sologan = sologan;
+	}
+
+	public String getBackground() {
+		return background;
+	}
+
+	public void setBackground(String background) {
+		this.background = background;
 	}
 
 }

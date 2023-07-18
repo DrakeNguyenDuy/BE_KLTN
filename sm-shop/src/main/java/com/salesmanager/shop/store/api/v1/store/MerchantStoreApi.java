@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,7 @@ import com.salesmanager.core.model.merchant.MerchantStoreCriteria;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.constants.Constants;
 import com.salesmanager.shop.model.entity.EntityExists;
+import com.salesmanager.shop.model.store.EmployerDetailDto;
 import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableBrand;
@@ -329,6 +331,39 @@ public class MerchantStoreApi {
 		byte image[] = storeFacade.getStoreLogo(codeStore);
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(image);
 	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(value = { "/store/{codeStore}/background" })
+	public ResponseEntity<?> getBackground(@PathVariable String codeStore) {
+		byte image[] = storeFacade.getBackground(codeStore);
+		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(image);
+	}
+	
+	@ResponseStatus(HttpStatus.CREATED)
+	@PostMapping(value = { "/private/store/{code}/background" })
+	@ApiOperation(httpMethod = "POST", value = "Add store logo", notes = "")
+	public void addBackground(@PathVariable String code, @RequestParam("file") MultipartFile uploadfile,
+			HttpServletRequest request) {
+
+		// user doing action must be attached to the store being modified
+		String userName = getUserFromRequest(request);
+
+		validateUserPermission(userName, code);
+
+		if (uploadfile.isEmpty()) {
+			throw new RestApiException("Upload file is empty");
+		}
+
+		storeFacade.addBackground(code, uploadfile);
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@PutMapping(value = { "/private/store/{codeStore}/edit" })
+	public ResponseEntity<String> editEmployer(@PathVariable String codeStore,
+			@RequestBody EmployerDetailDto detailDto) {
+		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+				.body(storeFacade.edtitEmployer(codeStore, detailDto));
+	}
 //	end
 
 	private InputContentFile createInputContentFile(MultipartFile image) {
@@ -396,6 +431,11 @@ public class MerchantStoreApi {
 	@GetMapping(value = { "/top-employer" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ReadableEmployer> topEmployer() {
 		return storeFacade.topEmployer();
+	}
+
+	@GetMapping(value = { "/employer-detail/{code}" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	public EmployerDetailDto getDetailEmployer(@PathVariable String code) {
+		return storeFacade.getDetailEmployer(code);
 	}
 	// end
 
