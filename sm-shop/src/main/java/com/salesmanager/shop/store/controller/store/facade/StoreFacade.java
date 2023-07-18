@@ -10,6 +10,7 @@ import com.salesmanager.core.model.content.InputContentFile;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.merchant.MerchantStoreCriteria;
 import com.salesmanager.core.model.reference.language.Language;
+import com.salesmanager.shop.model.store.EmployerDetailDto;
 import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableBrand;
@@ -144,4 +145,11 @@ public interface StoreFacade {
 	
 	List<ReadableEmployer> topEmployer();
 
+	EmployerDetailDto getDetailEmployer(String code);
+	
+	byte[] getBackground(String code) ;
+	
+	String edtitEmployer(String storeCode, EmployerDetailDto employerDetailDto);
+	
+	void addBackground(String code, MultipartFile cmsContentImage);
 }

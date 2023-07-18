@@ -16,6 +16,10 @@ public class Employer {
 		if (source.getStoreLogo() != null) {
 			result.setLogo("/api/v1/store/" + source.getCode() + "/marketing/logo");
 		}
+		if (source.getBackGround() != null) {
+			result.setBackground("/api/v1/store/" + source.getCode() + "/background");
+		}
+		result.setSologan(source.getSologan());
 		result.setName(source.getStorename());
 		result.setPhone(source.getStorephone());
 		return result;

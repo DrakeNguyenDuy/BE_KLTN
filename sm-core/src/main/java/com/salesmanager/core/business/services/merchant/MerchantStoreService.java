@@ -46,4 +46,6 @@ public interface MerchantStoreService extends SalesManagerEntityService<Integer,
 	GenericEntityList<MerchantStore> getByCriteria(MerchantStoreCriteria criteria) throws ServiceException;
 
 	List<MerchantStore> topEmployer();
+	
+	byte[] getBackground(String code) ;
 }

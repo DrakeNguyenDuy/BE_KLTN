@@ -42,7 +42,9 @@ import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.system.MerchantConfiguration;
 import com.salesmanager.core.model.system.MerchantConfigurationType;
 import com.salesmanager.shop.mapper.store.Employer;
+import com.salesmanager.shop.mapper.store.EmployerDetailMapper;
 import com.salesmanager.shop.model.content.ReadableImage;
+import com.salesmanager.shop.model.store.EmployerDetailDto;
 import com.salesmanager.shop.model.store.MerchantConfigEntity;
 import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
@@ -85,9 +87,12 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Autowired
 	private ReadableMerchantStorePopulator readableMerchantStorePopulator;
-	
+
 	@Autowired
 	private Employer employerMapper;
+	
+	@Autowired
+	private EmployerDetailMapper employerDetailMapper;
 
 	private static final Logger LOG = LoggerFactory.getLogger(StoreFacadeImpl.class);
 
@@ -373,7 +378,7 @@ public class StoreFacadeImpl implements StoreFacade {
 		store.setStoreLogo(null);
 
 		updateMerchantStore(store);
-		
+
 //		Long hide some lines here(17/6/2023)
 //		try {
 //			if (!StringUtils.isEmpty(image)) {
@@ -624,7 +629,7 @@ public class StoreFacadeImpl implements StoreFacade {
 	public byte[] getStoreLogo(String code) {
 		MerchantStore store = getByCode(code);
 		byte[] images = store.getStoreLogo();
-		
+
 //		Long hide some lines here(17/6/2023)
 //		try {
 //			images = Files
@@ -639,7 +644,52 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Override
 	public List<ReadableEmployer> topEmployer() {
-		return merchantStoreService.topEmployer().stream().map(item-> employerMapper.convertToDto(item)).toList();
+		return merchantStoreService.topEmployer().stream().map(item -> employerMapper.convertToDto(item)).toList();
+	}
+
+	@Override
+	public EmployerDetailDto getDetailEmployer(String code) {
+		MerchantStore employer=null;
+		try {
+			employer = merchantStoreService.getByCode(code);
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return employerDetailMapper.convertToDTO(employer);
+	}
+
+	@Override
+	public byte[] getBackground(String code) {
+		return merchantStoreService.getBackground(code);
+	}
+
+	@Override
+	public String edtitEmployer(String storeCode, EmployerDetailDto employerDetailDto) {
+		MerchantStore employer = employerDetailMapper.convertToEntity(storeCode, employerDetailDto);
+		try {
+			merchantStoreService.save(employer);
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Update fail";
+		}
+		return "Update success";
+	}
+
+	@Override
+	public void addBackground(String code, MultipartFile cmsContentImage) {
+		MerchantStore store;
+		try {
+			store = merchantStoreService.getByCode(code);
+			store.setBackGround(cmsContentImage.getBytes());
+			merchantStoreService.save(store);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

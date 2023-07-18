@@ -196,6 +196,16 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 
 	@Column(name = "DESCRIPTION", columnDefinition = "TEXT")
 	private String description;
+	
+	@Lob
+	@Column(name = "BACK_GROUND")
+	private byte[] backGround;
+	
+	@Column(name = "SOLOGAN", length = 255)
+	private String sologan;
+	
+	@Column(name = "NUM_OF_EMPLOYEE")
+	private Integer numOfEmployee;
 
 	public MerchantStore() {
 	}
@@ -470,6 +480,30 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public byte[] getBackGround() {
+		return backGround;
+	}
+
+	public void setBackGround(byte[] backGround) {
+		this.backGround = backGround;
+	}
+
+	public String getSologan() {
+		return sologan;
+	}
+
+	public void setSologan(String sologan) {
+		this.sologan = sologan;
+	}
+
+	public Integer getNumOfEmployee() {
+		return numOfEmployee;
+	}
+
+	public void setNumOfEmployee(Integer numOfEmployee) {
+		this.numOfEmployee = numOfEmployee;
 	}
 
 //	end
