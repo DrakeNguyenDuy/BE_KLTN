@@ -24,11 +24,11 @@ public class JobRateApi {
 	@Autowired
 	private JobRateFacade jobRateFacade;
 
-	@PostMapping(value = "/auth/rating/{jobId}")
+	@PostMapping(value = "/auth/rating/{jobCode}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public void likeOrRejectLike(@PathVariable Long jobId, HttpServletRequest request) {
+	public void likeOrRejectLike(@PathVariable String jobCode, HttpServletRequest request) {
 		String username = request.getUserPrincipal().getName();
-		jobRateFacade.likeOrUnlike(username, jobId);
+		jobRateFacade.likeOrUnlike(username, jobCode);
 	}
 
 	@GetMapping(value = "/auth/rating")

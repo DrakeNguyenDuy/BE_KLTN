@@ -26,21 +26,21 @@ public class RecruitmentApi {
 	@Autowired
 	private RecruitmentFacade recruitmentFacade;
 
-	@PostMapping(value = "/auth/recruitment/apply/{jobId}")
-	public ResponseEntity<String> apply(@PathVariable Long jobId, HttpServletRequest request) {
+	@PostMapping(value = "/auth/recruitment/apply/{codeJob}")
+	public ResponseEntity<String> apply(@PathVariable String codeJob, HttpServletRequest request) {
 		String customerName = request.getUserPrincipal().getName();// is nick name of customer
 		try {
-			return ResponseEntity.ok(recruitmentFacade.apply(customerName, jobId));
+			return ResponseEntity.ok(recruitmentFacade.apply(customerName, codeJob));
 		} catch (NullPointerException e) {
 			throw new RestApiException(e.getMessage());
 		}
 	}
 
 	//get list alumnus applied a job
-	@GetMapping(value = "/private/recruitment/{jobId}")
-	public ResponseEntity<List<RecruitmentDto>> findRecruitmentByJob(@PathVariable Long jobId) {
+	@GetMapping(value = "/private/recruitment/{codeJob}")
+	public ResponseEntity<List<RecruitmentDto>> findRecruitmentByJob(@PathVariable String codeJob) {
 		try {
-			return ResponseEntity.ok(recruitmentFacade.findApplyByJob(jobId));
+			return ResponseEntity.ok(recruitmentFacade.findApplyByJob(codeJob));
 		} catch (NullPointerException e) {
 			throw new RestApiException(e.getMessage());
 		}

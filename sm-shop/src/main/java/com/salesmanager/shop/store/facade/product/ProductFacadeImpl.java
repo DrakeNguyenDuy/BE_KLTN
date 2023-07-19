@@ -271,13 +271,7 @@ public class ProductFacadeImpl implements ProductFacade {
 	}
 
 	@Override
-	public ReadableProductList getProductLists(ProductCriteria criterias) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ReadableProductDetail getProductByCode(String uniqueCode) {
+	public ReadableProductDetail getProductByCode(String username,String uniqueCode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -289,7 +283,13 @@ public class ProductFacadeImpl implements ProductFacade {
 	}
 
 	@Override
-	public  List<ReadableProduct> getProductsLastest() {
+	public  List<ReadableProduct> getProductsLastest(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ReadableProductList getProductLists(String username, ProductCriteria criterias) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

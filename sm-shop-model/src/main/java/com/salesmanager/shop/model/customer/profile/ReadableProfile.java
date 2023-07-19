@@ -7,6 +7,7 @@ import com.salesmanager.shop.model.catalog.product.type.ReadableProductType;
 import com.salesmanager.shop.model.englishLevel.ReadableEnglishLevel;
 import com.salesmanager.shop.model.experience.ReadableExperience;
 import com.salesmanager.shop.model.location.ReadableDistrict;
+import com.salesmanager.shop.model.location.ReadableProvince;
 import com.salesmanager.shop.model.paycircle.ReadablePaycycle;
 import com.salesmanager.shop.model.skill.ReadableSkillDescription;
 
@@ -15,6 +16,8 @@ public class ReadableProfile {
 	private String username;
 	private String email;
 	private String fullName;
+	private String dob;
+	private String phone;
 	private String avatar;
 	private String introduce;
 	private String goal;
@@ -25,6 +28,7 @@ public class ReadableProfile {
 	private List<ProfileSkillDto> skills;
 	private ReadableCategory formWork;
 	private List<ReadableDistrict> districts;
+	private List<ReadableProvince> provinces;
 	private ReadablePaycycle paycycle;
 	private ReadableExperience experience;
 
@@ -156,5 +160,29 @@ public class ReadableProfile {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getDob() {
+		return dob;
+	}
+
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public List<ReadableProvince> getProvinces() {
+		return provinces;
+	}
+
+	public void setProvinces(List<ReadableProvince> provinces) {
+		this.provinces = provinces;
 	}
 }

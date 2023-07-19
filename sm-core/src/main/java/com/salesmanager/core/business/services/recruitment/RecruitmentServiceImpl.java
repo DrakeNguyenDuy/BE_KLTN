@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.constants.Constants;
+import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.recruitment.RecruitmentRepository;
 import com.salesmanager.core.business.services.catalog.product.ProductService;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -41,9 +42,11 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 	}
 
 	@Override
-	public List<Recruitment> findApplyByJob(Long productId) {
-		Product job = productService.getById(productId);
-		if (Objects.isNull(job)) {
+	public List<Recruitment> findApplyByJob(String codeJob) {
+		Product job;
+		try {
+			job = productService.getBySku(codeJob);
+		} catch (ServiceException e) {
 			throw new NullPointerException(Constants.CAN_NOT_FOUND_JOB_WHEN_FIND_RECRUITMENT_BY_JOB);
 		}
 		return recruitmentReposistory.findByJob(job);

@@ -34,7 +34,7 @@ public interface ProductFacade {
 	ReadableProduct getProductByCode(MerchantStore store, String uniqueCode, Language language);
 	
 //	Long add some lines here(20/5/2023)
-	ReadableProductDetail getProductByCode(String uniqueCode);
+	ReadableProductDetail getProductByCode(String username,String uniqueCode);
 //	end
 
 	/**
@@ -79,7 +79,7 @@ public interface ProductFacade {
 	 * @return
 	 * @throws Exception
 	 */
-	ReadableProductList getProductLists(ProductCriteria criterias) throws Exception;
+	ReadableProductList getProductLists(String username,ProductCriteria criterias) throws Exception;
 //  end
 
 	/**
@@ -98,6 +98,6 @@ public interface ProductFacade {
 	//	end
 
 	//Long add some lines here(14/7/2023)
-	 List<ReadableProduct> getProductsLastest();
+	 List<ReadableProduct> getProductsLastest(String username);
 	//	end
 }

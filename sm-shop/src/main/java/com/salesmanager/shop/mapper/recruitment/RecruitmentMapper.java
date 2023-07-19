@@ -25,18 +25,18 @@ public class RecruitmentMapper {
 	@Autowired
 	private ProductRepository productRepository;
 
-	public Recruitment convertToEntity(String customerName, Long jobId) {
+	public Recruitment convertToEntity(String customerName, String codeJob) {
 		Customer alumnus = customerRepository.findByNick(customerName);
-		if (Objects.isNull(jobId)) {
-			throw new NullPointerException("Customer not found when apply");
+		if (Objects.isNull(codeJob)) {
+			throw new NullPointerException("Job not found when apply");
 		}
 
-		Optional<Product> jobOpt = productRepository.findById(jobId);
-		if (!jobOpt.isPresent()) {
+		List<Product> jobs = productRepository.findBySku(codeJob);
+		if (jobs.size()==0) {
 			throw new NullPointerException("Can not found job when apply");
 		}
 
-		Product job = jobOpt.get();
+		Product job = jobs.get(0);
 
 		Recruitment recruitment = new Recruitment();
 		recruitment.setAlumnus(alumnus);
@@ -56,6 +56,8 @@ public class RecruitmentMapper {
 		destination.setApplyDate(ConverterDate.convertDateToString(recruitment.getApplyDate().toString()));
 		destination.setCvId(recruitment.getAlumnus().getCvs().get(0).getId());
 		destination.setIdJob(recruitment.getJob().getId());
+		destination
+				.setNameAlumnus(recruitment.getAlumnus().getLastName() + " " + recruitment.getAlumnus().getFirstName());
 		if (!Objects.isNull(recruitment.getJob().getMerchantStore().getStorename())) {
 			destination.setNameCompany(recruitment.getJob().getMerchantStore().getStorename());
 		}
