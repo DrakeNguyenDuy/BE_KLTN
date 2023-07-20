@@ -4,6 +4,7 @@ public class RecruitmentDto {
 	private String id;
 	private Long idJob;
 	private String nameJob;
+	private String codeJob;
 	private String nameAlumnus;
 	private String nameCompany;
 	private String cvId;
@@ -72,6 +73,14 @@ public class RecruitmentDto {
 
 	public void setNameAlumnus(String nameAlumnus) {
 		this.nameAlumnus = nameAlumnus;
+	}
+
+	public String getCodeJob() {
+		return codeJob;
+	}
+
+	public void setCodeJob(String codeJob) {
+		this.codeJob = codeJob;
 	}
 
 }

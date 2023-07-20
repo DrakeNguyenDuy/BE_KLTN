@@ -10,5 +10,5 @@ public interface JobRateFacade {
 	
 	public List<JobRateDto> findByAlumnusId(String nickname);
 	
-	public List<JobRateDto> findByJobId(Long jobId);
+	public List<JobRateDto> findByCodeJob(String codeJob);
 }

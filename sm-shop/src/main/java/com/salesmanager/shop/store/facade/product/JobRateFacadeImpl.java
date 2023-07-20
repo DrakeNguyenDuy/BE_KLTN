@@ -79,9 +79,11 @@ public class JobRateFacadeImpl implements JobRateFacade {
 	}
 
 	@Override
-	public List<JobRateDto> findByJobId(Long jobId) {
-		Product job = productService.getById(jobId);
-		if (Objects.isNull(job)) {
+	public List<JobRateDto> findByCodeJob(String codeJob) {
+		Product job;
+		try {
+			job = productService.getBySku(codeJob);
+		} catch (ServiceException e) {
 			throw new NullPointerException(Constants.NOT_FOUND_JOB_WHILE_CREATE_RATE);
 		}
 		return jobRateMapper.convertToDtos(jobRateService.findByJob(job));

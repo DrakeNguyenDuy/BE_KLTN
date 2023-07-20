@@ -37,8 +37,8 @@ public class JobRateApi {
 		return ResponseEntity.ok(jobRateFacade.findByAlumnusId(nickName));
 	}
 
-	@GetMapping(value = "/auth/rating/{jobId}")
-	public ResponseEntity<List<JobRateDto>> findByJob(@PathVariable Long jobId) {
-		return ResponseEntity.ok(jobRateFacade.findByJobId(jobId));
+	@GetMapping(value = "/auth/rating/{codeJob}")
+	public ResponseEntity<List<JobRateDto>> findByJob(@PathVariable String codeJob) {
+		return ResponseEntity.ok(jobRateFacade.findByCodeJob(codeJob));
 	}
 }

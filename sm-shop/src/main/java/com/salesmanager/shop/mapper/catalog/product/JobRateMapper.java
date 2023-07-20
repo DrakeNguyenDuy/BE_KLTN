@@ -20,6 +20,7 @@ public class JobRateMapper {
 		JobRateDto jobRateDto = new JobRateDto();
 		jobRateDto.setId(source.getId());
 		jobRateDto.setIdJob(source.getJob().getId());
+		jobRateDto.setCodeJob(source.getJob().getSku());
 		if (source.getJob().getDescriptions().iterator().hasNext()) {
 			jobRateDto.setNameJob(source.getJob().getDescriptions().iterator().next().getName());
 		}
@@ -30,6 +31,7 @@ public class JobRateMapper {
 		jobRateDto.setDateRating(source.getDateRating().toString());
 		jobRateDto.setAlumnusId(source.getAlumnus().getId());
 		jobRateDto.setNameAlumnus(source.getAlumnus().getLastName() + " " + source.getAlumnus().getFirstName());
+		jobRateDto.setAlumnusUsername(source.getAlumnus().getNick());
 		return jobRateDto;
 	}
 }

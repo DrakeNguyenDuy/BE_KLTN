@@ -56,6 +56,7 @@ public class RecruitmentMapper {
 		destination.setApplyDate(ConverterDate.convertDateToString(recruitment.getApplyDate().toString()));
 		destination.setCvId(recruitment.getAlumnus().getCvs().get(0).getId());
 		destination.setIdJob(recruitment.getJob().getId());
+		destination.setCodeJob(recruitment.getJob().getSku());
 		destination
 				.setNameAlumnus(recruitment.getAlumnus().getLastName() + " " + recruitment.getAlumnus().getFirstName());
 		if (!Objects.isNull(recruitment.getJob().getMerchantStore().getStorename())) {
