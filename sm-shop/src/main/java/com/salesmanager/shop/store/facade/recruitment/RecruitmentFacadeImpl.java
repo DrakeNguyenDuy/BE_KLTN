@@ -30,24 +30,24 @@ public class RecruitmentFacadeImpl implements RecruitmentFacade {
 	private EmailTemplatesUtils emailTemplatesUtils;
 
 	@Override
-	public String apply(String customerName, Long jobId) {
-		Recruitment recruitment = recruitmentMapper.convertToEntity(customerName, jobId);
+	public String apply(String customerName, String codeJob) {
+		Recruitment recruitment = recruitmentMapper.convertToEntity(customerName, codeJob);
 		String message = recruitmentService.appy(recruitment);
-		if (message.equals(Constants.APPLY_SUCCESS)) {
-			String toEmail = recruitment.getAlumnus().getEmailAddress();
-			String name = recruitment.getAlumnus().getFirstName() + " " + recruitment.getAlumnus().getLastName();
-			String jobTitle = recruitment.getJob().getProductDescription().getName();
-			String nameCompany = recruitment.getJob().getMerchantStore().getStorename();
-			String status = recruitment.getStatusProcess().toString();
-			String dateApply = ConverterDate.convertDateToString(recruitment.getApplyDate().toString());
-			emailTemplatesUtils.sendJobApplicationNotification(toEmail, name, jobTitle, nameCompany, dateApply, status);
-		}
+//		if (message.equals(Constants.APPLY_SUCCESS)) {
+//			String toEmail = recruitment.getAlumnus().getEmailAddress();
+//			String name = recruitment.getAlumnus().getFirstName() + " " + recruitment.getAlumnus().getLastName();
+//			String jobTitle = recruitment.getJob().getProductDescription().getName();
+//			String nameCompany = recruitment.getJob().getMerchantStore().getStorename();
+//			String status = recruitment.getStatusProcess().toString();
+//			String dateApply = ConverterDate.convertDateToString(recruitment.getApplyDate().toString());
+//			emailTemplatesUtils.sendJobApplicationNotification(toEmail, name, jobTitle, nameCompany, dateApply, status);
+//		}
 		return message;
 	}
 
 	@Override
-	public List<RecruitmentDto> findApplyByJob(Long productId) {
-		return recruitmentMapper.convertToDtos(recruitmentService.findApplyByJob(productId));
+	public List<RecruitmentDto> findApplyByJob(String codeJob) {
+		return recruitmentMapper.convertToDtos(recruitmentService.findApplyByJob(codeJob));
 	}
 
 	@Override

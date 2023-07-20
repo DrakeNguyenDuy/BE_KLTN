@@ -22,6 +22,7 @@ public class Employer {
 		result.setSologan(source.getSologan());
 		result.setName(source.getStorename());
 		result.setPhone(source.getStorephone());
+		result.setCode(source.getCode());
 		return result;
 	}
 }

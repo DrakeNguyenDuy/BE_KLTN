@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -311,15 +312,15 @@ public class ProductApiV2 {
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, // paging
 //			end
 
-			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count // count
-	// per
-	// page
-	) {
+			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count ,// count
+			// per
+			// page
+			@RequestParam(required = false) String username) {
 		searchCriterias.setMaxCount(count);
 		searchCriterias.setStartPage(page);
 
 		try {
-			return productFacadeV2.getProductLists(searchCriterias);
+			return productFacadeV2.getProductLists(username, searchCriterias);
 
 		} catch (Exception e) {
 			LOGGER.error("Error while filtering products product", e);
@@ -331,8 +332,8 @@ public class ProductApiV2 {
 
 	@RequestMapping(value = "/products-lastest", method = RequestMethod.GET)
 	@ResponseBody
-	public  List<ReadableProduct> jobLastest() {
-		return productFacadeV2.getProductsLastest();
+	public List<ReadableProduct> jobLastest(@RequestParam(required = false) String username) {
+		return productFacadeV2.getProductsLastest(username);
 	}
 
 	/** updates price quantity **/
@@ -381,8 +382,8 @@ public class ProductApiV2 {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Single product found", response = ReadableProduct.class) })
 	@ResponseBody
-	public ReadableProductDetail get(@PathVariable final String sku) {
-		ReadableProductDetail product = productFacadeV2.getProductByCode(sku);
+	public ReadableProductDetail get(@PathVariable final String sku, @RequestParam(required = false) String username) {
+		ReadableProductDetail product = productFacadeV2.getProductByCode(username, sku);
 		return product;
 	}
 

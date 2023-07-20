@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.catalog.product.ProductService;
 import com.salesmanager.core.business.services.catalog.product.jobRate.JobRateService;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -35,13 +36,15 @@ public class JobRateFacadeImpl implements JobRateFacade {
 
 	@SuppressWarnings("null")
 	@Override
-	public void likeOrUnlike(String nickname, Long jobId) {
+	public void likeOrUnlike(String nickname, String jobCode) {
 		Customer alumnus = customerService.getByNick(nickname);
 		if (Objects.isNull(alumnus)) {
 			throw new NullPointerException(Constants.NOT_FOUND_CUSTOMER_WHILE_CREATE_RATE);
 		}
-		Product job = productService.getById(jobId);
-		if (Objects.isNull(job)) {
+		Product job;
+		try {
+			job = productService.getBySku(jobCode);
+		} catch (ServiceException e) {
 			throw new NullPointerException(Constants.NOT_FOUND_JOB_WHILE_CREATE_RATE);
 		}
 
@@ -76,9 +79,11 @@ public class JobRateFacadeImpl implements JobRateFacade {
 	}
 
 	@Override
-	public List<JobRateDto> findByJobId(Long jobId) {
-		Product job = productService.getById(jobId);
-		if (Objects.isNull(job)) {
+	public List<JobRateDto> findByCodeJob(String codeJob) {
+		Product job;
+		try {
+			job = productService.getBySku(codeJob);
+		} catch (ServiceException e) {
 			throw new NullPointerException(Constants.NOT_FOUND_JOB_WHILE_CREATE_RATE);
 		}
 		return jobRateMapper.convertToDtos(jobRateService.findByJob(job));

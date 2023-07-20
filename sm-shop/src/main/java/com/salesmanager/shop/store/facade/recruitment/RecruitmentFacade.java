@@ -8,10 +8,10 @@ import com.salesmanager.shop.model.recruitment.StatusProcessDto;
 
 public interface RecruitmentFacade {
 
-	String apply(String customerName, Long jobId);
+	String apply(String customerName, String codeJob);
 	
 	//get list apply by job
-	public List<RecruitmentDto> findApplyByJob(Long productId);
+	public List<RecruitmentDto> findApplyByJob(String codeJob);
 	
 	//get list apply by nick name of alumnus
 	public List<RecruitmentDto> findRecruitmentByAlumnus(String nickname);

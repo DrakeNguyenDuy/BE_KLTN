@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.salesmanager.core.business.services.catalog.pricing.PricingService;
+import com.salesmanager.core.business.services.catalog.product.jobRate.JobRateService;
 import com.salesmanager.core.business.services.catalog.product.paycycle.PayCycleService;
 import com.salesmanager.core.business.services.catalog.product.price.ProductPriceService;
 import com.salesmanager.core.model.catalog.product.Product;
@@ -30,6 +31,7 @@ import com.salesmanager.core.model.catalog.product.price.FinalPrice;
 import com.salesmanager.core.model.catalog.product.price.ProductPrice;
 import com.salesmanager.core.model.catalog.product.price.ProductPriceDescription;
 import com.salesmanager.core.model.catalog.product.variant.ProductVariant;
+import com.salesmanager.core.model.customer.JobRate;
 import com.salesmanager.core.model.experience.ExperienceDescription;
 import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -97,6 +99,9 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 	@Autowired
 	private PricingService pricingService;
+	
+	@Autowired
+	private JobRateService jobRateService;
 
 	@Override
 	public ReadableProduct convert(Product source, MerchantStore store, Language language) {
@@ -611,6 +616,8 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			String payCycle= payCycleService.getPayCycleByCode(source.getIdPayCycle()).getName();
 			destination.setPayCycle(payCycle);
 		}
+		
+		JobRate jobRate = jobRateService.findByJobAndAlumnus(source, null);
 		// end
 
 		destination.setId(source.getId());

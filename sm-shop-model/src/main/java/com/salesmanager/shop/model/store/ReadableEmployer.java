@@ -9,6 +9,7 @@ public class ReadableEmployer {
 	private String description;
 	private String sologan;
 	private String background;
+	private String code;
 
 	public Integer getId() {
 		return id;
@@ -72,6 +73,14 @@ public class ReadableEmployer {
 
 	public void setBackground(String background) {
 		this.background = background;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

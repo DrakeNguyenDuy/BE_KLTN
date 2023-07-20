@@ -24,11 +24,11 @@ public class JobRateApi {
 	@Autowired
 	private JobRateFacade jobRateFacade;
 
-	@PostMapping(value = "/auth/rating/{jobId}")
+	@PostMapping(value = "/auth/rating/{jobCode}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public void likeOrRejectLike(@PathVariable Long jobId, HttpServletRequest request) {
+	public void likeOrRejectLike(@PathVariable String jobCode, HttpServletRequest request) {
 		String username = request.getUserPrincipal().getName();
-		jobRateFacade.likeOrUnlike(username, jobId);
+		jobRateFacade.likeOrUnlike(username, jobCode);
 	}
 
 	@GetMapping(value = "/auth/rating")
@@ -37,8 +37,8 @@ public class JobRateApi {
 		return ResponseEntity.ok(jobRateFacade.findByAlumnusId(nickName));
 	}
 
-	@GetMapping(value = "/auth/rating/{jobId}")
-	public ResponseEntity<List<JobRateDto>> findByJob(@PathVariable Long jobId) {
-		return ResponseEntity.ok(jobRateFacade.findByJobId(jobId));
+	@GetMapping(value = "/auth/rating/{codeJob}")
+	public ResponseEntity<List<JobRateDto>> findByJob(@PathVariable String codeJob) {
+		return ResponseEntity.ok(jobRateFacade.findByCodeJob(codeJob));
 	}
 }

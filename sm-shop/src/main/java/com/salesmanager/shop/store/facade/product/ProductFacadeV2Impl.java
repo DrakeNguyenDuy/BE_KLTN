@@ -3,6 +3,7 @@ package com.salesmanager.shop.store.facade.product;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.catalog.category.CategoryService;
@@ -22,14 +24,18 @@ import com.salesmanager.core.business.services.catalog.pricing.PricingService;
 import com.salesmanager.core.business.services.catalog.product.ProductService;
 import com.salesmanager.core.business.services.catalog.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.catalog.product.availability.ProductAvailabilityService;
+import com.salesmanager.core.business.services.catalog.product.jobRate.JobRateService;
 import com.salesmanager.core.business.services.catalog.product.relationship.ProductRelationshipService;
 import com.salesmanager.core.business.services.catalog.product.variant.ProductVariantService;
+import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.ProductCriteria;
 import com.salesmanager.core.model.catalog.product.relationship.ProductRelationship;
 import com.salesmanager.core.model.catalog.product.relationship.ProductRelationshipType;
 import com.salesmanager.core.model.catalog.product.variant.ProductVariant;
+import com.salesmanager.core.model.customer.Customer;
+import com.salesmanager.core.model.customer.JobRate;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.mapper.catalog.product.ReadableProductMapper;
@@ -51,6 +57,9 @@ public class ProductFacadeV2Impl implements ProductFacade {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private CustomerService customerService;
 
 	@Inject
 	private CategoryService categoryService;
@@ -78,6 +87,9 @@ public class ProductFacadeV2Impl implements ProductFacade {
 
 	@Autowired
 	private MerchantStoreService merchantStoreService;
+
+	@Autowired
+	private JobRateService jobRateService;
 
 	@Inject
 	@Qualifier("img")
@@ -234,7 +246,7 @@ public class ProductFacadeV2Impl implements ProductFacade {
 	}
 
 	@Override
-	public ReadableProductList getProductLists(ProductCriteria criterias) throws Exception {
+	public ReadableProductList getProductLists(String username, ProductCriteria criterias) throws Exception {
 		Validate.notNull(criterias, "ProductCriteria must be set for this product");
 
 		Page<Product> modelProductList = productService.listByStoreV2(criterias, criterias.getStartPage(),
@@ -250,6 +262,21 @@ public class ProductFacadeV2Impl implements ProductFacade {
 		List<ReadableProduct> readableProducts = products.stream().map(p -> readableProductMapper.convert(p))
 				.sorted(Comparator.comparing(ReadableProduct::getSortOrder)).collect(Collectors.toList());
 
+		if (username != null) {
+			Customer alumnus = customerService.getByNick(username);
+			if (!Objects.isNull(alumnus)) {
+				for (int i = 0; i < readableProducts.size(); i++) {
+					JobRate jobRate = jobRateService.findByJobAndAlumnus(products.get(i), alumnus);
+					if (!Objects.isNull(jobRate)) {
+						readableProducts.get(i).setFollow(true);
+					} else {
+						readableProducts.get(i).setFollow(false);
+						;
+					}
+				}
+			}
+		}
+
 		productList.setRecordsTotal(modelProductList.getTotalElements());
 		productList.setNumber(modelProductList.getNumberOfElements());
 		productList.setProducts(readableProducts);
@@ -260,7 +287,7 @@ public class ProductFacadeV2Impl implements ProductFacade {
 
 //	Long add some lines here(20/5/20223)
 	@Override
-	public ReadableProductDetail getProductByCode(String sku) {
+	public ReadableProductDetail getProductByCode(String username, String sku) {
 		Product product = null;
 		try {
 			product = productService.getBySku(sku);
@@ -272,6 +299,17 @@ public class ProductFacadeV2Impl implements ProductFacade {
 			throw new ResourceNotFoundException("Product " + sku + " not found");
 		}
 		ReadableProductDetail readableProduct = readableProductMapper.convertDetail(product);
+		if (username != null) {
+			Customer alumnus = customerService.getByNick(username);
+			if (!Objects.isNull(alumnus)) {
+				JobRate jobRate = jobRateService.findByJobAndAlumnus(product, alumnus);
+				if (!Objects.isNull(jobRate)) {
+					readableProduct.setFollow(true);
+				} else {
+					readableProduct.setFollow(false);
+				}
+			}
+		}
 		return readableProduct;
 	}
 //	end
@@ -292,9 +330,25 @@ public class ProductFacadeV2Impl implements ProductFacade {
 	}
 
 	@Override
-	public List<ReadableProduct> getProductsLastest() {
+	public List<ReadableProduct> getProductsLastest(String username) {
 		List<Product> products = productService.getProductsLastest();
-		return products.stream().map(item -> readableProductMapper.convert(item)).toList();
+		List<ReadableProduct> readableProducts = products.stream().map(item -> readableProductMapper.convert(item))
+				.toList();
+		if (username != null) {
+			Customer alumnus = customerService.getByNick(username);
+			if (!Objects.isNull(alumnus)) {
+				for (int i = 0; i < readableProducts.size(); i++) {
+					JobRate jobRate = jobRateService.findByJobAndAlumnus(products.get(i), alumnus);
+					if (!Objects.isNull(jobRate)) {
+						readableProducts.get(i).setFollow(true);
+					} else {
+						readableProducts.get(i).setFollow(false);
+						;
+					}
+				}
+			}
+		}
+		return readableProducts;
 	}
 
 	/**

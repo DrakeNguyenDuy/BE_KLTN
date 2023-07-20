@@ -9,7 +9,7 @@ public interface RecruitmentService {
 	public String appy(Recruitment recruitment);
 	
 	//get list apply by job
-	public List<Recruitment> findApplyByJob(Long productId);
+	public List<Recruitment> findApplyByJob(String codeJob);
 	
 	//get list apply by nick name of alumnus
 	public List<Recruitment> findRecruitmentByAlumnus(String nickname);
