@@ -36,6 +36,7 @@ import com.salesmanager.core.model.catalog.product.relationship.ProductRelations
 import com.salesmanager.core.model.catalog.product.variant.ProductVariant;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.JobRate;
+import com.salesmanager.core.model.customer.JobRateStatus;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.mapper.catalog.product.ReadableProductMapper;
@@ -267,11 +268,11 @@ public class ProductFacadeV2Impl implements ProductFacade {
 			if (!Objects.isNull(alumnus)) {
 				for (int i = 0; i < readableProducts.size(); i++) {
 					JobRate jobRate = jobRateService.findByJobAndAlumnus(products.get(i), alumnus);
-					if (!Objects.isNull(jobRate)) {
+					if (!Objects.isNull(jobRate)
+							&& jobRate.getJobRateStatus().name().equals(JobRateStatus.LIKED.toString())) {
 						readableProducts.get(i).setFollow(true);
 					} else {
 						readableProducts.get(i).setFollow(false);
-						;
 					}
 				}
 			}
