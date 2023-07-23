@@ -38,7 +38,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 
 //	@Autowired
 //	private ReadableSkillMapper readableSkillMapper;
-	
+
 	@Autowired
 	private ProfileSkillEntryMapper profileSkillEntryMapper;
 
@@ -50,7 +50,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 
 	@Autowired
 	private ReadableDistrictMapper readableDistrictMapper;
-	
+
 	@Autowired
 	private ReadableProvinceMapper readableProvinceMapper;
 
@@ -75,6 +75,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 
 		if (StringUtils.hasText(source.getCustomer().getLastName())) {
 			fullName += source.getCustomer().getLastName();
+			destination.setLastname(source.getCustomer().getLastName());
 		}
 		if (StringUtils.hasText(source.getCustomer().getEmailAddress())) {
 			destination.setEmail(source.getCustomer().getEmailAddress());
@@ -83,10 +84,11 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 			destination.setUsername(source.getCustomer().getNick());
 		}
 		if (StringUtils.hasText(source.getCustomer().getFirstName())) {
-			fullName += source.getCustomer().getFirstName();
+			fullName += " " + source.getCustomer().getFirstName();
+			destination.setFirstname(source.getCustomer().getFirstName());
 		}
-		if ( source.getAvatar()!=null) {
-			destination.setAvatar("/api/v1/profile/avatar/"+source.getCustomer().getNick());
+		if (source.getAvatar() != null) {
+			destination.setAvatar("/api/v1/profile/avatar/" + source.getCustomer().getNick());
 		}
 		destination.setFullName(fullName);
 		if (!Objects.isNull(source.getCustomer().getGender())
@@ -113,7 +115,8 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 //			List<ReadableSkillDescription> skills = source.getSkills().stream()
 //					.map(item -> this.readableSkillMapper.convert(item, store, language)).toList();
 //			destination.setReadableSkillDescriptions(skills);
-			List<ProfileSkillDto> skills = source.getSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
+			List<ProfileSkillDto> skills = source.getSkills().stream()
+					.map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
 			destination.setSkills(skills);
 		}
 		if (!Objects.isNull(source.getCategory())) {
@@ -130,13 +133,13 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 		if (!Objects.isNull(source.getExperience())) {
 			destination.setExperience(this.readableExperienceMapper.convert(source.getExperience(), store, language));
 		}
-		if(Objects.nonNull(source.getCustomer().getDateOfBirth())) {
+		if (Objects.nonNull(source.getCustomer().getDateOfBirth())) {
 			destination.setDob(ConverterDate.convertDateToString(source.getCustomer().getDateOfBirth().toString()));
 		}
-		if(StringUtils.hasText(source.getCustomer().getPhoneNumber())) {
+		if (StringUtils.hasText(source.getCustomer().getPhoneNumber())) {
 			destination.setPhone(source.getCustomer().getPhoneNumber());
 		}
-		if(!CollectionUtils.isEmpty(source.getDistricts())) {
+		if (!CollectionUtils.isEmpty(source.getDistricts())) {
 			Set<ReadableProvince> provinces = new HashSet<ReadableProvince>();
 			for (District district : source.getDistricts()) {
 				provinces.add(readableProvinceMapper.convert(district.getProvince(), null, null));

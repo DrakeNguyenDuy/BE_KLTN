@@ -1,11 +1,13 @@
 package com.salesmanager.core.business.services.recruitment;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,11 @@ import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.recruitment.RecruitmentRepository;
 import com.salesmanager.core.business.services.catalog.product.ProductService;
 import com.salesmanager.core.business.services.customer.CustomerService;
+import com.salesmanager.core.business.services.utils.SystemService;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.recruitment.Recruitment;
+import com.salesmanager.core.model.system.SystemNotification;
 
 @Service
 public class RecruitmentServiceImpl implements RecruitmentService {
@@ -29,12 +33,21 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private SystemService systemService;
 
 	@Override
 	@Transactional
 	public String appy(Recruitment r) {
 		Optional<Recruitment> isExist = recruitmentReposistory.checkExist(r.getAlumnus().getId(), r.getJob().getId());
 		if (isExist.isPresent()) {
+			SystemNotification notification = new SystemNotification();
+			notification.setOpened(false);
+			notification.setStartDate(new Date());
+			notification.setReciever(r.getAlumnus());
+			notification.setValue("Bạn vừa ứng tuyển thành công vào công việc "+ r.getJob().getProductDescription().getName());
+			systemService.insertNotification(null);
 			return Constants.APPLY_DUPLICATE;
 		}
 		recruitmentReposistory.saveAndFlush(r);
