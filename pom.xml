@@ -372,7 +372,10 @@
 				<artifactId>javax.annotation-api</artifactId>
 				<version>${javax.annotation}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+			</dependency>
 		</dependencies>
 
 	</dependencyManagement>

@@ -3,6 +3,7 @@ package com.salesmanager.shop.store.facade.product;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -290,6 +291,12 @@ public class ProductFacadeImpl implements ProductFacade {
 
 	@Override
 	public ReadableProductList getProductLists(String username, ProductCriteria criterias) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ReadableProductList getProducts(String username, Integer page, Integer count, Map<String, Object> filter) {
 		// TODO Auto-generated method stub
 		return null;
 	}

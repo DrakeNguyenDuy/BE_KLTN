@@ -77,4 +77,13 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 		recruitmentReposistory.save(r);
 	}
 
+	@Override
+	public boolean existByAlumnusAndJob(Customer alumnus, Product job) {
+		Optional<Recruitment> isExist = recruitmentReposistory.checkExist(alumnus.getId(), job.getId());
+		if (isExist.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
 }

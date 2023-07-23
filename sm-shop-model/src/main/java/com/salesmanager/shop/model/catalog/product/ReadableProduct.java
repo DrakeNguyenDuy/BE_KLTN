@@ -29,6 +29,7 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	private String title;
 	private String payCycle;
 	private boolean isFollow;
+	private boolean isApplied;
 	// end
 
 //	Long hide some lines here(13/05/2023)
@@ -281,6 +282,14 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 
 	public void setFollow(boolean isFollow) {
 		this.isFollow = isFollow;
+	}
+
+	public boolean isApplied() {
+		return isApplied;
+	}
+
+	public void setApplied(boolean isApplied) {
+		this.isApplied = isApplied;
 	}
 
 //	end

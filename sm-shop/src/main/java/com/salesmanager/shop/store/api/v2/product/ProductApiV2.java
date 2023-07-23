@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,6 +50,8 @@ import com.salesmanager.shop.store.controller.category.facade.CategoryFacade;
 import com.salesmanager.shop.store.controller.product.facade.ProductCommonFacade;
 import com.salesmanager.shop.store.controller.product.facade.ProductDefinitionFacade;
 import com.salesmanager.shop.store.controller.product.facade.ProductFacade;
+import com.salesmanager.shop.store.facade.product.FilterFacade;
+import com.salesmanager.shop.util.FilterDto;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -84,6 +87,9 @@ public class ProductApiV2 {
 
 	@Autowired
 	private CategoryFacade categoryFacade;
+
+	@Autowired
+	private FilterFacade filterFacade;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductApiV2.class);
 
@@ -304,7 +310,7 @@ public class ProductApiV2 {
 //	end
 
 //	Long add some lines here(14/5/2023)
-	@RequestMapping(value = "/products", method = RequestMethod.GET)
+	@RequestMapping(value = "/products-new", method = RequestMethod.GET)
 	@ResponseBody
 	public ReadableProductList list(ProductCriteria searchCriterias,
 
@@ -312,7 +318,7 @@ public class ProductApiV2 {
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, // paging
 //			end
 
-			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count ,// count
+			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count, // count
 			// per
 			// page
 			@RequestParam(required = false) String username) {
@@ -411,6 +417,21 @@ public class ProductApiV2 {
 			throw new ServiceRuntimeException(e);
 
 		}
+	}
+
+	@RequestMapping(value = "/products", method = RequestMethod.GET)
+	@ResponseBody
+	public ReadableProductList getProducts(@RequestParam Map<String, Object> map,
+			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count, // count
+			@RequestParam(required = false) String username) {
+		return productFacadeV2.getProducts(username, page, count, map);
+	}
+
+	@RequestMapping(value = "/filters-display", method = RequestMethod.GET)
+	@ResponseBody
+	public List<FilterDto> getFilterDisplay() {
+		return filterFacade.findAll();
 	}
 //	end
 }

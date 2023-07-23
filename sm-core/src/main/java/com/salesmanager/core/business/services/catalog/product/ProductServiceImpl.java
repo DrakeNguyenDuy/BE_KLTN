@@ -3,9 +3,11 @@ package com.salesmanager.core.business.services.catalog.product;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,10 +22,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.catalog.product.ProductRepository;
+import com.salesmanager.core.business.repositories.recruitment.RecruitmentRepository;
 import com.salesmanager.core.business.services.catalog.category.CategoryService;
 import com.salesmanager.core.business.services.catalog.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.catalog.product.attribute.ProductOptionService;
@@ -38,6 +42,7 @@ import com.salesmanager.core.business.services.catalog.product.review.ProductRev
 import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillEntryService;
 import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillService;
 import com.salesmanager.core.business.services.common.generic.SalesManagerEntityServiceImpl;
+import com.salesmanager.core.business.specifications.JobSpecification;
 import com.salesmanager.core.business.utils.CatalogServiceHelper;
 import com.salesmanager.core.business.utils.CoreConfiguration;
 import com.salesmanager.core.model.catalog.category.Category;
@@ -62,6 +67,8 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
 	ProductRepository productRepository;
+
+	RecruitmentRepository recruitmentRepository;
 
 	@Inject
 	CategoryService categoryService;
@@ -98,6 +105,8 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	private ProductSkillEntryService productSkillServiceEntryService;
 	@Autowired
 	private ProductLocationEntryService productLocationServiceEntryService;
+	@Autowired
+	private JobSpecification jobSpecification;
 //	end
 
 	@Inject
@@ -449,6 +458,17 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	public List<Product> getProductsLastest() {
 		Pageable paging = PageRequest.of(0, 18);
 		return productRepository.findLastestAndOrderByCreateAt(paging);
+	}
+
+	@Override
+	public Page<Product> getProducts(Integer page, Integer count, Map<String, Object> filter) {
+		Pageable pageable = PageRequest.of(page, count);
+		Specification<Product> specification = jobSpecification.search(filter);
+		Page<Product> productsPage = productRepository.findAll(specification, pageable);
+		if (productsPage.hasContent()) {
+			return productsPage;
+		}
+		return null;
 	}
 
 }

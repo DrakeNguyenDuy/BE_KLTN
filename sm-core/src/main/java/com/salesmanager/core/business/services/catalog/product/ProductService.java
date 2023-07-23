@@ -2,6 +2,7 @@ package com.salesmanager.core.business.services.catalog.product;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -103,5 +104,7 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
 	Product findOne(Long id, MerchantStore merchant);
 	
 	List<Product> getProductsLastest();
+	
+	Page<Product> getProducts(Integer page, Integer count, Map<String, Object> filter);
 
 }
