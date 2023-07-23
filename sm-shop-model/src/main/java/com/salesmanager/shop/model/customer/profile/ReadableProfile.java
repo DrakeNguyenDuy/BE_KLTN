@@ -16,6 +16,8 @@ public class ReadableProfile {
 	private String username;
 	private String email;
 	private String fullName;
+	private String lastname;
+	private String firstname;
 	private String dob;
 	private String phone;
 	private String avatar;
@@ -185,4 +187,21 @@ public class ReadableProfile {
 	public void setProvinces(List<ReadableProvince> provinces) {
 		this.provinces = provinces;
 	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	
 }

@@ -23,6 +23,7 @@ import com.salesmanager.core.constants.SchemaConstant;
 import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
+import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.user.User;
@@ -56,6 +57,10 @@ public class SystemNotification extends SalesManagerEntity<Long, SystemNotificat
 	private MerchantStore merchantStore;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="RECIEVER_ID", nullable=true)
+	private Customer reciever;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="USER_ID", nullable=true)
 	private User user;
 	
@@ -66,6 +71,9 @@ public class SystemNotification extends SalesManagerEntity<Long, SystemNotificat
 	@Temporal(TemporalType.DATE)
 	@Column(name = "END_DATE")
 	private Date endDate;
+	
+	@Column(name = "IS_OPENED")
+	private boolean isOpened;
 	
 	@Embedded
 	private AuditSection auditSection = new AuditSection();
@@ -134,5 +142,21 @@ public class SystemNotification extends SalesManagerEntity<Long, SystemNotificat
 
 	public User getUser() {
 		return user;
+	}
+
+	public boolean isOpened() {
+		return isOpened;
+	}
+
+	public void setOpened(boolean isOpened) {
+		this.isOpened = isOpened;
+	}
+
+	public Customer getReciever() {
+		return reciever;
+	}
+
+	public void setReciever(Customer reciever) {
+		this.reciever = reciever;
 	}
 }
