@@ -1,16 +1,15 @@
 package com.salesmanager.shop.store.controller.product.facade;
 
 import java.util.List;
+import java.util.Map;
 
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.ProductCriteria;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
-import com.salesmanager.shop.model.catalog.product.ProductPriceRequest;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.shop.model.catalog.product.ReadableProductDetail;
 import com.salesmanager.shop.model.catalog.product.ReadableProductList;
-import com.salesmanager.shop.model.catalog.product.ReadableProductPrice;
 
 public interface ProductFacade {
 
@@ -32,9 +31,9 @@ public interface ProductFacade {
 	 * @throws Exception
 	 */
 	ReadableProduct getProductByCode(MerchantStore store, String uniqueCode, Language language);
-	
+
 //	Long add some lines here(20/5/2023)
-	ReadableProductDetail getProductByCode(String username,String uniqueCode);
+	ReadableProductDetail getProductByCode(String username, String uniqueCode);
 //	end
 
 	/**
@@ -79,7 +78,7 @@ public interface ProductFacade {
 	 * @return
 	 * @throws Exception
 	 */
-	ReadableProductList getProductLists(String username,ProductCriteria criterias) throws Exception;
+	ReadableProductList getProductLists(String username, ProductCriteria criterias) throws Exception;
 //  end
 
 	/**
@@ -92,12 +91,14 @@ public interface ProductFacade {
 	 * @throws Exception
 	 */
 	List<ReadableProduct> relatedItems(MerchantStore store, Product product, Language language) throws Exception;
-	
-	//Long add some lines here(18/6/2023)
-	List<ReadableProduct> getProductsByStoreCode(String storeCode);
-	//	end
 
-	//Long add some lines here(14/7/2023)
-	 List<ReadableProduct> getProductsLastest(String username);
-	//	end
+	// Long add some lines here(18/6/2023)
+	List<ReadableProduct> getProductsByStoreCode(String storeCode);
+	// end
+
+	// Long add some lines here(14/7/2023)
+	List<ReadableProduct> getProductsLastest(String username);
+
+	ReadableProductList getProducts(String username, Integer page, Integer count, Map<String, Object> filter);
+	// end
 }

@@ -38,6 +38,7 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 	private String logo;
 	private String gender;
 	private boolean isFollow;
+	private boolean isApplied;
 
 	public String getFinalPrice() {
 		return finalPrice;
@@ -176,6 +177,12 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 		this.isFollow = isFollow;
 	}
 
-	// end
+	public boolean isApplied() {
+		return isApplied;
+	}
 
+	public void setApplied(boolean isApplied) {
+		this.isApplied = isApplied;
+	}
+	// end
 }

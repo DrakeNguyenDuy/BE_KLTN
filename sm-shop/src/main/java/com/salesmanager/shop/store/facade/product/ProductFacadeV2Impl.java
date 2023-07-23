@@ -1,10 +1,11 @@
 package com.salesmanager.shop.store.facade.product;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -16,9 +17,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import com.salesmanager.core.business.exception.ServiceException;
+import com.salesmanager.core.business.repositories.recruitment.RecruitmentRepository;
 import com.salesmanager.core.business.services.catalog.category.CategoryService;
 import com.salesmanager.core.business.services.catalog.pricing.PricingService;
 import com.salesmanager.core.business.services.catalog.product.ProductService;
@@ -29,6 +30,7 @@ import com.salesmanager.core.business.services.catalog.product.relationship.Prod
 import com.salesmanager.core.business.services.catalog.product.variant.ProductVariantService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
+import com.salesmanager.core.business.services.recruitment.RecruitmentService;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.ProductCriteria;
 import com.salesmanager.core.model.catalog.product.relationship.ProductRelationship;
@@ -38,6 +40,7 @@ import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.JobRate;
 import com.salesmanager.core.model.customer.JobRateStatus;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import com.salesmanager.core.model.recruitment.Recruitment;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.mapper.catalog.product.ReadableProductMapper;
 import com.salesmanager.shop.mapper.catalog.product.ReadableProductVariantMapper;
@@ -91,6 +94,9 @@ public class ProductFacadeV2Impl implements ProductFacade {
 
 	@Autowired
 	private JobRateService jobRateService;
+
+	@Autowired
+	private RecruitmentService recruitmentService;
 
 	@Inject
 	@Qualifier("img")
@@ -304,8 +310,16 @@ public class ProductFacadeV2Impl implements ProductFacade {
 			Customer alumnus = customerService.getByNick(username);
 			if (!Objects.isNull(alumnus)) {
 				JobRate jobRate = jobRateService.findByJobAndAlumnus(product, alumnus);
-				if (!Objects.isNull(jobRate)) {
+				if (!Objects.isNull(jobRate)
+						&& jobRate.getJobRateStatus().name().equals(JobRateStatus.LIKED.toString())) {
 					readableProduct.setFollow(true);
+				} else {
+					readableProduct.setFollow(false);
+				}
+				// check is applied
+				boolean isApplied = recruitmentService.existByAlumnusAndJob(alumnus, product);
+				if (isApplied == true) {
+					readableProduct.setApplied(true);
 				} else {
 					readableProduct.setFollow(false);
 				}
@@ -340,16 +354,62 @@ public class ProductFacadeV2Impl implements ProductFacade {
 			if (!Objects.isNull(alumnus)) {
 				for (int i = 0; i < readableProducts.size(); i++) {
 					JobRate jobRate = jobRateService.findByJobAndAlumnus(products.get(i), alumnus);
-					if (!Objects.isNull(jobRate)) {
+					if (!Objects.isNull(jobRate)
+							&& jobRate.getJobRateStatus().name().equals(JobRateStatus.LIKED.toString())) {
 						readableProducts.get(i).setFollow(true);
 					} else {
 						readableProducts.get(i).setFollow(false);
-						;
+					}
+					// check is applied
+					boolean isApplied = recruitmentService.existByAlumnusAndJob(alumnus, products.get(i));
+					if (isApplied == true) {
+						readableProducts.get(i).setApplied(true);
+					} else {
+						readableProducts.get(i).setFollow(false);
 					}
 				}
 			}
 		}
 		return readableProducts;
+	}
+
+	@Override
+	public ReadableProductList getProducts(String username, Integer page, Integer count, Map<String, Object> filter) {
+		Page<Product> pageJob = productService.getProducts(page, count, filter);
+		List<ReadableProduct> list = new ArrayList<ReadableProduct>();
+		if (!Objects.isNull(pageJob)) {
+			list = pageJob.getContent().stream().map(item -> readableProductMapper.convert(item)).toList();
+		}
+		if (username != null) {
+			Customer alumnus = customerService.getByNick(username);
+			if (!Objects.isNull(alumnus)) {
+				for (int i = 0; i < list.size(); i++) {
+					JobRate jobRate = jobRateService.findByJobAndAlumnus(pageJob.getContent().get(i), alumnus);
+					if (!Objects.isNull(jobRate)
+							&& jobRate.getJobRateStatus().name().equals(JobRateStatus.LIKED.toString())) {
+						list.get(i).setFollow(true);
+					} else {
+						list.get(i).setFollow(false);
+					}
+					// check is applied
+					boolean isApplied = recruitmentService.existByAlumnusAndJob(alumnus, pageJob.getContent().get(i));
+					if (isApplied == true) {
+						list.get(i).setApplied(true);
+					} else {
+						list.get(i).setFollow(false);
+					}
+				}
+			}
+		}
+		ReadableProductList products = new ReadableProductList();
+		products.setProducts(list);
+		products.setRecordsFiltered(
+				!Objects.isNull(pageJob) ? pageJob.getNumberOfElements() : Collections.emptyList().size());
+		products.setRecordsTotal(
+				!Objects.isNull(pageJob) ? pageJob.getTotalElements() : Collections.emptyList().size());
+		products.setTotalPages(!Objects.isNull(pageJob) ? pageJob.getTotalPages() : Collections.emptyList().size());
+		products.setNumber(Long.valueOf(productService.count()).intValue());
+		return products;
 	}
 
 	/**

@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.salesmanager.core.model.catalog.product.Product;
 
-public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom, JpaSpecificationExecutor<Product> {
 
 	@Query(value = "SELECT " + "CASE WHEN COUNT(*) > 0 THEN true ELSE false END " + "FROM " + "Product p "
 			+ "JOIN MerchantStore m ON m.id = ?2 " + "LEFT JOIN ProductVariant pv ON pv.product.id = p.id "

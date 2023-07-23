@@ -17,4 +17,5 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, String
 	
 	@Query("select r from Recruitment r where r.alumnus.id=:alumnusId and job.id=:jobId")
 	Optional<Recruitment> checkExist(Long alumnusId, Long jobId);
+	
 }

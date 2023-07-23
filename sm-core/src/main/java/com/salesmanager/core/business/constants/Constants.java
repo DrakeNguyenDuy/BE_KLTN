@@ -31,6 +31,8 @@ public class Constants {
   public final static String EMAIL_CONFIG = "EMAIL_CONFIG";
 
   public final static String UNDERSCORE = "_";
+  public final static String WHITE_SPACE=" ";
+  public final static String SPLIT=",";
   public final static String SLASH = "/";
   public final static String TRUE = "true";
   public final static String FALSE = "false";
@@ -65,4 +67,8 @@ public class Constants {
 	public final static String CAN_NOT_FOUND_ALUMNUS_WHEN_FIND_RECRUITMENT_BY_ALUMNUS="Can not found job when find recruitment by alumnus";
 	//end
 
+	//filter
+	public static final String FILTER_BY_LASTEST="lastest";
+	public static final String FILTER_BY_UPDATE="update";
+	public static final String FILTER_BY_SALARY="salary";
 }

@@ -1,11 +1,9 @@
 package com.salesmanager.core.business.services.customer.profile;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.apache.tools.ant.taskdefs.Cvs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,11 +47,11 @@ public class CVServiceImpl implements CVService {
 	public void delete(String id) {
 		Optional<CV> cvOpt = cvRepository.findById(id);
 		if (cvOpt.isPresent()) {
-			educationRepository.deleteAllById(cvOpt.get().getEducations().stream().map(item -> item.getId()).toList());
-			workExperienceRepository
-					.deleteAllById(cvOpt.get().getWorkExperiences().stream().map(item -> item.getId()).toList());
-			certificateRepository
-					.deleteAllById(cvOpt.get().getCertificate().stream().map(item -> item.getId()).toList());
+//			educationRepository.deleteAllById(cvOpt.get().getEducations().stream().map(item -> item.getId()).toList());
+//			workExperienceRepository
+//					.deleteAllById(cvOpt.get().getWorkExperiences().stream().map(item -> item.getId()).toList());
+//			certificateRepository
+//					.deleteAllById(cvOpt.get().getCertificate().stream().map(item -> item.getId()).toList());
 		}
 	}
 
