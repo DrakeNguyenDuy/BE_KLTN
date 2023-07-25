@@ -261,4 +261,10 @@ public class CustomerFacadeImpl implements CustomerFacade {
 	            .isPresent();
 	}
 
+	@Override
+	public String updatePassword(String username,  String oldPassword, String newPassword) {
+		Customer  customer= customerService.getByNick(username);
+		return null;
+	}
+
 }

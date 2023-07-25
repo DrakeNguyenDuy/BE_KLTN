@@ -508,7 +508,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 			PersistableCustomerShippingAddressPopulator shippingAddressPopulator = new PersistableCustomerShippingAddressPopulator();
 			customerModel = shippingAddressPopulator.populate(address, customerModel, merchantStore,
 					merchantStore.getDefaultLanguage());
-			
+
 //			Long hide some lines here(20/5/2023)
 //			customerModel.getDelivery().setCountry(country);
 //			if (StringUtils.isNotBlank(address.getZone())) {
@@ -846,7 +846,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 			Map<String, String> templateTokens = emailUtils.createEmailObjectsMap(imageUtils.getContextPath(), store,
 					messages, locale);
 			templateTokens.put(EmailConstants.LABEL_HI, messages.getMessage("label.generic.hi", locale));
-			
+
 //			Long hide some lines here(20/5/2023)
 //			templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
 //			templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
@@ -1071,7 +1071,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 		}
 
 //		Customer customerModel = getCustomerModel(customer, merchantStore, language);
-		Customer customerModel= null;
+		Customer customerModel = null;
 		if (customerModel == null) {
 			LOG.equals("Unable to create customer in system");
 			// throw new CustomerRegistrationException( "Unable to register customer" );
@@ -1104,5 +1104,10 @@ public class CustomerFacadeImpl implements CustomerFacade {
 		}
 
 		return customerModel;
+	}
+
+	@Override
+	public Customer getCustomerByUserName(String userName) {
+		return customerService.getByNick(userName);
 	}
 }

@@ -152,15 +152,15 @@ public class UserApi {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@PatchMapping(value = { "/private/user/{id}/password" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(value = { "/private/user/password" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "PATCH", value = "Updates a user password", notes = "", response = Void.class)
-	public void password(@Valid @RequestBody UserPassword password, @PathVariable Long id) {
+	public void password(@Valid @RequestBody UserPassword password) {
 
 		String authenticatedUser = userFacade.authenticatedUser();
 		if (authenticatedUser == null) {
 			throw new UnauthorizedException();
 		}
-		userFacade.changePassword(id, authenticatedUser, password);
+		userFacade.changePassword(authenticatedUser, password);
 	}
 
 	@ResponseStatus(HttpStatus.OK)

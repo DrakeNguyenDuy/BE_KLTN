@@ -1,6 +1,7 @@
 package com.salesmanager.core.business.services.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
@@ -44,7 +45,7 @@ public interface UserService extends SalesManagerEntityService<Long, User> {
   
   User findByResetPasswordToken (String userName, String token, MerchantStore store) throws ServiceException;
 
-
+  Optional<User> getByEmail(String email) ;
 
 
 }

@@ -103,37 +103,14 @@ public class ResetCustomerPasswordApi {
 	 * @param language
 	 * @param request
 	 */
-	// Long hide some lines here(25/7/2023)
-//	@RequestMapping(value = "/customer/{store}/password/{token}", method = RequestMethod.POST, produces = {
-//			"application/json" })
-//	@ApiOperation(httpMethod = "POST", value = "Change customer password", response = Void.class)
-//	public void changePassword(
-//			@RequestBody @Valid PasswordRequest passwordRequest, 
-//			@PathVariable String store,
-//			@PathVariable String token, @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
-//			HttpServletRequest request) {
-//
-//		// validate password
-//		if (StringUtils.isBlank(passwordRequest.getPassword())
-//				|| StringUtils.isBlank(passwordRequest.getRepeatPassword())) {
-//			throw new RestApiException("400", "Password don't match");
-//		}
-//
-//		if (!passwordRequest.getPassword().equals(passwordRequest.getRepeatPassword())) {
-//			throw new RestApiException("400", "Password don't match");
-//		}
-//
-//		customerFacade.resetPassword(passwordRequest.getPassword(), token, store);
-//
-//	}
-//	end
-	@RequestMapping(value = "/customer/password/{token}", method = RequestMethod.POST, produces = {
+	@RequestMapping(value = "/customer/{store}/password/{token}", method = RequestMethod.POST, produces = {
 			"application/json" })
 	@ApiOperation(httpMethod = "POST", value = "Change customer password", response = Void.class)
-	public void changePassword(@RequestBody @Valid PasswordRequest passwordRequest, @PathVariable String token,
-			@ApiIgnore Language language, HttpServletRequest request) {
+	public void changePassword(@RequestBody @Valid PasswordRequest passwordRequest, @PathVariable String store,
+			@PathVariable String token, @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
+			HttpServletRequest request) {
 
-// validate password
+		// validate password
 		if (StringUtils.isBlank(passwordRequest.getPassword())
 				|| StringUtils.isBlank(passwordRequest.getRepeatPassword())) {
 			throw new RestApiException("400", "Password don't match");
@@ -143,8 +120,25 @@ public class ResetCustomerPasswordApi {
 			throw new RestApiException("400", "Password don't match");
 		}
 
-		customerFacade.resetPassword(passwordRequest.getPassword(), token, null);
+		customerFacade.resetPassword(passwordRequest.getPassword(), token, store);
 
 	}
 
+	@RequestMapping(value = "/auth/password/update", method = RequestMethod.POST, produces = { "application/json" })
+	@ApiOperation(httpMethod = "POST", value = "Update customer password", response = Void.class)
+	public void updatePassword(@RequestBody @Valid PasswordRequest passwordRequest, HttpServletRequest request) {
+		String username = request.getUserPrincipal().getName();
+		// validate password
+		if (StringUtils.isBlank(passwordRequest.getPassword())
+				|| StringUtils.isBlank(passwordRequest.getRepeatPassword())) {
+			throw new RestApiException("400", "Password don't match");
+		}
+
+		if (!passwordRequest.getPassword().equals(passwordRequest.getRepeatPassword())) {
+			throw new RestApiException("400", "Password don't match");
+		}
+
+//		customerFacade.updatePassword(username, passwordRequest.getPassword());
+
+	}
 }
