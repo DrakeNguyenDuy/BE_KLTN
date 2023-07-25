@@ -44,4 +44,5 @@ public interface CustomerFacade {
 	 */
 	boolean customerExists(String userName, MerchantStore store);
 
+	String updatePassword(String username, String oldPassword, String newPassword);
 }

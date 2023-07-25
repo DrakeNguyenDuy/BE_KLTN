@@ -144,7 +144,7 @@ public interface UserFacade {
    * @param authenticatedUser
    * @param changePassword
    */
-  void changePassword(Long userId, String authenticatedUser, UserPassword changePassword);
+  void changePassword(String authenticatedUser, UserPassword changePassword);
 
   void authorizedGroups(String authenticatedUser, PersistableUser user);
   

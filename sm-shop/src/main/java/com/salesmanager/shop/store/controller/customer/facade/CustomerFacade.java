@@ -213,4 +213,6 @@ public interface CustomerFacade {
 	boolean passwordMatch(String rawPassword, Customer customer);
 
 	void changePassword(Customer customer, String newPassword);
+	
+	public Customer getCustomerByUserName(final String userName);
 }

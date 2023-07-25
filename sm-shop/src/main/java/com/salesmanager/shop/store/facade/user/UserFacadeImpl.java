@@ -475,7 +475,7 @@ public class UserFacadeImpl implements UserFacade {
 	}
 
 	@Override
-	public void changePassword(Long userId, String authenticatedUser, UserPassword changePassword) {
+	public void changePassword(String authenticatedUser, UserPassword changePassword) {
 
 		Validate.notNull(changePassword, "Change password request must not be null");
 		Validate.notNull(changePassword.getPassword(), "Original password request must not be null");
@@ -492,17 +492,27 @@ public class UserFacadeImpl implements UserFacade {
 				throw new ServiceRuntimeException("Cannot find user [" + authenticatedUser + "]");
 			}
 
-			User userModel = userService.getById(userId);
-			if (userModel == null) {
-				throw new ServiceRuntimeException("Cannot find user [" + userId + "]");
+//			Long hide some lines here
+//			User userModel = userService.getById(userId);
+//			end
+			Optional<User> userOpt =userService.getByEmail(authenticatedUser);
+//			Long hide some lines here(25/7/2023)
+//			if (userModel == null) {
+//				throw new ServiceRuntimeException("Cannot find user [" + authenticatedUser + "]");
+//			}
+//			end
+			
+			if (!userOpt.isPresent()) {
+				throw new ServiceRuntimeException("Cannot find user [" + authenticatedUser + "]");
 			}
 
 			/**
 			 * need to validate if actual password match
 			 */
 
+			User userModel = userOpt.get();
 			if (!securityFacade.matchPassword(userModel.getAdminPassword(), changePassword.getPassword())) {
-				throw new ServiceRuntimeException("Actual password does not match for user [" + userId + "]");
+				throw new ServiceRuntimeException("Actual password does not match for user [" + authenticatedUser + "]");
 			}
 
 			/**

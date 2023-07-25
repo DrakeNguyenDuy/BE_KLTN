@@ -22,6 +22,7 @@ public class Constants {
 
   public static final String ALL_REGIONS = "*";
 
+  public static final String SUCCESS ="Success";
 
   public final static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
   public final static String DEFAULT_DATE_FORMAT_YEAR = "yyyy";

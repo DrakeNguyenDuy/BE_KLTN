@@ -1,6 +1,8 @@
 package com.salesmanager.core.business.services.user;
 
 import java.util.List;
+import java.util.Optional;
+
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -136,6 +138,11 @@ public class UserServiceImpl extends SalesManagerEntityServiceImpl<Long, User> i
 	@Override
 	public User getByPasswordResetToken(String storeCode, String token) {
 		return userRepository.findByResetPasswordToken(token, storeCode);
+	}
+
+	@Override
+	public Optional<User> getByEmail(String email) {
+		return userRepository.findByAdminEmail(email);
 	}
 
 }

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -270,10 +271,15 @@ public class AuthenticateCustomerApi {
 
         try {
             
-            MerchantStore merchantStore = storeFacade.getByCode(request);
+        	//Long hide some lines here(25/7/2023)
+//            MerchantStore merchantStore = storeFacade.getByCode(request);
+//        	end
 
-            Customer customer = customerFacade.getCustomerByUserName(passwordRequest.getUsername(), merchantStore);
-            
+//            Customer customer = customerFacade.getCustomerByUserName(passwordRequest.getUsername(), merchantStore);
+//        	Long add some lines here(25/7/2023)
+        	Customer customer = customerFacade.getCustomerByUserName(passwordRequest.getUsername());
+//        	end		
+        	
             if(customer == null){
                 return ResponseEntity.notFound().build();
             }
@@ -288,7 +294,7 @@ public class AuthenticateCustomerApi {
             }
             
             customerFacade.changePassword(customer, passwordRequest.getPassword());           
-            return ResponseEntity.ok(Void.class);
+            return ResponseEntity.ok(Constants.SUCCESS);
             
         } catch(Exception e) {
             return ResponseEntity.badRequest().body("Exception when reseting password "+e.getMessage());
