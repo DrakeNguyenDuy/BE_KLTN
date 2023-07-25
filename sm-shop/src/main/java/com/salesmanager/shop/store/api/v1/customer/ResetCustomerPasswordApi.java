@@ -66,6 +66,7 @@ public class ResetCustomerPasswordApi {
 
 	/**
 	 * Verify a password token
+	 * 
 	 * @param store
 	 * @param token
 	 * @param merchantStore
@@ -77,16 +78,15 @@ public class ResetCustomerPasswordApi {
 	@ApiOperation(httpMethod = "GET", value = "Validate customer password reset token", notes = "", response = Void.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public void passwordResetVerify(
-			@PathVariable String store, @PathVariable String token,
+	public void passwordResetVerify(@PathVariable String store, @PathVariable String token,
 			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
 
 		/**
-		 * Receives reset token Needs to validate if user found from token Needs
-		 * to validate if token has expired
+		 * Receives reset token Needs to validate if user found from token Needs to
+		 * validate if token has expired
 		 * 
-		 * If no problem void is returned otherwise throw OperationNotAllowed
-		 * All of this in UserFacade
+		 * If no problem void is returned otherwise throw OperationNotAllowed All of
+		 * this in UserFacade
 		 */
 
 		customerFacade.verifyPasswordRequestToken(token, store);
@@ -95,6 +95,7 @@ public class ResetCustomerPasswordApi {
 
 	/**
 	 * Change password
+	 * 
 	 * @param passwordRequest
 	 * @param store
 	 * @param token
@@ -102,16 +103,37 @@ public class ResetCustomerPasswordApi {
 	 * @param language
 	 * @param request
 	 */
-	@RequestMapping(value = "/customer/{store}/password/{token}", method = RequestMethod.POST, produces = {
+	// Long hide some lines here(25/7/2023)
+//	@RequestMapping(value = "/customer/{store}/password/{token}", method = RequestMethod.POST, produces = {
+//			"application/json" })
+//	@ApiOperation(httpMethod = "POST", value = "Change customer password", response = Void.class)
+//	public void changePassword(
+//			@RequestBody @Valid PasswordRequest passwordRequest, 
+//			@PathVariable String store,
+//			@PathVariable String token, @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
+//			HttpServletRequest request) {
+//
+//		// validate password
+//		if (StringUtils.isBlank(passwordRequest.getPassword())
+//				|| StringUtils.isBlank(passwordRequest.getRepeatPassword())) {
+//			throw new RestApiException("400", "Password don't match");
+//		}
+//
+//		if (!passwordRequest.getPassword().equals(passwordRequest.getRepeatPassword())) {
+//			throw new RestApiException("400", "Password don't match");
+//		}
+//
+//		customerFacade.resetPassword(passwordRequest.getPassword(), token, store);
+//
+//	}
+//	end
+	@RequestMapping(value = "/customer/password/{token}", method = RequestMethod.POST, produces = {
 			"application/json" })
 	@ApiOperation(httpMethod = "POST", value = "Change customer password", response = Void.class)
-	public void changePassword(
-			@RequestBody @Valid PasswordRequest passwordRequest, 
-			@PathVariable String store,
-			@PathVariable String token, @ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
-			HttpServletRequest request) {
+	public void changePassword(@RequestBody @Valid PasswordRequest passwordRequest, @PathVariable String token,
+			@ApiIgnore Language language, HttpServletRequest request) {
 
-		// validate password
+// validate password
 		if (StringUtils.isBlank(passwordRequest.getPassword())
 				|| StringUtils.isBlank(passwordRequest.getRepeatPassword())) {
 			throw new RestApiException("400", "Password don't match");
@@ -121,7 +143,7 @@ public class ResetCustomerPasswordApi {
 			throw new RestApiException("400", "Password don't match");
 		}
 
-		customerFacade.resetPassword(passwordRequest.getPassword(), token, store);
+		customerFacade.resetPassword(passwordRequest.getPassword(), token, null);
 
 	}
 

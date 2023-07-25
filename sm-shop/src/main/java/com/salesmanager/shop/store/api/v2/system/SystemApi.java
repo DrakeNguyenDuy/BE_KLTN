@@ -39,14 +39,16 @@ public class SystemApi {
 	}
 
 	@PutMapping("/auth/notification/opened")
-	ResponseEntity<String> changeIsOpenedAlumnus(String nickname) {
+	ResponseEntity<String> changeIsOpenedAlumnus(HttpServletRequest request) {
+		String nickname = request.getUserPrincipal().getName();
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
 				.body(facade.changeIsOpenedAlumnus(nickname));
 	}
 
 	@PutMapping("/private/notification/opened")
-	ResponseEntity<String> changeIsOpenedEmployer(String storeCode) {
+	ResponseEntity<String> changeIsOpenedEmployer(HttpServletRequest request) {
+		String mail = request.getUserPrincipal().getName();
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
-				.body(facade.changeIsOpenedEmployer(storeCode));
+				.body(facade.changeIsOpenedEmployer(mail));
 	}
 }
