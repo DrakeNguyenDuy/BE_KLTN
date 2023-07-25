@@ -14,4 +14,5 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
 	@Query("select p from Profile p where p.customer.nick =:username")
 	Optional<Profile> findByCustomerNick(String username);
+	
 }

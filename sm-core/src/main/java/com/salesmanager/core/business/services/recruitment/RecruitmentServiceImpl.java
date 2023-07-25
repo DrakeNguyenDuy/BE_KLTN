@@ -33,7 +33,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private SystemService systemService;
 
@@ -42,15 +42,23 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 	public String appy(Recruitment r) {
 		Optional<Recruitment> isExist = recruitmentReposistory.checkExist(r.getAlumnus().getId(), r.getJob().getId());
 		if (isExist.isPresent()) {
-			SystemNotification notification = new SystemNotification();
-			notification.setOpened(false);
-			notification.setStartDate(new Date());
-			notification.setReciever(r.getAlumnus());
-			notification.setValue("Bạn vừa ứng tuyển thành công vào công việc "+ r.getJob().getProductDescription().getName());
-			systemService.insertNotification(null);
 			return Constants.APPLY_DUPLICATE;
 		}
 		recruitmentReposistory.saveAndFlush(r);
+		SystemNotification notification = new SystemNotification();
+		notification.setOpened(false);
+		notification.setStartDate(new Date());
+		notification.setReciever(r.getAlumnus());
+		notification.setValue(
+				"Bạn vừa ứng tuyển thành công vào công việc: " + r.getJob().getProductDescription().getName());
+		SystemNotification notificationAnother = new SystemNotification();
+		notificationAnother.setOpened(false);
+		notificationAnother.setStartDate(new Date());
+		notificationAnother.setMerchantStore(r.getJob().getMerchantStore());
+		notificationAnother.setValue(r.getAlumnus().getFirstName() + " " + r.getAlumnus().getLastName()
+				+ " vừa ứng tuyển vào công việc: " + r.getJob().getProductDescription().getName());
+		systemService.insertNotification(notificationAnother);
+		systemService.insertNotification(notification);
 		return Constants.APPLY_SUCCESS;
 	}
 
