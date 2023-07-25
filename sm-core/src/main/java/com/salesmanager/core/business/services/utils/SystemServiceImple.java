@@ -78,11 +78,14 @@ public class SystemServiceImple implements SystemService {
 	}
 
 	@Override
-	public String changeIsOpenedEmployer(String storeCode) {
-		MerchantStore employer = merchantRepository.findByCode(storeCode);
-		if (employer != null) {
+	public String changeIsOpenedEmployer(String mail) {
+		Optional<User> employerOpt = userRepository.findByAdminEmail(mail);
+		if (!employerOpt.isPresent()) {
+			return Constants.CHANGE_STATUS_FAIL;
+		}
+		if (!Objects.isNull(employerOpt.get().getMerchantStore())) {
 			List<SystemNotification> systemNotifications = systemNotificationRepository
-					.findByMerchantStoreAndIsOpened(employer, false);
+					.findByMerchantStoreAndIsOpened(employerOpt.get().getMerchantStore(), false);
 			for (SystemNotification systemNotification : systemNotifications) {
 				systemNotification.setOpened(true);
 			}

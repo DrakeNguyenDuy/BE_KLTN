@@ -110,6 +110,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, Custo
 	@Query("select c from Customer c "
 			+ "where c.credentialsResetRequest.credentialsRequest = ?1 and c.customerReviewCount=?2")
 	Customer findByResetPasswordToken(String token, String store);
+	@Query("select c from Customer c "
+			+ "where c.credentialsResetRequest.credentialsRequest = :token")
+	Customer findByResetPasswordToken(String token);
 //	end
 	
 //	Long hide some lines here(20/5/2023)

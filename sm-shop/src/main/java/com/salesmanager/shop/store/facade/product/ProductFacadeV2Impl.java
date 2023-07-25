@@ -321,7 +321,7 @@ public class ProductFacadeV2Impl implements ProductFacade {
 				if (isApplied == true) {
 					readableProduct.setApplied(true);
 				} else {
-					readableProduct.setFollow(false);
+					readableProduct.setApplied(false);
 				}
 			}
 		}
@@ -365,7 +365,7 @@ public class ProductFacadeV2Impl implements ProductFacade {
 					if (isApplied == true) {
 						readableProducts.get(i).setApplied(true);
 					} else {
-						readableProducts.get(i).setFollow(false);
+						readableProducts.get(i).setApplied(false);
 					}
 				}
 			}
@@ -396,7 +396,7 @@ public class ProductFacadeV2Impl implements ProductFacade {
 					if (isApplied == true) {
 						list.get(i).setApplied(true);
 					} else {
-						list.get(i).setFollow(false);
+						list.get(i).setApplied(false);
 					}
 				}
 			}
