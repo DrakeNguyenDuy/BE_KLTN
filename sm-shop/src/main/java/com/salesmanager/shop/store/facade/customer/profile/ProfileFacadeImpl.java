@@ -44,8 +44,9 @@ public class ProfileFacadeImpl implements ProfileFacade {
 	public ReadableProfile saveOrUpdate(String customerName, PersistableProfile profile) {
 		Profile p = persistableProfileMapper.convertToEntity(customerName, profile);
 		List<ProfileSkillEntry> profileSkillEntries = p.getSkills();
-		p = profileService.saveOrUpdate(p);
+		profileSkillService.deleteByProfile(p);
 		profileSkillEntries = profileSkillService.saveAll(profileSkillEntries);
+		p = profileService.saveOrUpdate(p);
 		p.setSkills(profileSkillEntries);
 		return readableProfileMapper.convert(p, null, null);
 	}

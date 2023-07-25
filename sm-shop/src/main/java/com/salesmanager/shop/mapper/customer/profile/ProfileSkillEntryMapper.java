@@ -25,8 +25,8 @@ public class ProfileSkillEntryMapper {
 
 	@Autowired
 	private ProfileRepository profileRepository;
-	
-	@Autowired 
+
+	@Autowired
 	private ProfileSkillRepository profileSkillRepository;
 
 	public ProfileSkillDto convertToDto(ProfileSkillEntry profileSkillEntry) {
@@ -42,7 +42,7 @@ public class ProfileSkillEntryMapper {
 		}
 		return dto;
 	}
-	
+
 	public ProfileSkillDto convertToDto(CVSkill cvSkill) {
 		ProfileSkillDto dto = new ProfileSkillDto();
 		dto.setNameSkill(cvSkill.getSkill());
@@ -56,36 +56,16 @@ public class ProfileSkillEntryMapper {
 		return dto;
 	}
 
-	public ProfileSkillEntry convertToEntity(Profile profile, ProfileSkillDto source) throws NotFoundException  {
-		ProfileSkillEntry des = null;
-		if(StringUtils.hasText(source.getId())) {
-			Optional<ProfileSkillEntry> tempOpt = profileSkillRepository.findById(source.getId());
-			if(tempOpt.isPresent()) {
-				des = tempOpt.get();
-				des.setDescription(source.getDes());
-				des.setRate(source.getRate());
-				return des;
-			}
-		}
-		
-		des = new ProfileSkillEntry();
-		if (source.getId() != null) {
-			des.setId(source.getId());
-		}
+	public ProfileSkillEntry convertToEntity(Profile profile, ProfileSkillDto source) throws NotFoundException {
+		ProfileSkillEntry des = new ProfileSkillEntry();
+		des.setDescription(source.getDes());
+		des.setProfile(profile);
+		des.setRate(source.getRate());
 		Optional<SkillDescription> skillOpt = skillReposistory.findById(source.getIdSkill());
-
 		if (!skillOpt.isPresent()) {
 			throw new NotFoundException("Can not found skill");
 		}
-
 		des.setSkill(skillOpt.get());
-		des.setProfile(profile);
-		if (source.getRate() != null) {
-			des.setRate(source.getRate());
-		}
-		if (StringUtils.hasText(source.getDes())) {
-			des.setDescription(source.getDes());
-		}
 		return des;
 	}
 }

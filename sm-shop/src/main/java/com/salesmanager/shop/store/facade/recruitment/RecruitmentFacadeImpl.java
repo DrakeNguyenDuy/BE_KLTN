@@ -1,6 +1,7 @@
 package com.salesmanager.shop.store.facade.recruitment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.business.services.recruitment.RecruitmentService;
+import com.salesmanager.core.business.services.utils.SystemService;
 import com.salesmanager.core.model.recruitment.Recruitment;
 import com.salesmanager.core.model.recruitment.StatusProcess;
+import com.salesmanager.core.model.system.SystemNotification;
 import com.salesmanager.shop.mapper.recruitment.RecruitmentMapper;
 import com.salesmanager.shop.model.recruitment.RecruitmentDto;
 import com.salesmanager.shop.model.recruitment.RecruitmentStatusDto;
@@ -28,6 +31,9 @@ public class RecruitmentFacadeImpl implements RecruitmentFacade {
 
 	@Autowired
 	private EmailTemplatesUtils emailTemplatesUtils;
+
+	@Autowired
+	private SystemService systemService;
 
 	@Override
 	public String apply(String customerName, String codeJob) {
@@ -60,8 +66,17 @@ public class RecruitmentFacadeImpl implements RecruitmentFacade {
 		Optional<Recruitment> reOptional = recruitmentService.findById(recruitmentStatusDto.getId());
 		if (reOptional.isPresent()) {
 			Recruitment r = reOptional.get();
+			String value = "Công việc  "+ r.getJob().getProductDescription().getName()+
+					" mà bạn đã ứng tuyển đã chuyển trạng thái từ "+r.getStatusProcess().toString()
+					+" sang "+recruitmentStatusDto.getStatus();
 			r.setStatusProcess(StatusProcess.valueOf(recruitmentStatusDto.getStatus()));
 			recruitmentService.update(r);
+			SystemNotification notification = new SystemNotification();
+			notification.setOpened(false);
+			notification.setStartDate(new Date());
+			notification.setReciever(r.getAlumnus());
+			notification.setValue(value);
+			systemService.insertNotification(notification);
 			return Constants.CHANGE_STATUS_SUCCESS;
 		}
 		return Constants.CHANGE_STATUS_FAIL;

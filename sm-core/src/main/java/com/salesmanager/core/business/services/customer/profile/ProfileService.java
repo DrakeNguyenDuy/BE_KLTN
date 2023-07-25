@@ -11,4 +11,5 @@ public interface ProfileService {
 	void uploadAvatar(String username, byte[] byteAvt);
 	
 	byte[] getAvatar(String username);
+	
 }

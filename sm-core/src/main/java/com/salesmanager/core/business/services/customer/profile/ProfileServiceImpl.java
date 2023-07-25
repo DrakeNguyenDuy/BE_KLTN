@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.repositories.customer.profile.ProfileRepository;
+import com.salesmanager.core.business.repositories.customer.profile.ProfileSkillRepository;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.profile.Profile;
 
@@ -16,6 +17,9 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	private ProfileRepository profileRepository;
+	
+	@Autowired
+	private ProfileSkillRepository profileSkillRepository;
 
 	@Override
 	public Profile findProfileByCustomerName(String customerName) {

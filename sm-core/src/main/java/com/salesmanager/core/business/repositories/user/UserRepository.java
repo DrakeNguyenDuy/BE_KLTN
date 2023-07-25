@@ -1,6 +1,7 @@
 package com.salesmanager.core.business.repositories.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -36,4 +37,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 			+ "left join fetch u.defaultLanguage ul "
 			+ "where u.credentialsResetRequest.credentialsRequest = ?1 and um.code = ?2 ")
 	User findByResetPasswordToken(String token, String store);
+	
+	Optional<User> findByAdminEmail(String mail);
 }
