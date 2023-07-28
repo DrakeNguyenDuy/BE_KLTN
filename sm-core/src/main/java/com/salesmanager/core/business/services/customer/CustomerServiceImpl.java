@@ -16,26 +16,22 @@ import com.salesmanager.core.model.common.Address;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.CustomerCriteria;
 import com.salesmanager.core.model.customer.CustomerList;
-import com.salesmanager.core.model.customer.attribute.CustomerAttribute;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.modules.utils.GeoLocation;
-
-
 
 @Service("customerService")
 public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Customer> implements CustomerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerServiceImpl.class);
-	
+
 	private CustomerRepository customerRepository;
-	
+
 	@Inject
 	private CustomerAttributeService customerAttributeService;
-	
+
 	@Inject
 	private GeoLocation geoLocation;
 
-	
 	@Inject
 	public CustomerServiceImpl(CustomerRepository customerRepository) {
 		super(customerRepository);
@@ -46,52 +42,52 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 	public List<Customer> getByName(String firstName) {
 		return customerRepository.findByName(firstName);
 	}
-	
+
 	@Override
 	public Customer getById(Long id) {
-			return customerRepository.findOne(id);		
+		return customerRepository.findOne(id);
 	}
-	
+
 	@Override
 	public Customer getByNick(String nick) {
-		return customerRepository.findByNick(nick);	
+		return customerRepository.findByNick(nick);
 	}
-	
+
 	@Override
 	public Customer getByNick(String nick, int storeId) {
-		return customerRepository.findByNick(nick, storeId);	
+		return customerRepository.findByNick(nick, storeId);
 	}
-	
+
 	@Override
 	public List<Customer> getListByStore(MerchantStore store) {
 		return customerRepository.findByStore(store.getId());
 	}
-	
+
 	@Override
 	public CustomerList getListByStore(MerchantStore store, CustomerCriteria criteria) {
-		return customerRepository.listByStore(store,criteria);
-	}
-	
-	@Override
-	public Address getCustomerAddress(MerchantStore store, String ipAddress) throws ServiceException {
-		
-		try {
-			return geoLocation.getAddress(ipAddress);
-		} catch(Exception e) {
-			throw new ServiceException(e);
-		}
-		
+		return customerRepository.listByStore(store, criteria);
 	}
 
-	@Override	
+	@Override
+	public Address getCustomerAddress(MerchantStore store, String ipAddress) throws ServiceException {
+
+		try {
+			return geoLocation.getAddress(ipAddress);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+
+	}
+
+	@Override
 	public void saveOrUpdate(Customer customer) throws ServiceException {
 
 		LOGGER.debug("Creating Customer");
-		
-		if(customer.getId()!=null && customer.getId()>0) {
+
+		if (customer.getId() != null && customer.getId() > 0) {
 			super.update(customer);
-		} else {			
-		
+		} else {
+
 			super.create(customer);
 
 		}
@@ -99,7 +95,7 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 
 	public void delete(Customer customer) throws ServiceException {
 		customer = getById(customer.getId());
-		
+
 //		Long hide some lines here(20/5/2023)
 //		//delete attributes
 //		List<CustomerAttribute> attributes =customerAttributeService.getByCustomer(customer.getMerchantStore(), customer);
@@ -121,6 +117,25 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 	@Override
 	public Customer getByPasswordResetToken(String storeCode, String token) {
 		return customerRepository.findByResetPasswordToken(token, storeCode);
+	}
+
+	@Override
+	public void uploadAvatar(String username, byte[] avatar) {
+		Customer alumnus = customerRepository.findByNick(username);
+		if (alumnus == null) {
+			throw new NullPointerException("Can not found alumnus");
+		}
+		alumnus.setAvatar(avatar);
+		customerRepository.save(alumnus);
+	}
+
+	@Override
+	public byte[] getAvatar(String username) {
+		Customer alumnus = customerRepository.findByNick(username);
+		if (alumnus == null) {
+			throw new NullPointerException("Can not found alumnus");
+		}
+		return alumnus.getAvatar();
 	}
 
 }

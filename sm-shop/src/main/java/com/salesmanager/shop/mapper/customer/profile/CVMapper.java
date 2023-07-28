@@ -102,7 +102,7 @@ public class CVMapper {
 			cvDto.setFirstName(cv.getAlumnus().getFirstName());
 		}
 
-		if (cv.getAlumnus().getProfile().getAvatar() != null) {
+		if (cv.getAlumnus().getAvatar() != null) {
 			cvDto.setAvatar("/api/v1/profile/avatar/"+cv.getAlumnus().getNick());
 		}
 
@@ -210,6 +210,12 @@ public class CVMapper {
 
 		if (!Objects.isNull(source.getTitle())) {
 			destination.setTitle(source.getTitle());
+		}
+		
+		if (!Objects.isNull(source.getPhoneNumber())) {
+			Customer a =  destination.getAlumnus();
+			a.setPhoneNumber(source.getPhoneNumber());
+			destination.setAlumnus(a);
 		}
 
 		if (!CollectionUtils.isEmpty(source.getWorkExperiences())) {

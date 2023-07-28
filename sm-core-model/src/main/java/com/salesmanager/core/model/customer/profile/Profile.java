@@ -40,10 +40,6 @@ public class Profile {
 	@Column(name = "YEAR_OF_BIRTH")
 	private String yearOfBirth;
 
-	@Lob
-	@Column(name = "AVATAR")
-	private byte[] avatar;
-
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
 	@JoinColumn(name = "ENGLISH_LEVEL_ID", referencedColumnName = "ID", nullable = false)
 	private EnglishLevel englishLevel;
@@ -159,14 +155,6 @@ public class Profile {
 
 	public void setCareer(ProductType career) {
 		this.career = career;
-	}
-
-	public byte[] getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(byte[] avatar) {
-		this.avatar = avatar;
 	}
 
 	public ExperienceDescription getExperience() {

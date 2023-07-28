@@ -3,6 +3,8 @@ package com.salesmanager.core.business.services.customer;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.common.generic.SalesManagerEntityService;
 import com.salesmanager.core.model.common.Address;
@@ -46,4 +48,7 @@ public interface CustomerService  extends SalesManagerEntityService<Long, Custom
 	Address getCustomerAddress(MerchantStore store, String ipAddress)
 			throws ServiceException;
 
+	public void uploadAvatar(String username,byte[] avatar);
+	
+	byte[] getAvatar(String username);
 }

@@ -8,8 +8,8 @@ public interface ProfileService {
 
 	Profile saveOrUpdate(Profile profile);
 	
-	void uploadAvatar(String username, byte[] byteAvt);
-	
-	byte[] getAvatar(String username);
+//	void uploadAvatar(String username, byte[] byteAvt);
+//	
+//	byte[] getAvatar(String username);
 	
 }

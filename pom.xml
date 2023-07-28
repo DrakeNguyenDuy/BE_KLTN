@@ -30,6 +30,7 @@
 		<module>sm-shop-model</module>
 		<module>sm-shop</module>
 		<module>recruitment-rs</module>
+		<module>test</module>
 	</modules>
 
 	<properties>
