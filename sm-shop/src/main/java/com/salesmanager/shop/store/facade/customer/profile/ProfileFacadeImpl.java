@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.profile.ProfileService;
 import com.salesmanager.core.business.services.customer.profile.ProfileSkillService;
 import com.salesmanager.core.model.customer.profile.Profile;
@@ -21,7 +22,10 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
 	@Autowired
 	private ProfileService profileService;
-	
+
+	@Autowired
+	private CustomerService customerService;
+
 	@Autowired
 	private ProfileSkillService profileSkillService;
 
@@ -31,7 +35,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
 	@Autowired
 	private PersistableProfileMapper persistableProfileMapper;
 
-	//customer name is nick name
+	// customer name is nick name
 	@Override
 	public ReadableProfile findProfile(String customerName) {
 		Profile profile = profileService.findProfileByCustomerName(customerName);
@@ -44,10 +48,14 @@ public class ProfileFacadeImpl implements ProfileFacade {
 	public ReadableProfile saveOrUpdate(String customerName, PersistableProfile profile) {
 		Profile p = persistableProfileMapper.convertToEntity(customerName, profile);
 		List<ProfileSkillEntry> profileSkillEntries = p.getSkills();
-		profileSkillService.deleteByProfile(p);
-		profileSkillEntries = profileSkillService.saveAll(profileSkillEntries);
-		p = profileService.saveOrUpdate(p);
-		p.setSkills(profileSkillEntries);
+		if (p.getId() != null) {
+			profileSkillService.deleteByProfile(p);
+			profileSkillEntries = profileSkillService.saveAll(profileSkillEntries);
+			p.setSkills(profileSkillEntries);
+		}else {
+			p = profileService.saveOrUpdate(p);
+			profileSkillEntries = profileSkillService.saveAll(profileSkillEntries);
+		}
 		return readableProfileMapper.convert(p, null, null);
 	}
 
@@ -55,7 +63,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
 	public void uploadAvatar(String username, MultipartFile avatar) {
 		try {
 			byte[] byteAvt = avatar.getBytes();
-			profileService.uploadAvatar(username, byteAvt);
+			customerService.uploadAvatar(username, byteAvt);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -63,7 +71,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
 	@Override
 	public byte[] getAvatar(String username) {
-		return profileService.getAvatar(username);
+		return customerService.getAvatar(username);
 	}
 
 }

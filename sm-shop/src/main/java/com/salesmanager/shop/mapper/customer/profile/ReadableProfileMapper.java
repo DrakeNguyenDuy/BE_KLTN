@@ -87,7 +87,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 			fullName += " " + source.getCustomer().getFirstName();
 			destination.setFirstname(source.getCustomer().getFirstName());
 		}
-		if (source.getAvatar() != null) {
+		if (source.getCustomer().getAvatar() != null) {
 			destination.setAvatar("/api/v1/profile/avatar/" + source.getCustomer().getNick());
 		}
 		destination.setFullName(fullName);

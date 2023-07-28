@@ -36,24 +36,24 @@ public class ProfileServiceImpl implements ProfileService {
 		return profileRepository.saveAndFlush(profile);
 	}
 
-	@Override
-	@Transactional
-	public void uploadAvatar(String username, byte[] byteAvt) {
-		Optional<Profile> profileOpt = profileRepository.findByCustomerNick(username);
-		if (!profileOpt.isPresent()) {
-			throw new NullPointerException("Profile is null");
-		}
-		Profile profile = profileOpt.get();
-		profile.setAvatar(byteAvt);
-		profileRepository.save(profile);
-	}
+//	@Override
+//	@Transactional
+//	public void uploadAvatar(String username, byte[] byteAvt) {
+//		Optional<Profile> profileOpt = profileRepository.findByCustomerNick(username);
+//		if (!profileOpt.isPresent()) {
+//			throw new NullPointerException("Profile is null");
+//		}
+//		Profile profile = profileOpt.get();
+//		profile.setAvatar(byteAvt);
+//		profileRepository.save(profile);
+//	}
 
-	@Override
-	public byte[] getAvatar(String username) {
-		Optional<Profile> profileOpt = profileRepository.findByCustomerNick(username);
-		if (!profileOpt.isPresent()) {
-			throw new NullPointerException("Profile is null");
-		}
-		return profileOpt.get().getAvatar();
-	}
+//	@Override
+//	public byte[] getAvatar(String username) {
+//		Optional<Profile> profileOpt = profileRepository.findByCustomerNick(username);
+//		if (!profileOpt.isPresent()) {
+//			throw new NullPointerException("Profile is null");
+//		}
+//		return profileOpt.get().getAvatar();
+//	}
 }
