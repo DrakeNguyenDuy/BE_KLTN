@@ -29,8 +29,7 @@
 		<module>sm-core</module>
 		<module>sm-shop-model</module>
 		<module>sm-shop</module>
-		<module>recruitment-rs</module>
-		<module>test</module>
+		<module>recommender</module>
 	</modules>
 
 	<properties>

@@ -8,6 +8,7 @@ import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.recruitment.Recruitment;
 
 public interface RecruitmentService {
+	
 	public String appy(Recruitment recruitment);
 
 	// get list apply by job
