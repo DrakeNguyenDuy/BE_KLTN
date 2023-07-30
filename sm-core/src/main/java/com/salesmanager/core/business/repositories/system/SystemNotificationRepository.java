@@ -9,11 +9,11 @@ import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.system.SystemNotification;
 
 public interface SystemNotificationRepository extends JpaRepository<SystemNotification, Long> {
-	List<SystemNotification> findByReciever(Customer alumnus);
+	List<SystemNotification> findByRecieverOrderByAuditSectionDateCreated(Customer alumnus);
 
-	List<SystemNotification> findByMerchantStore(MerchantStore employer);
+	List<SystemNotification> findByMerchantStoreOrderByAuditSectionDateCreated(MerchantStore employer);
 	
-	List<SystemNotification> findByRecieverAndIsOpened(Customer alumnus, boolean isOpened);
+	List<SystemNotification> findByRecieverAndIsOpenedOrderByAuditSectionDateCreated(Customer alumnus, boolean isOpened);
 	
-	List<SystemNotification> findByMerchantStoreAndIsOpened(MerchantStore employer, boolean isOpened);
+	List<SystemNotification> findByMerchantStoreAndIsOpenedOrderByAuditSectionDateCreated(MerchantStore employer, boolean isOpened);
 }

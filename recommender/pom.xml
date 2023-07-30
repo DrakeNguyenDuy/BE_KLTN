@@ -5,14 +5,25 @@
 		<artifactId>shopizer</artifactId>
 		<version>3.2.5</version>
 	</parent>
-	<artifactId>test</artifactId>
 
+	<artifactId>recommender</artifactId>
+	<packaging>jar</packaging>
 
 	<dependencies>
-	<dependency>
+		<dependency>
+			<groupId>com.shopizer</groupId>
+			<artifactId>sm-core</artifactId>
+		</dependency>
+		<!-- lenskit-->
+		<dependency>
 			<groupId>org.grouplens.lenskit</groupId>
 			<artifactId>lenskit-all</artifactId>
 			<version>3.0-T1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.lenskit</groupId>
+			<artifactId>lenskit-all</artifactId>
+			<version>3.0-M3</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -45,7 +45,7 @@ public class SystemServiceImple implements SystemService {
 	public List<SystemNotification> findByRecieverNick(String nick) {
 		Customer alumnus = customerRepository.findByNick(nick);
 		if (!Objects.isNull(alumnus)) {
-			return systemNotificationRepository.findByReciever(alumnus);
+			return systemNotificationRepository.findByRecieverOrderByAuditSectionDateCreated(alumnus);
 		}
 		return Collections.emptyList();
 	}
@@ -57,7 +57,7 @@ public class SystemServiceImple implements SystemService {
 			return Collections.emptyList();
 		}
 		if (!Objects.isNull(employerOpt.get().getMerchantStore())) {
-			return systemNotificationRepository.findByMerchantStore(employerOpt.get().getMerchantStore());
+			return systemNotificationRepository.findByMerchantStoreOrderByAuditSectionDateCreated(employerOpt.get().getMerchantStore());
 		}
 		return Collections.emptyList();
 	}
@@ -67,7 +67,7 @@ public class SystemServiceImple implements SystemService {
 		Customer alumnus = customerRepository.findByNick(nickname);
 		if (alumnus != null) {
 			List<SystemNotification> systemNotifications = systemNotificationRepository
-					.findByRecieverAndIsOpened(alumnus, false);
+					.findByRecieverAndIsOpenedOrderByAuditSectionDateCreated(alumnus, false);
 			for (SystemNotification systemNotification : systemNotifications) {
 				systemNotification.setOpened(true);
 			}
@@ -85,7 +85,7 @@ public class SystemServiceImple implements SystemService {
 		}
 		if (!Objects.isNull(employerOpt.get().getMerchantStore())) {
 			List<SystemNotification> systemNotifications = systemNotificationRepository
-					.findByMerchantStoreAndIsOpened(employerOpt.get().getMerchantStore(), false);
+					.findByMerchantStoreAndIsOpenedOrderByAuditSectionDateCreated(employerOpt.get().getMerchantStore(), false);
 			for (SystemNotification systemNotification : systemNotifications) {
 				systemNotification.setOpened(true);
 			}
