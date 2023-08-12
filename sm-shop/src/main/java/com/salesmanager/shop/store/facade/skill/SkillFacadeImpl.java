@@ -1,6 +1,7 @@
 package com.salesmanager.shop.store.facade.skill;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class SkillFacadeImpl implements SkillFacade {
 	@Override
 	public ReadableEntityListV2<ReadableSkillDescription> getSkills() {
 		List<ReadableSkillDescription> readableSkillDescriptions = productSkillService.getSkills().stream()
-				.map(item -> this.convertToReadleSkill(item)).toList();
+				.map(item -> this.convertToReadleSkill(item)).collect(Collectors.toList());
 		ReadableEntityListV2<ReadableSkillDescription> entityList = new ReadableEntityListV2<ReadableSkillDescription>();
 		entityList.setData(readableSkillDescriptions);
 		return entityList;

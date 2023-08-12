@@ -1,6 +1,7 @@
 package com.salesmanager.shop.store.facade.position;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class PositionFacadeImpl implements PositionFacade {
 	@Override
 	public ReadableEntityListV2<ReadablePosition> getAll() {
 		List<ReadablePosition> postions = positionService.getAll().stream()
-				.map(item -> positionMapper.convert(item, null, null)).toList();
+				.map(item -> positionMapper.convert(item, null, null)).collect(Collectors.toList());
 		ReadableEntityListV2<ReadablePosition> readableEntityList = new ReadableEntityListV2<ReadablePosition>();
 		readableEntityList.setData(postions);
 		return readableEntityList;

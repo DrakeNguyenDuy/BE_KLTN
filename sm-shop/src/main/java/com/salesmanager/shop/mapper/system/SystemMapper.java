@@ -3,6 +3,7 @@ package com.salesmanager.shop.mapper.system;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -38,6 +39,6 @@ public class SystemMapper {
 	}
 
 	public List<NotificationDto> convertNotifiDtos(List<SystemNotification> notifications) {
-		return notifications.stream().map(item -> convertNotifiDto(item)).toList();
+		return notifications.stream().map(item -> convertNotifiDto(item)).collect(Collectors.toList());
 	}
 }

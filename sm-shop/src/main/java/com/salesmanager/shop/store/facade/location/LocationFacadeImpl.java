@@ -1,6 +1,7 @@
 package com.salesmanager.shop.store.facade.location;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class LocationFacadeImpl implements LocationFacade {
 	@Override
 	public ReadableEntityListV2<ReadableProvince> getProvinces() {
 		List<ReadableProvince> readableProvinces = provinceService.findAll().stream()
-				.map(item -> provinceMapper.convert(item, null, null)).toList();
+				.map(item -> provinceMapper.convert(item, null, null)).collect(Collectors.toList());
 		ReadableEntityListV2<ReadableProvince> readableList = new ReadableEntityListV2<ReadableProvince>();
 		readableList.setData(readableProvinces);
 		return readableList;
@@ -49,7 +50,7 @@ public class LocationFacadeImpl implements LocationFacade {
 	@Override
 	public ReadableEntityListV2<ReadableDistrict> getDistrict(Long idProvince) {
 		List<ReadableDistrict> readableDistricts = districtService.findAll(idProvince).stream()
-				.map(item -> districtMapper.convert(item, null, null)).toList();
+				.map(item -> districtMapper.convert(item, null, null)).collect(Collectors.toList());
 		ReadableEntityListV2<ReadableDistrict> readableEntityList = new ReadableEntityListV2<ReadableDistrict>();
 		readableEntityList.setData(readableDistricts);
 		return readableEntityList;
@@ -58,7 +59,7 @@ public class LocationFacadeImpl implements LocationFacade {
 	@Override
 	public ReadableEntityListV2<ReadableWard> getWard(Long idDistrict) {
 		List<ReadableWard> readableWards = wardService.findAll(idDistrict).stream()
-				.map(item -> wardMapper.convert(item, null, null)).toList();
+				.map(item -> wardMapper.convert(item, null, null)).collect(Collectors.toList());
 		ReadableEntityListV2<ReadableWard> readableEntityList = new ReadableEntityListV2<ReadableWard>();
 		readableEntityList.setData(readableWards);
 		return readableEntityList;

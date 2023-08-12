@@ -566,7 +566,7 @@ public class CategoryFacadeImpl implements CategoryFacade {
 	public ReadableCategoryList findAll() {
 		List<Category> categories = categoryService.findAll();
 		List<ReadableCategory> readableCategories = categories.stream()
-				.map(item -> readableCategoryMapper.convert2Readable(item)).toList();
+				.map(item -> readableCategoryMapper.convert2Readable(item)).collect(Collectors.toList());
 		ReadableCategoryList categoryList = new ReadableCategoryList();
 		categoryList.setCategories(readableCategories);
 		return categoryList;

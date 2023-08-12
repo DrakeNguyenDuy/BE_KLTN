@@ -2,6 +2,7 @@ package com.salesmanager.shop.store.facade.paycycle;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class PayCycleFacadeImp implements PaycycleFacade {
 	@Override
 	public ReadableEntityListV2<ReadablePaycycle> findAll() {
 		List<ReadablePaycycle> paycycles = payCycleService.getAll().stream()
-				.map(item -> paycircleMapper.convert(item, null, null)).toList();
+				.map(item -> paycircleMapper.convert(item, null, null)).collect(Collectors.toList());
 		ReadableEntityListV2<ReadablePaycycle> entityList = new ReadableEntityListV2<ReadablePaycycle>();
 		entityList.setData(paycycles);
 		return entityList;

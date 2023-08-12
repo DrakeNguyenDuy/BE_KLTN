@@ -73,6 +73,9 @@ public class EmployerDetailMapper {
 		if (source.getId() != null) {
 			destination.setId(source.getId());
 		}
+		if (StringUtils.hasText(source.getName())) {
+			destination.setStorename(source.getName());
+		}
 		if (StringUtils.hasText(source.getAddress())) {
 			destination.setStoreaddress(source.getAddress());
 		}

@@ -341,14 +341,14 @@ public class ProductFacadeV2Impl implements ProductFacade {
 			throw new NullPointerException("Not found store");
 		}
 		List<Product> products = productService.listByStore(store);
-		return products.stream().map(item -> readableProductMapper.convert(item)).toList();
+		return products.stream().map(item -> readableProductMapper.convert(item)).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ReadableProduct> getProductsLastest(String username) {
 		List<Product> products = productService.getProductsLastest();
 		List<ReadableProduct> readableProducts = products.stream().map(item -> readableProductMapper.convert(item))
-				.toList();
+				.collect(Collectors.toList());;
 		if (username != null) {
 			Customer alumnus = customerService.getByNick(username);
 			if (!Objects.isNull(alumnus)) {
@@ -378,7 +378,7 @@ public class ProductFacadeV2Impl implements ProductFacade {
 		Page<Product> pageJob = productService.getProducts(page, count, filter);
 		List<ReadableProduct> list = new ArrayList<ReadableProduct>();
 		if (!Objects.isNull(pageJob)) {
-			list = pageJob.getContent().stream().map(item -> readableProductMapper.convert(item)).toList();
+			list = pageJob.getContent().stream().map(item -> readableProductMapper.convert(item)).collect(Collectors.toList());
 		}
 		if (username != null) {
 			Customer alumnus = customerService.getByNick(username);

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
@@ -189,6 +190,7 @@ public class StoreFacadeImpl implements StoreFacade {
 	}
 
 	@Override
+	@Transactional
 	public void create(PersistableMerchantStore store) {
 
 		Validate.notNull(store, "PersistableMerchantStore must not be null");
@@ -644,7 +646,7 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Override
 	public List<ReadableEmployer> topEmployer() {
-		return merchantStoreService.topEmployer().stream().map(item -> employerMapper.convertToDto(item)).toList();
+		return merchantStoreService.topEmployer().stream().map(item -> employerMapper.convertToDto(item)).collect(Collectors.toList());
 	}
 
 	@Override
