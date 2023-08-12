@@ -11,6 +11,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -300,6 +301,7 @@ public class UserFacadeImpl implements UserFacade {
 	}
 
 	@Override
+	@Transactional
 	public ReadableUser create(PersistableUser user, MerchantStore store) {
 
 		Validate.notNull(store, "MerchantStore must not be null");

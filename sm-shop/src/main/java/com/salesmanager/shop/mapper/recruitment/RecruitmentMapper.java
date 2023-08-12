@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,7 +48,7 @@ public class RecruitmentMapper {
 	}
 
 	public List<RecruitmentDto> convertToDtos(List<Recruitment> recruitments) {
-		return recruitments.stream().map(item -> convertToDto(item)).toList();
+		return recruitments.stream().map(item -> convertToDto(item)).collect(Collectors.toList());
 	}
 
 	public RecruitmentDto convertToDto(Recruitment recruitment) {

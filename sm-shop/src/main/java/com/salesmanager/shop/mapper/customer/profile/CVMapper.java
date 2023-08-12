@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,25 +139,25 @@ public class CVMapper {
 
 		if (!CollectionUtils.isEmpty(cv.getWorkExperiences())) {
 			List<WorkExperienceDto> workExperienceDtos = cv.getWorkExperiences().stream()
-					.map(item -> this.workExperienceMapper.convertToDto(item)).toList();
+					.map(item -> this.workExperienceMapper.convertToDto(item)).collect(Collectors.toList());
 			cvDto.setWorkExperiences(workExperienceDtos);
 		}
 
 		if (!CollectionUtils.isEmpty(cv.getCertificate())) {
 			List<CertificateDto> certificateDtos = cv.getCertificate().stream()
-					.map(item -> this.certificateMapper.convertToDto(item)).toList();
+					.map(item -> this.certificateMapper.convertToDto(item)).collect(Collectors.toList());
 			cvDto.setCertificates(certificateDtos);
 		}
 
 		if (!CollectionUtils.isEmpty(cv.getEducations())) {
 			List<EducationDto> educationDtos = cv.getEducations().stream()
-					.map(item -> this.educationMapper.convertToDto(item)).toList();
+					.map(item -> this.educationMapper.convertToDto(item)).collect(Collectors.toList());
 			cvDto.setEducations(educationDtos);
 		}
 		
 		if(!CollectionUtils.isEmpty(cv.getCvSkills())) {
 //			List<ProfileSkillDto> skills = cv.getAlumnus().getProfile().getSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
-			List<ProfileSkillDto> skills = cv.getCvSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
+			List<ProfileSkillDto> skills = cv.getCvSkills().stream().map(item -> profileSkillEntryMapper.convertToDto(item)).collect(Collectors.toList());
 			cvDto.setSkills(skills);
 		}
 		return cvDto;
@@ -220,13 +221,13 @@ public class CVMapper {
 
 		if (!CollectionUtils.isEmpty(source.getWorkExperiences())) {
 			List<WorkExperience> workExperiences = source.getWorkExperiences().stream()
-					.map(item -> this.workExperienceMapper.convertToEntity(destination, item)).toList();
+					.map(item -> this.workExperienceMapper.convertToEntity(destination, item)).collect(Collectors.toList());
 			destination.setWorkExperiences(new ArrayList<WorkExperience>(workExperiences));
 		}
 
 		if (!CollectionUtils.isEmpty(source.getCertificates())) {
 			List<Certificate> certificateDtos = source.getCertificates().stream()
-					.map(item -> this.certificateMapper.convertToEntity(destination, item)).toList();
+					.map(item -> this.certificateMapper.convertToEntity(destination, item)).collect(Collectors.toList());
 			destination.setCertificate(new ArrayList<Certificate>(certificateDtos));
 		}
 
@@ -244,7 +245,7 @@ public class CVMapper {
 
 		if (!CollectionUtils.isEmpty(source.getEducations())) {
 			List<Education> educationDtos = source.getEducations().stream()
-					.map(item -> this.educationMapper.convertToEntity(destination, item)).toList();
+					.map(item -> this.educationMapper.convertToEntity(destination, item)).collect(Collectors.toList());
 			destination.setEducations(new ArrayList<Education>(educationDtos));
 		}
 		

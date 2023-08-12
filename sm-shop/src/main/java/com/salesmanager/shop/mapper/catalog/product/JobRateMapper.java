@@ -2,18 +2,18 @@ package com.salesmanager.shop.mapper.catalog.product;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import com.salesmanager.core.model.customer.JobRate;
 import com.salesmanager.shop.model.catalog.product.jobRate.JobRateDto;
-import com.salesmanager.shop.utils.ConverterDate;
 
 @Component
 public class JobRateMapper {
 
 	public List<JobRateDto> convertToDtos(List<JobRate> sources) {
-		return sources.stream().map(item -> convertToDto(item)).toList();
+		return sources.stream().map(item -> convertToDto(item)).collect(Collectors.toList());
 	}
 
 	public JobRateDto convertToDto(JobRate source) {

@@ -386,7 +386,7 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 //				for (PersistableLocationDescription description : codeLocations) {
 ////					locationDescriptions.add(locationService.getLocationDescriptionByCode(string));
 //				}
-				List<LocationDescription> ld = source.getLocationsDecription().stream().map(item->this.convertToLocationDescription(item)).toList();
+				List<LocationDescription> ld = source.getLocationsDecription().stream().map(item->this.convertToLocationDescription(item)).collect(Collectors.toList());
 				locationDescriptions.addAll(ld);
 				destination.setLocationDescriptions(locationDescriptions);
 			}

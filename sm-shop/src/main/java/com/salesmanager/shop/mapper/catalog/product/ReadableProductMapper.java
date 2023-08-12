@@ -769,7 +769,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 		if (source.getCategories() != null) {
 			destination.setCategories(source.getCategories().stream()
-					.map(item -> readableCategoryMapper.convert2Readable(item)).toList());
+					.map(item -> readableCategoryMapper.convert2Readable(item)).collect(Collectors.toList()));
 		}
 
 		// temp store

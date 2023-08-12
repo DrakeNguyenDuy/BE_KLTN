@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +117,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 //					.map(item -> this.readableSkillMapper.convert(item, store, language)).toList();
 //			destination.setReadableSkillDescriptions(skills);
 			List<ProfileSkillDto> skills = source.getSkills().stream()
-					.map(item -> profileSkillEntryMapper.convertToDto(item)).toList();
+					.map(item -> profileSkillEntryMapper.convertToDto(item)).collect(Collectors.toList());
 			destination.setSkills(skills);
 		}
 		if (!Objects.isNull(source.getCategory())) {
@@ -124,7 +125,7 @@ public class ReadableProfileMapper implements Mapper<Profile, ReadableProfile> {
 		}
 		if (!CollectionUtils.isEmpty(source.getDistricts())) {
 			List<ReadableDistrict> districts = source.getDistricts().stream()
-					.map(item -> this.readableDistrictMapper.convert(item, store, language)).toList();
+					.map(item -> this.readableDistrictMapper.convert(item, store, language)).collect(Collectors.toList());
 			destination.setDistricts(districts);
 		}
 		if (!Objects.isNull(source.getPayCycle())) {

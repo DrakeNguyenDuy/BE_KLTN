@@ -10,10 +10,12 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
-			<groupId>com.shopizer</groupId>
-			<artifactId>sm-core</artifactId>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+
 		<!-- lenskit-->
 		<dependency>
 			<groupId>org.grouplens.lenskit</groupId>
@@ -25,5 +27,6 @@
 			<artifactId>lenskit-all</artifactId>
 			<version>3.0-M3</version>
 		</dependency>
+
 	</dependencies>
 </project>
