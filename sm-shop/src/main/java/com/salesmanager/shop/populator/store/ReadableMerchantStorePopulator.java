@@ -128,7 +128,7 @@ public class ReadableMerchantStorePopulator extends AbstractDataPopulator<Mercha
 //		end
 
 //		Long add some lines here(17/6/2023)
-		if (source.getStoreLogo().length > 0 && source.getStoreLogo() != null) {
+		if (source.getStoreLogo() != null) {
 			ReadableImage image = new ReadableImage();
 			image.setName(source.getCode());
 			image.setPath("/api/v1/store/" + source.getCode() + "/marketing/logo");
