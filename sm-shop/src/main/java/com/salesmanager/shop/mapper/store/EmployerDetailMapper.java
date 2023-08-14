@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -53,7 +54,8 @@ public class EmployerDetailMapper {
 		if (StringUtils.hasText(source.getSologan())) {
 			destination.setSologan(source.getSologan());
 		}
-		List<Product> jobs = productService.listByStore(source);
+		Page<Product> jobPage = productService.listByStore(source, 0, 10, null);
+		List<Product> jobs = jobPage.getContent();
 		if (jobs.size() > 0) {
 			List<ReadableProduct> readableProducts = jobs.stream().map(p -> jobMapper.convert(p))
 					.sorted(Comparator.comparing(ReadableProduct::getSortOrder)).collect(Collectors.toList());

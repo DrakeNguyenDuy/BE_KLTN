@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.ProductCriteria;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -44,6 +46,7 @@ import com.salesmanager.shop.model.catalog.product.product.definition.ReadablePr
 import com.salesmanager.shop.model.entity.Entity;
 
 import com.salesmanager.shop.store.api.exception.ResourceNotFoundException;
+import com.salesmanager.shop.store.api.exception.RestApiException;
 import com.salesmanager.shop.store.api.exception.ServiceRuntimeException;
 import com.salesmanager.shop.store.controller.category.facade.CategoryFacade;
 
@@ -127,7 +130,10 @@ public class ProductApiV2 {
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
 	public @ResponseBody Entity createV2(@Valid @RequestBody PersistableProductDefinition product,
 			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language) {
-
+//		ReadableProductDetail p = productFacadeV2.getProductByCode(merchantStore.getCode(), product.getSku());
+//		if(!Objects.isNull(p)) {
+//			throw new RestApiException("422", "Duplicate ")
+//		}
 		// make sure product id is null
 		product.setId(null);
 		Long id = productDefinitionFacade.saveProductDefinition(merchantStore, product, language);
@@ -403,14 +409,14 @@ public class ProductApiV2 {
 //	Long add some lines here(17/7/2023)
 	@RequestMapping(value = "/private/products/{storeCode}", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ReadableProduct> getProductByStore(ProductCriteria searchCriterias, @PathVariable String storeCode,
+	public ReadableProductList getProductByStore(ProductCriteria searchCriterias, @PathVariable String storeCode,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, // paging
 			@RequestParam(value = "count", required = false, defaultValue = "10") Integer count // count per page
-	) {
+			, @RequestParam(required = false) Map<String, String> map) {
 		searchCriterias.setMaxCount(count);
 		searchCriterias.setStartPage(page);
 		try {
-			return productFacadeV2.getProductsByStoreCode(storeCode);
+			return productFacadeV2.getProductsByStoreCode(storeCode, page, count, map);
 
 		} catch (Exception e) {
 			LOGGER.error("Error while filtering products product", e);
@@ -421,7 +427,7 @@ public class ProductApiV2 {
 
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	@ResponseBody
-	public ReadableProductList getProducts(@RequestParam Map<String, Object> map,
+	public ReadableProductList getProducts(@RequestParam(required = false) Map<String, Object> map,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
 			@RequestParam(value = "count", required = false, defaultValue = "100") Integer count, // count
 			@RequestParam(required = false) String username) {
@@ -432,6 +438,12 @@ public class ProductApiV2 {
 	@ResponseBody
 	public List<FilterDto> getFilterDisplay() {
 		return filterFacade.findAll();
+	}
+
+	@RequestMapping(value = "/private/product/update-status/{jobCode}", method = RequestMethod.PUT)
+	@ResponseBody
+	public String updateStatus(@PathVariable String jobCode, @RequestParam(required = true) String status) {
+		return productFacadeV2.updateStatus(jobCode, status);
 	}
 //	end
 }

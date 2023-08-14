@@ -2,8 +2,11 @@ package com.salesmanager.core.business.services.catalog.product;
 
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -22,8 +25,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.catalog.product.ProductRepository;
@@ -35,17 +41,16 @@ import com.salesmanager.core.business.services.catalog.product.attribute.Product
 import com.salesmanager.core.business.services.catalog.product.availability.ProductAvailabilityService;
 import com.salesmanager.core.business.services.catalog.product.image.ProductImageService;
 import com.salesmanager.core.business.services.catalog.product.location.ProductLocationEntryService;
-import com.salesmanager.core.business.services.catalog.product.location.ProductLocationService;
 import com.salesmanager.core.business.services.catalog.product.price.ProductPriceService;
 import com.salesmanager.core.business.services.catalog.product.relationship.ProductRelationshipService;
 import com.salesmanager.core.business.services.catalog.product.review.ProductReviewService;
 import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillEntryService;
-import com.salesmanager.core.business.services.catalog.product.skill.ProductSkillService;
 import com.salesmanager.core.business.services.common.generic.SalesManagerEntityServiceImpl;
 import com.salesmanager.core.business.specifications.JobSpecification;
 import com.salesmanager.core.business.utils.CatalogServiceHelper;
 import com.salesmanager.core.business.utils.CoreConfiguration;
 import com.salesmanager.core.model.catalog.category.Category;
+import com.salesmanager.core.model.catalog.product.JobStatus;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.ProductCriteria;
 import com.salesmanager.core.model.catalog.product.ProductList;
@@ -55,10 +60,8 @@ import com.salesmanager.core.model.catalog.product.relationship.ProductRelations
 import com.salesmanager.core.model.catalog.product.review.ProductReview;
 import com.salesmanager.core.model.content.FileContentType;
 import com.salesmanager.core.model.content.ImageContentFile;
-import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
-import com.salesmanager.core.model.skill.SkillDescription;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 
 @Service("productService")
@@ -223,9 +226,11 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	}
 
 	@Override
-	public List<Product> listByStore(MerchantStore store) {
-
-		return productRepository.listByStore(store);
+	public Page<Product> listByStore(MerchantStore store, int page, int count, Map<String, String> map) {
+		Pageable paging = PageRequest.of(page, count, Sort.by("dateAvailable"));
+		map.put("storeCode", store.getCode());
+		Specification<Product> specification = jobSpecification.query(map);
+		return productRepository.findAll(specification, paging);
 	}
 
 	@Override
@@ -469,6 +474,31 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 			return productsPage;
 		}
 		return null;
+	}
+
+	@Override
+	@Scheduled(cron = "0 0 1 * * *")
+	public void updateOutOfDate() {
+		Date date = new Date();
+		List<Product> products = productRepository.findByDateExperienceLessThan(date);
+		for (Product product : products) {
+			product.setStatus(JobStatus.OUTOFDATE);
+		}
+		productRepository.saveAll(products);
+		LOGGER.info("Update success");
+	}
+
+	@Override
+	public String updateStatus(String jobCode, String status) {
+		List<Product> product = productRepository.findBySku(jobCode);
+		if (!CollectionUtils.isEmpty(product)) {
+			JobStatus jobStatus = JobStatus.valueOf(status) == JobStatus.ACTIVE ? JobStatus.ACTIVE
+					: JobStatus.valueOf(status) == JobStatus.INACTIVE ? JobStatus.INACTIVE : JobStatus.OUTOFDATE;
+			product.get(0).setStatus(jobStatus);
+			productRepository.save(product.get(0));
+			return "Update sucess";
+		}
+		return "Cannot update because not found out job";
 	}
 
 }

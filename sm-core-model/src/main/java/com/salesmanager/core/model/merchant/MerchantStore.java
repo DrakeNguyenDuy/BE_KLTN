@@ -198,7 +198,7 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 	private String description;
 	
 	@Lob
-	@Column(name = "BACK_GROUND")
+	@Column(name = "BACK_GROUND", columnDefinition = "MEDIUMBLOB")
 	private byte[] backGround;
 	
 	@Column(name = "SOLOGAN", length = 255)

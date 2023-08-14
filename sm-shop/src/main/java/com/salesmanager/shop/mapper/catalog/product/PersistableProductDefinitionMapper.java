@@ -34,6 +34,7 @@ import com.salesmanager.core.business.services.reference.language.LanguageServic
 import com.salesmanager.core.model.address.District;
 import com.salesmanager.core.model.address.Province;
 import com.salesmanager.core.model.catalog.category.Category;
+import com.salesmanager.core.model.catalog.product.JobStatus;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.availability.ProductAvailability;
 import com.salesmanager.core.model.catalog.product.description.ProductDescription;
@@ -135,6 +136,9 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 			destination.setDateAvailable(new Date());
 
 			destination.setRefSku(source.getIdentifier());
+
+			destination.setStatus(
+					JobStatus.valueOf(source.getStatus()) == JobStatus.ACTIVE ? JobStatus.ACTIVE : JobStatus.INACTIVE);
 
 			if (source.getId() != null && source.getId().longValue() == 0) {
 				destination.setId(null);
@@ -348,7 +352,7 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 
 						}
 					}
-					//Long hide some lines value here(17/6/2023)
+					// Long hide some lines value here(17/6/2023)
 //					if (c.getMerchantStore().getId().intValue() != store.getId().intValue()) {
 //						throw new ConversionException("Invalid category id");
 //					}
@@ -386,7 +390,8 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 //				for (PersistableLocationDescription description : codeLocations) {
 ////					locationDescriptions.add(locationService.getLocationDescriptionByCode(string));
 //				}
-				List<LocationDescription> ld = source.getLocationsDecription().stream().map(item->this.convertToLocationDescription(item)).collect(Collectors.toList());
+				List<LocationDescription> ld = source.getLocationsDecription().stream()
+						.map(item -> this.convertToLocationDescription(item)).collect(Collectors.toList());
 				locationDescriptions.addAll(ld);
 				destination.setLocationDescriptions(locationDescriptions);
 			}
@@ -431,7 +436,7 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 	private LocationDescription convertToLocationDescription(PersistableLocationDescription pld) {
 		LocationDescription ld = new LocationDescription();
 //		when update
-		if(pld.getIdLocation()!=null) {
+		if (pld.getIdLocation() != null) {
 			ld.setID_LOCATION(pld.getIdLocation());
 		}
 		ld.setDETAIL_ADDRESS(pld.getDetailAddress());

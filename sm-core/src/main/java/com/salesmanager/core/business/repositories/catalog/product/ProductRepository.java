@@ -1,5 +1,7 @@
 package com.salesmanager.core.business.repositories.catalog.product;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 	// Long add some lines here
 	@Query("SELECT p FROM Product p ORDER BY p.auditSection.dateCreated DESC")
 	List<Product> findLastestAndOrderByCreateAt(Pageable pageable);
+	
+	List<Product> findByDateExperienceLessThan(Date now);
 	// end
 
 }

@@ -160,6 +160,9 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 
 	@Column(name = "AVAILABLE")
 	private boolean available = true;
+	
+	@Column(name = "STATUS" )
+	private JobStatus status = JobStatus.INACTIVE;
 
 	// Long add some lines here(4/5/2023)
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -676,5 +679,14 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	public void setJobRates(List<JobRate> jobRates) {
 		this.jobRates = jobRates;
 	}
+
+	public JobStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(JobStatus status) {
+		this.status = status;
+	}
+	
 	//	end
 }

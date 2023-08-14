@@ -71,7 +71,7 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
 	Page<Product> listByStoreV2(ProductCriteria criteria, int page, int count);
 //	end
 
-	List<Product> listByStore(MerchantStore store);
+	Page<Product> listByStore(MerchantStore store, int page, int count, Map<String, String> map);
 
 	List<Product> listByTaxClass(TaxClass taxClass);
 
@@ -87,7 +87,7 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
 	 * @return
 	 */
 	Product getBySku(String productCode, MerchantStore merchant, Language language) throws ServiceException;
-	
+
 //	Long add some lines here(20/5/2023)
 	Product getBySku(String productCode) throws ServiceException;
 //	end
@@ -102,9 +102,12 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
 	 * @return
 	 */
 	Product findOne(Long id, MerchantStore merchant);
-	
+
 	List<Product> getProductsLastest();
-	
+
 	Page<Product> getProducts(Integer page, Integer count, Map<String, Object> filter);
 
+	void updateOutOfDate();
+
+	public String updateStatus(String jobCode, String status);
 }

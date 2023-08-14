@@ -84,7 +84,8 @@ public class TFIDFItemScorer extends AbstractItemScorer {
             for(VectorEntry v: itemVector.fast()){
                 long vKey = v.getKey();
                 double vValue = v.getValue();
-                double sum = vValue * multiplier + profile.get(vKey);
+//                double sum = vValue * multiplier + profile.get(vKey);
+                double sum = ratingValue*vValue + profile.get(vKey);
                 profile.set(vKey, sum);
             }
 

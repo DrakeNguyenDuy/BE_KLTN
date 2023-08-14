@@ -17,6 +17,7 @@ import com.salesmanager.core.business.services.catalog.pricing.PricingService;
 import com.salesmanager.core.business.services.catalog.product.jobRate.JobRateService;
 import com.salesmanager.core.business.services.catalog.product.paycycle.PayCycleService;
 import com.salesmanager.core.business.services.catalog.product.price.ProductPriceService;
+import com.salesmanager.core.model.catalog.product.JobStatus;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.attribute.ProductAttribute;
 import com.salesmanager.core.model.catalog.product.attribute.ProductOption;
@@ -89,7 +90,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 //	Long add some lines here(20/5/2023)
 	@Autowired
 	private ReadableExperienceMapper readableExperienceMapper;
-	
+
 	@Autowired
 	private PayCycleService payCycleService;
 
@@ -99,7 +100,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 	@Autowired
 	private PricingService pricingService;
-	
+
 	@Autowired
 	private JobRateService jobRateService;
 
@@ -590,7 +591,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setId(source.getId());
 		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
-		destination.setLogo("/api/v1/store/"+source.getMerchantStore().getCode()+"/marketing/logo");
+		destination.setLogo("/api/v1/store/" + source.getMerchantStore().getCode() + "/marketing/logo");
 		if (source.getMerchantStore() != null) {
 			destination.setNameCompany(source.getMerchantStore().getStorename());
 		}
@@ -611,12 +612,12 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			destination.setName(source.getProductDescription().getName());
 			destination.setTitle(source.getProductDescription().getTitle());
 		}
-		
-		if(source.getIdPayCycle()!=null && StringUtils.isNoneBlank(source.getIdPayCycle())) {
-			String payCycle= payCycleService.getPayCycleByCode(source.getIdPayCycle()).getName();
+
+		if (source.getIdPayCycle() != null && StringUtils.isNoneBlank(source.getIdPayCycle())) {
+			String payCycle = payCycleService.getPayCycleByCode(source.getIdPayCycle()).getName();
 			destination.setPayCycle(payCycle);
 		}
-		
+
 		JobRate jobRate = jobRateService.findByJobAndAlumnus(source, null);
 		// end
 
@@ -627,6 +628,12 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 
 		if (source.getDateAvailable() != null) {
 			destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
+		}
+
+		JobStatus status = source.getStatus();
+		if (status != null) {
+			destination.setStatus(status == JobStatus.ACTIVE ? "Đang ứng tuyển"
+					: status == JobStatus.INACTIVE ? "Tạm dừng ứng tuyển" : "Đã hết hạn");
 		}
 
 		// temp store
@@ -731,7 +738,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setId(source.getId());
 		destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		destination.setDateExperience(DateUtil.formatDate(source.getDateExperience()));
-		destination.setLogo("/api/v1/store/"+source.getMerchantStore().getCode()+"/marketing/logo");
+		destination.setLogo("/api/v1/store/" + source.getMerchantStore().getCode() + "/marketing/logo");
 		if (source.getMerchantStore() != null) {
 			String storeName = source.getMerchantStore().getStorename();
 			String phoneNumber = source.getMerchantStore().getStorephone();

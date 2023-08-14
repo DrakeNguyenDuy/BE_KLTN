@@ -26,9 +26,9 @@ public class RatingDAO extends AbstractDao implements EventDAO {
 					// rating, like and
 					// like-batch
 					JDBCRatingDAO jdbcDao = JDBCRatingDAO.newBuilder()
-							
 							.setTableName("job_rate")
-							.setTimestampColumn("date_rating").setRatingColumn("jobRateStatus")
+							.setTimestampColumn("date_rating")
+							.setRatingColumn("jobRateStatus")
 							.setUserColumn("ALUMNUS_ID").setItemColumn("JOB_ID").build(conn);
 					EventDAO eventDao = jdbcDao;
 					eventCache = (EventCollectionDAO) EventCollectionDAO
