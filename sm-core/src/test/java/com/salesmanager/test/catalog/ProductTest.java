@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.data.domain.Page;
+
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.model.catalog.category.Category;
 import com.salesmanager.core.model.catalog.category.CategoryDescription;
@@ -280,8 +282,8 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
 	     */
 	    //testReview(product);
 
-	    List<Product> products = productService.listByStore(store);
-	    
+	    Page<Product> productPage = productService.listByStore(store, 0, 10, null);
+	    List<Product> products= productPage.getContent();
 	    System.out.println("Total number of items " + products.size());
 	    
 	    //count products by category
@@ -338,7 +340,8 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
 		
 		
 		//go and get products again
-		products = productService.listByStore(store);
+		  productPage = productService.listByStore(store, 0, 10, null);
+		products = productPage.getContent();
 
 		updatableProduct = products.get(0);
 		

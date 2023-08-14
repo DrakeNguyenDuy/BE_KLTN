@@ -22,6 +22,7 @@ public class ProductEntity extends Product implements Serializable {
 	private BigDecimal price;
 	private int quantity = 0;
 	private String sku;
+	private String status;
 	//Long hide some lines here 
 //	private boolean preOrder = false;
 //	private boolean productVirtual = false;
@@ -158,6 +159,14 @@ public class ProductEntity extends Product implements Serializable {
 
 	public void setRefSku(String refSku) {
 		this.refSku = refSku;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 //	Long hide some lines here(13/5/2023)

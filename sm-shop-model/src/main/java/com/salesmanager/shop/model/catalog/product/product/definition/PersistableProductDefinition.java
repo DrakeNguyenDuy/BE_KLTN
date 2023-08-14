@@ -36,10 +36,11 @@ public class PersistableProductDefinition extends ProductDefinition {
 	private List<String> positionCode;
 	private List<String> skillsDecription = new ArrayList<String>();
 	private List<PersistableLocationDescription> locationsDecription = new ArrayList<PersistableLocationDescription>();
-	private String  idPayCycle;
+	private String idPayCycle;
+	private String status;
 	// end
-	//Long add some lines here
-	//end
+	// Long add some lines here
+	// end
 
 	public List<ProductDescription> getDescriptions() {
 		return descriptions;
@@ -69,6 +70,7 @@ public class PersistableProductDefinition extends ProductDefinition {
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -145,7 +147,15 @@ public class PersistableProductDefinition extends ProductDefinition {
 	public void setIdPayCycle(String idPayCycle) {
 		this.idPayCycle = idPayCycle;
 	}
-	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 //	end
 
 }

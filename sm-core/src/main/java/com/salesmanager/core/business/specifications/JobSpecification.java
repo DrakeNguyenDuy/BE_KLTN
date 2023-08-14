@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.model.address.District;
 import com.salesmanager.core.model.catalog.category.Category;
+import com.salesmanager.core.model.catalog.product.JobStatus;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.availability.ProductAvailability;
 import com.salesmanager.core.model.catalog.product.description.ProductDescription;
@@ -22,6 +23,7 @@ import com.salesmanager.core.model.catalog.product.price.ProductPrice;
 import com.salesmanager.core.model.catalog.product.type.ProductType;
 import com.salesmanager.core.model.experience.ExperienceDescription;
 import com.salesmanager.core.model.location.LocationDescription;
+import com.salesmanager.core.model.merchant.MerchantStore;
 
 @Component
 public class JobSpecification {
@@ -82,6 +84,31 @@ public class JobSpecification {
 				default:
 					break;
 				}
+			}
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
+	}
+
+	public Specification<Product> query(Map<String, String> map) {
+		return (root, query, criteriaBuilder) -> {
+			String search = map.get("query");
+			String status = map.get("status");
+			String storeCode = map.get("storeCode");
+			List<Predicate> predicates = new ArrayList<Predicate>();
+
+			Join<Product, ProductDescription> descriptionJoin = root.joinSet("descriptions");
+			Join<Product, MerchantStore> employer = root.join("merchantStore");
+			if (search != null) {
+				predicates.add(
+						criteriaBuilder.like(criteriaBuilder.lower(descriptionJoin.get("name")), "%" + search + "%"));
+			}
+			if (status != null) {
+				JobStatus jobStatus = JobStatus.valueOf(status) == JobStatus.ACTIVE ? JobStatus.ACTIVE
+						: JobStatus.valueOf(status) == JobStatus.INACTIVE ? JobStatus.INACTIVE : JobStatus.OUTOFDATE;
+				predicates.add(criteriaBuilder.equal(root.get("status"), jobStatus));
+			}
+			if (storeCode != null) {
+				predicates.add(criteriaBuilder.equal(employer.get("code"), storeCode));
 			}
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 		};

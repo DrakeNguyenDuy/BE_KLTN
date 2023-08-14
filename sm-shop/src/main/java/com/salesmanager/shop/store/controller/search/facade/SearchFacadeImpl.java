@@ -10,6 +10,7 @@ import org.jsoup.helper.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -70,8 +71,8 @@ public class SearchFacadeImpl implements SearchFacade {
 	@Override
 	@Async
 	public void indexAllData(MerchantStore store) throws Exception {
-		List<Product> products = productService.listByStore(store);
-
+		Page<Product> productPage = productService.listByStore(store, 0, 10, null);
+		List<Product> products = productPage.getContent();
 		products.stream().forEach(p -> {
 			try {
 				searchService.index(store, p);

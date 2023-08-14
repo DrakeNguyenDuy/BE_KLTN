@@ -93,12 +93,14 @@ public interface ProductFacade {
 	List<ReadableProduct> relatedItems(MerchantStore store, Product product, Language language) throws Exception;
 
 	// Long add some lines here(18/6/2023)
-	List<ReadableProduct> getProductsByStoreCode(String storeCode);
+	ReadableProductList getProductsByStoreCode(String storeCode, Integer page, Integer count, Map<String, String> map);
 	// end
 
 	// Long add some lines here(14/7/2023)
 	List<ReadableProduct> getProductsLastest(String username);
 
 	ReadableProductList getProducts(String username, Integer page, Integer count, Map<String, Object> filter);
+	
+	String updateStatus(String jobCode, String status);
 	// end
 }

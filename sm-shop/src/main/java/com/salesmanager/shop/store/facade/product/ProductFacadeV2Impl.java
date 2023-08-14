@@ -330,7 +330,8 @@ public class ProductFacadeV2Impl implements ProductFacade {
 //	end
 
 	@Override
-	public List<ReadableProduct> getProductsByStoreCode(String storeCode) {
+	public ReadableProductList getProductsByStoreCode(String storeCode, Integer page, Integer count,
+			Map<String, String> map) {
 		MerchantStore store = null;
 		try {
 			store = merchantStoreService.getByCode(storeCode);
@@ -340,8 +341,15 @@ public class ProductFacadeV2Impl implements ProductFacade {
 		if (store == null) {
 			throw new NullPointerException("Not found store");
 		}
-		List<Product> products = productService.listByStore(store);
-		return products.stream().map(item -> readableProductMapper.convert(item)).collect(Collectors.toList());
+		Page<Product> productPage = productService.listByStore(store, page, count , map);
+		List<Product> products = productPage.getContent();
+		List<ReadableProduct> readableProducts = products.stream().map(item -> readableProductMapper.convert(item)).collect(Collectors.toList());
+		ReadableProductList result  = new ReadableProductList();
+		result.setRecordsTotal(productPage.getTotalElements());
+		result.setNumber(productPage.getNumberOfElements());
+		result.setProducts(readableProducts);
+		result.setTotalPages(productPage.getTotalPages());
+		return result;
 	}
 
 	@Override
@@ -410,6 +418,11 @@ public class ProductFacadeV2Impl implements ProductFacade {
 		products.setTotalPages(!Objects.isNull(pageJob) ? pageJob.getTotalPages() : Collections.emptyList().size());
 		products.setNumber(Long.valueOf(productService.count()).intValue());
 		return products;
+	}
+
+	@Override
+	public String updateStatus(String jobCode, String status) {
+		return productService.updateStatus(jobCode, status);
 	}
 
 	/**
