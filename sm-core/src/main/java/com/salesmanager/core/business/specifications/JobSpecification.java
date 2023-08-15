@@ -70,6 +70,7 @@ public class JobSpecification {
 			if (paycycle != null) {
 				predicates.add(criteriaBuilder.equal(root.get("idPayCycle"), paycycle));
 			}
+			predicates.add(criteriaBuilder.equal(root.get("status"), JobStatus.ACTIVE));
 			if (order != null) {
 				switch (order) {
 				case Constants.FILTER_BY_LASTEST:

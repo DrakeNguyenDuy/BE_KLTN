@@ -36,10 +36,10 @@ public class JobRate {
 	private JobRateStatus jobRateStatus;
 
 	@Column(name = "DATE_RATING", nullable = false)
-	private Date dateRating;
+	private Long dateRating;
 
 	@Column(name = "DATE_MODIFIED", nullable = false)
-	private Date dateModified;
+	private Long dateModified;
 
 	@Column(name = "COMMENT", columnDefinition = "TEXT")
 	private String comment;
@@ -76,19 +76,19 @@ public class JobRate {
 		this.jobRateStatus = jobRateStatus;
 	}
 
-	public Date getDateRating() {
+	public Long getDateRating() {
 		return dateRating;
 	}
 
-	public void setDateRating(Date dateRating) {
+	public void setDateRating(Long dateRating) {
 		this.dateRating = dateRating;
 	}
 
-	public Date getDateModified() {
+	public Long getDateModified() {
 		return dateModified;
 	}
 
-	public void setDateModified(Date dateModified) {
+	public void setDateModified(Long dateModified) {
 		this.dateModified = dateModified;
 	}
 
