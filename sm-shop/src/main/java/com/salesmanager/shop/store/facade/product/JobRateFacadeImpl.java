@@ -54,12 +54,12 @@ public class JobRateFacadeImpl implements JobRateFacade {
 		if (Objects.isNull(jobRate)) {
 			jobRate = new JobRate();
 			jobRate.setAlumnus(alumnus);
-			jobRate.setDateModified(now);
+			jobRate.setDateModified(now.getTime());
 			jobRate.setJob(job);
-			jobRate.setDateRating(now);
+			jobRate.setDateRating(now.getTime());
 			jobRate.setJobRateStatus(JobRateStatus.LIKED);
 		} else {
-			jobRate.setDateModified(now);
+			jobRate.setDateModified(now.getTime());
 			if(jobRate.getJobRateStatus().equals(JobRateStatus.REJECTLIKED)) {
 				jobRate.setJobRateStatus(JobRateStatus.LIKED);
 			}else {	

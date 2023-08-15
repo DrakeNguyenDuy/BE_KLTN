@@ -107,23 +107,23 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	private MerchantStore merchantStore;
 
 	// Long add some lines here (21/4/2023)
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
 	@JoinTable(name = "SKILL_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_SKILL"))
 	private Set<SkillDescription> skillDescriptions = new HashSet<SkillDescription>();
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
 	@JoinTable(name = "LOCATION_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_LOCATION"))
 	private Set<LocationDescription> locationDescriptions = new HashSet<LocationDescription>();
 
 //	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //	@JoinTable(name = "PAYCYCLE_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_PAY_CIRCLE"))
 //	private Set<PayCycleDescription> payCycleDescriptions = new HashSet<PayCycleDescription>();
-	
+
 	@Column(name = "ID_PAY_CIRCL")
 	private String idPayCycle;
 	// end
 
 //	Long add some lines here(14/05/2023)
-	@ManyToMany(fetch = FetchType.LAZY, cascade =  {CascadeType.PERSIST, CascadeType.DETACH})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH })
 	@JoinTable(name = "POSITION_PRODUCT_ENTRY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "ID_POSITION"))
 	private Set<PositionDescription> positionDescriptions = new HashSet<PositionDescription>();
 //	end
@@ -160,8 +160,8 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 
 	@Column(name = "AVAILABLE")
 	private boolean available = true;
-	
-	@Column(name = "STATUS" )
+
+	@Column(name = "STATUS")
 	private JobStatus status = JobStatus.INACTIVE;
 
 	// Long add some lines here(4/5/2023)
@@ -278,13 +278,13 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CUSTOMER_ID", nullable = true)
 	private Customer owner;
-	
-	//Long add some lines here(11/6/2023)
-	@OneToMany(mappedBy = "job")
+
+	// Long add some lines here(11/6/2023)
+	@OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
 	private List<Recruitment> recruitments;
-	@OneToMany(mappedBy = "job")
+	@OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
 	private List<JobRate> jobRates;
-	//end
+	// end
 
 	public Product() {
 	}
@@ -662,8 +662,8 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	}
 
 	// end
-	
-	//Long add some lines here(11/6/2023)
+
+	// Long add some lines here(11/6/2023)
 	public List<Recruitment> getRecruitments() {
 		return recruitments;
 	}
@@ -687,6 +687,6 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	public void setStatus(JobStatus status) {
 		this.status = status;
 	}
-	
-	//	end
+
+	// end
 }

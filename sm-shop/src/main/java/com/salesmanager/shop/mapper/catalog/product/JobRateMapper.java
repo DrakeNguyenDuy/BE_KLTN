@@ -1,5 +1,8 @@
 package com.salesmanager.shop.mapper.catalog.product;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,7 +31,9 @@ public class JobRateMapper {
 			jobRateDto.setNameCompany(source.getJob().getMerchantStore().getStorename());
 		}
 //		jobRateDto.setDateRating(ConverterDate.convertDateToString(source.getDateRating().toString()));
-		jobRateDto.setDateRating(source.getDateRating().toString());
+		Instant instantDateRating = Instant.ofEpochMilli(source.getDateRating());
+		LocalDateTime localDateTime = instantDateRating.atZone(ZoneId.systemDefault()).toLocalDateTime();
+		jobRateDto.setDateRating(localDateTime.toString());
 		jobRateDto.setAlumnusId(source.getAlumnus().getId());
 		jobRateDto.setNameAlumnus(source.getAlumnus().getLastName() + " " + source.getAlumnus().getFirstName());
 		jobRateDto.setAlumnusUsername(source.getAlumnus().getNick());
