@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -118,11 +119,13 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 		try {
 
 			// core properties
-
-			if (StringUtils.isBlank(source.getIdentifier())) {
-				destination.setSku(source.getSku());
+			String randomString = UUID.randomUUID().toString();
+			if (source.getIdentifier() == null) {
+				destination.setSku(randomString);
+				destination.setRefSku(randomString);
 			} else {
 				destination.setSku(source.getIdentifier());
+				destination.setRefSku(source.getIdentifier());
 			}
 
 //			Long hide some lines here(5/5/2023)
@@ -134,8 +137,6 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 //			end
 
 			destination.setDateAvailable(new Date());
-
-			destination.setRefSku(source.getIdentifier());
 
 			destination.setStatus(
 					JobStatus.valueOf(source.getStatus()) == JobStatus.ACTIVE ? JobStatus.ACTIVE : JobStatus.INACTIVE);
