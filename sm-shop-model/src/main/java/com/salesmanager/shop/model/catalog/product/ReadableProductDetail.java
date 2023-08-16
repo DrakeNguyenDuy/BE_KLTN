@@ -32,11 +32,15 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 	private List<ReadableLocationDescription> locations = new ArrayList<ReadableLocationDescription>();
 	private List<ReadablePosition> positions = new ArrayList<ReadablePosition>();
 	private String paycycles;
+	private String codePayCycle;
+	private String status;
+	private String codeStatus;
 	private ReadableExperience experience;
 	private ReadableMerchantStoreV2 merchantStore;
 	private String description;
 	private String logo;
 	private String gender;
+	private String codeGender;
 	private boolean isFollow;
 	private boolean isApplied;
 
@@ -185,4 +189,40 @@ public class ReadableProductDetail extends ProductEntity implements Serializable
 		this.isApplied = isApplied;
 	}
 	// end
+
+	public String getCodePayCycle() {
+		return codePayCycle;
+	}
+
+	public void setCodePayCycle(String codePayCycle) {
+		this.codePayCycle = codePayCycle;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getCodeStatus() {
+		return codeStatus;
+	}
+
+	public void setCodeStatus(String codeStatus) {
+		this.codeStatus = codeStatus;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getCodeGender() {
+		return codeGender;
+	}
+
+	public void setCodeGender(String codeGender) {
+		this.codeGender = codeGender;
+	}
 }

@@ -1,4 +1,4 @@
-package com.salesmanager.beans;
+package com.salesmanager.recommender.beans;
 
 public class Item {
 private Long id;

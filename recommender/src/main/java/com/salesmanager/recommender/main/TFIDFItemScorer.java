@@ -1,4 +1,4 @@
-package com.salesmanager.main;
+package com.salesmanager.recommender.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,13 +15,11 @@ import org.lenskit.api.ResultMap;
 import org.lenskit.basic.AbstractItemScorer;
 import org.lenskit.data.dao.PrefetchingUserEventDAO;
 import org.lenskit.data.dao.UserEventDAO;
-import org.lenskit.data.events.Like;
-import org.lenskit.data.ratings.Preference;
 import org.lenskit.data.ratings.Rating;
 import org.lenskit.results.BasicResult;
 import org.lenskit.results.BasicResultMap;
 
-import com.salesmanager.dao.UserDao;
+import com.salesmanager.recommender.dao.UserDao;
 import com.salesmanager.utils.ScoreUtils;
 
 public class TFIDFItemScorer extends AbstractItemScorer {

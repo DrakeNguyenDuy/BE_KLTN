@@ -1,14 +1,17 @@
 package com.salesmanager.core.business.services.recruitment;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
 
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.recruitment.Recruitment;
 
 public interface RecruitmentService {
-	
+
 	public String appy(Recruitment recruitment);
 
 	// get list apply by job
@@ -24,4 +27,7 @@ public interface RecruitmentService {
 	public void update(Recruitment r);
 
 	public boolean existByAlumnusAndJob(Customer alumnus, Product job);
+
+	public Page<Recruitment> findAlumnusByEmployer(String emailEmployer, Integer page, Integer size,
+			Map<String, String> map);
 }

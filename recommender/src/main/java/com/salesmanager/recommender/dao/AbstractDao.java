@@ -1,4 +1,4 @@
-package com.salesmanager.dao;
+package com.salesmanager.recommender.dao;
 
 import java.io.File;
 import java.io.IOException;

@@ -3,9 +3,11 @@ package com.salesmanager.shop.store.facade.recruitment;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.constants.Constants;
@@ -15,10 +17,10 @@ import com.salesmanager.core.model.recruitment.Recruitment;
 import com.salesmanager.core.model.recruitment.StatusProcess;
 import com.salesmanager.core.model.system.SystemNotification;
 import com.salesmanager.shop.mapper.recruitment.RecruitmentMapper;
+import com.salesmanager.shop.model.recruitment.ReadableRecruitmentList;
 import com.salesmanager.shop.model.recruitment.RecruitmentDto;
 import com.salesmanager.shop.model.recruitment.RecruitmentStatusDto;
 import com.salesmanager.shop.model.recruitment.StatusProcessDto;
-import com.salesmanager.shop.utils.ConverterDate;
 import com.salesmanager.shop.utils.EmailTemplatesUtils;
 
 @Service
@@ -66,9 +68,9 @@ public class RecruitmentFacadeImpl implements RecruitmentFacade {
 		Optional<Recruitment> reOptional = recruitmentService.findById(recruitmentStatusDto.getId());
 		if (reOptional.isPresent()) {
 			Recruitment r = reOptional.get();
-			String value = "Công việc  "+ r.getJob().getProductDescription().getName()+
-					" mà bạn đã ứng tuyển đã chuyển trạng thái từ "+r.getStatusProcess().toString()
-					+" sang "+recruitmentStatusDto.getStatus();
+			String value = "Công việc  " + r.getJob().getProductDescription().getName()
+					+ " mà bạn đã ứng tuyển đã chuyển trạng thái từ " + r.getStatusProcess().toString() + " sang "
+					+ recruitmentStatusDto.getStatus();
 			r.setStatusProcess(StatusProcess.valueOf(recruitmentStatusDto.getStatus()));
 			recruitmentService.update(r);
 			SystemNotification notification = new SystemNotification();
@@ -95,7 +97,6 @@ public class RecruitmentFacadeImpl implements RecruitmentFacade {
 		return processDtos;
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	public String mappingToVi(String name) {
 		if (name.equals(StatusProcess.APPLIED.toString())) {
 			return "Đã ứng tuyển";
@@ -109,6 +110,18 @@ public class RecruitmentFacadeImpl implements RecruitmentFacade {
 			return "Phỏng vấn";
 		} else
 			return "Trúng tuyển";
+	}
+
+	@Override
+	public ReadableRecruitmentList findAlumnusByEmployer(String emailEmployer, Integer page, Integer size,
+			Map<String, String> map) {
+		Page<Recruitment> recruitmentPage = recruitmentService.findAlumnusByEmployer(emailEmployer, page, size, map);
+		ReadableRecruitmentList readableRecruitmentList = new ReadableRecruitmentList();
+		readableRecruitmentList.setRecruitments(recruitmentMapper.convertToDtos(recruitmentPage.getContent()));
+		readableRecruitmentList.setRecordsTotal(recruitmentPage.getTotalElements());
+		readableRecruitmentList.setNumber(recruitmentPage.getNumberOfElements());
+		readableRecruitmentList.setTotalPages(recruitmentPage.getTotalPages());
+		return readableRecruitmentList;
 	}
 
 }
