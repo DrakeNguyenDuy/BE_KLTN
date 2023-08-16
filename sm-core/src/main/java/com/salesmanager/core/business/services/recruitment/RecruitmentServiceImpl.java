@@ -2,13 +2,17 @@ package com.salesmanager.core.business.services.recruitment;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.constants.Constants;
@@ -17,6 +21,7 @@ import com.salesmanager.core.business.repositories.recruitment.RecruitmentReposi
 import com.salesmanager.core.business.services.catalog.product.ProductService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.utils.SystemService;
+import com.salesmanager.core.business.specifications.RecruitmentSpecification;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.recruitment.Recruitment;
@@ -36,6 +41,9 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
 	@Autowired
 	private SystemService systemService;
+
+	@Autowired
+	private RecruitmentSpecification recruitmentSpecification;
 
 	@Override
 	@Transactional
@@ -107,4 +115,12 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 		return false;
 	}
 
+	@Override
+	public Page<Recruitment> findAlumnusByEmployer(String emailEmployer, Integer page, Integer size,
+			Map<String, String> map) {
+		map.put("email", emailEmployer);
+		Pageable paging = PageRequest.of(page, size);
+		Specification<Recruitment> reSpecification = recruitmentSpecification.query(map);
+		return recruitmentReposistory.findAll(reSpecification, paging);
+	}
 }

@@ -1,6 +1,7 @@
 package com.salesmanager.shop.store.api.v2.recruitment;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.salesmanager.shop.model.recruitment.ReadableRecruitmentList;
 import com.salesmanager.shop.model.recruitment.RecruitmentDto;
 import com.salesmanager.shop.model.recruitment.RecruitmentStatusDto;
 import com.salesmanager.shop.model.recruitment.StatusProcessDto;
@@ -36,7 +39,7 @@ public class RecruitmentApi {
 		}
 	}
 
-	//get list alumnus applied a job
+	// get list alumnus applied a job
 	@GetMapping(value = "/private/recruitment/{codeJob}")
 	public ResponseEntity<List<RecruitmentDto>> findRecruitmentByJob(@PathVariable String codeJob) {
 		try {
@@ -46,7 +49,17 @@ public class RecruitmentApi {
 		}
 	}
 
-	
+	@GetMapping(value = "/private/recruitment")
+	public ReadableRecruitmentList findAlumnusByEmployer(@RequestParam Map<String, String> map,
+			@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size,
+			HttpServletRequest request) {
+		try {
+			return recruitmentFacade.findAlumnusByEmployer(null, page, size, map);
+		} catch (NullPointerException e) {
+			throw new RestApiException(e.getMessage());
+		}
+	}
+
 	@GetMapping(value = "/auth/recruitment")
 	public ResponseEntity<List<RecruitmentDto>> findRecruitmentByAlumnus(HttpServletRequest request) {
 		String customerName = request.getUserPrincipal().getName();// is nick name of customer
@@ -56,7 +69,7 @@ public class RecruitmentApi {
 			throw new RestApiException(e.getMessage());
 		}
 	}
-	
+
 	@PostMapping(value = "/private/recruitment/change")
 	public ResponseEntity<String> changeStatus(@RequestBody RecruitmentStatusDto recruitmentStatusDto) {
 		try {
@@ -65,7 +78,7 @@ public class RecruitmentApi {
 			throw new RestApiException(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping(value = "/status-process")
 	public ResponseEntity<List<StatusProcessDto>> getStatusProject() {
 		try {

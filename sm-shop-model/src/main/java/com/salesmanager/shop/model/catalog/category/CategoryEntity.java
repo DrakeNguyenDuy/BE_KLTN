@@ -19,6 +19,7 @@ public class CategoryEntity extends Category implements Serializable {
 	private int depth;
 	//Long add some lines here(30/5/2023)
 	private String name;
+	private String code;
 //	end
 	private Category parent;
 	
@@ -68,4 +69,13 @@ public class CategoryEntity extends Category implements Serializable {
 		this.name = name;
 	}
 //	end
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 }

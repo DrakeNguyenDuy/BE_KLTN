@@ -9,8 +9,11 @@ public class ReadableLocationDescription implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long locationID;
 	private String detailAddress;
+	private Long idWard;
 	private String ward;
+	private Long idDistinct;
 	private String district;
+	private Long idProvince;
 	private String province;
 
 	public Long getLocationID() {
@@ -51,6 +54,38 @@ public class ReadableLocationDescription implements Serializable {
 
 	public void setProvince(String province) {
 		this.province = province;
+	}
+
+	public Long getIdWard() {
+		return idWard;
+	}
+
+	public void setIdWard(Long idWard) {
+		this.idWard = idWard;
+	}
+
+	public Long getIdDistinct() {
+		return idDistinct;
+	}
+
+	public void setIdDistinct(Long idDistinct) {
+		this.idDistinct = idDistinct;
+	}
+
+	public Long getIdProvince() {
+		return idProvince;
+	}
+
+	public void setIdProvince(Long idProvince) {
+		this.idProvince = idProvince;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public void setLocationID(Long locationID) {
+		this.locationID = locationID;
 	}
 
 }

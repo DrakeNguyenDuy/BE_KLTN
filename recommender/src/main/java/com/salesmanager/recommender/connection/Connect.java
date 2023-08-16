@@ -1,4 +1,4 @@
-package com.salesmanager.connection;
+package com.salesmanager.recommender.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

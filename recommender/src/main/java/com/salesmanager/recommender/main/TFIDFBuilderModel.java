@@ -1,4 +1,4 @@
-package com.salesmanager.main;
+package com.salesmanager.recommender.main;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.grouplens.lenskit.vectors.MutableSparseVector;
 import org.grouplens.lenskit.vectors.VectorEntry;
 import org.lenskit.inject.Transient;
 
-import com.salesmanager.dao.ItemDao;
+import com.salesmanager.recommender.dao.ItemDao;
 import com.salesmanager.utils.ScoreUtils;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;

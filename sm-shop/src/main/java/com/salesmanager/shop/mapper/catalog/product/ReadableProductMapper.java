@@ -1,6 +1,8 @@
 package com.salesmanager.shop.mapper.catalog.product;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
@@ -17,6 +19,7 @@ import com.salesmanager.core.business.services.catalog.pricing.PricingService;
 import com.salesmanager.core.business.services.catalog.product.jobRate.JobRateService;
 import com.salesmanager.core.business.services.catalog.product.paycycle.PayCycleService;
 import com.salesmanager.core.business.services.catalog.product.price.ProductPriceService;
+import com.salesmanager.core.model.catalog.category.Category;
 import com.salesmanager.core.model.catalog.product.JobStatus;
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.catalog.product.attribute.ProductAttribute;
@@ -44,6 +47,7 @@ import com.salesmanager.shop.mapper.catalog.ReadableCategoryMapper;
 import com.salesmanager.shop.mapper.catalog.ReadableManufacturerMapper;
 import com.salesmanager.shop.mapper.catalog.ReadableProductTypeMapper;
 import com.salesmanager.shop.mapper.experience.ReadableExperienceMapper;
+import com.salesmanager.shop.model.catalog.category.ReadableCategory;
 import com.salesmanager.shop.model.catalog.product.ReadableImage;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.shop.model.catalog.product.ReadableProductDetail;
@@ -53,6 +57,7 @@ import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductProp
 import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductPropertyValue;
 import com.salesmanager.shop.model.catalog.product.attribute.api.ReadableProductOptionValue;
 import com.salesmanager.shop.model.catalog.product.product.variant.ReadableProductVariant;
+import com.salesmanager.shop.model.catalog.product.type.ReadableProductType;
 import com.salesmanager.shop.model.location.ReadableLocationDescription;
 import com.salesmanager.shop.model.position.ReadablePosition;
 import com.salesmanager.shop.model.skill.ReadableSkillDescription;
@@ -578,7 +583,6 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 	private final String DES_FOLDER = "D:\\store\\images";
 
 	public ReadableProduct merge(Product source, ReadableProduct destination) {
-
 		Validate.notNull(source, "Product cannot be null");
 		Validate.notNull(destination, "Product destination cannot be null");
 
@@ -629,7 +633,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		if (source.getDateAvailable() != null) {
 			destination.setDateAvailable(DateUtil.formatDate(source.getDateAvailable()));
 		}
-
+		
 		JobStatus status = source.getStatus();
 		if (status != null) {
 			destination.setStatus(status == JobStatus.ACTIVE ? "Đang ứng tuyển"
@@ -768,6 +772,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 			String gender = source.getGender().equals(Constants.M) ? Constants.MALE
 					: source.getGender().equals(Constants.FM) ? Constants.FEMALE : Constants.NO_REQUIRE;
 			destination.setGender(gender);
+			destination.setCodeGender(source.getGender());
 		}
 
 		if (source.getDateAvailable() != null) {
@@ -808,6 +813,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setExperience(readableExperienceMapper.convert(experiences, null, null));
 
 		destination.setPaycycles(payCycleService.getPayCycleByCode(source.getIdPayCycle()).getName());
+		destination.setCodePayCycle(source.getIdPayCycle());
 
 		Set<PositionDescription> positions = source.getPositionDescriptions();
 		if (CollectionUtils.isNotEmpty(positions)) {
@@ -826,6 +832,28 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		// if default instance
 		destination.setSku(source.getSku());
 		destination.setSortOrder(source.getSortOrder());
+		
+		if (Objects.nonNull(source.getType())) {
+			ReadableProductType readableProductType = new ReadableProductType();
+			readableProductType.setCode(source.getType().getCode());
+			readableProductType.setName(source.getType().getName());
+			destination.setType(readableProductType);
+		}
+		
+		if (Objects.nonNull(source.getCategories())) {
+			ReadableCategory readableCategory = new ReadableCategory();
+			Category c = source.getCategories().iterator().next();
+			readableCategory.setCode(c.getCode());
+			readableCategory.setName(c.getName());
+			destination.setCategories(Arrays.asList(readableCategory));
+		}
+		
+		JobStatus status = source.getStatus();
+		if (status != null) {
+			destination.setStatus(status == JobStatus.ACTIVE ? "Đang ứng tuyển"
+					: status == JobStatus.INACTIVE ? "Tạm dừng ứng tuyển" : "Đã hết hạn");
+			destination.setCodeStatus(status.name());
+		}
 
 		return destination;
 	}
@@ -1064,8 +1092,11 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		ReadableLocationDescription rld = new ReadableLocationDescription();
 		rld.setIdLocation(ld.getID_LOCATION());
 		rld.setDetailAddress(ld.getDETAIL_ADDRESS());
+		rld.setIdWard(ld.getWard().getIdWard());
 		rld.setWard(ld.getWard().getName());
+		rld.setIdDistinct(ld.getDistrict().getIdDistrict());
 		rld.setDistrict(ld.getDistrict().getName());
+		rld.setIdProvince(ld.getProvince().getIdProvince());
 		rld.setProvince(ld.getProvince().getName());
 		return rld;
 	}

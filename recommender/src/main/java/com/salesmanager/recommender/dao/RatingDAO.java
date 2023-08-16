@@ -1,9 +1,8 @@
-package com.salesmanager.dao;
+package com.salesmanager.recommender.dao;
 
 import java.sql.Connection;
 
 import org.grouplens.lenskit.data.sql.JDBCRatingDAO;
-import org.grouplens.lenskit.data.text.EventFormat;
 import org.lenskit.data.dao.EventCollectionDAO;
 import org.lenskit.data.dao.EventDAO;
 import org.lenskit.data.dao.SortOrder;
@@ -11,7 +10,7 @@ import org.lenskit.data.events.Event;
 import org.lenskit.util.io.ObjectStream;
 import org.lenskit.util.io.ObjectStreams;
 
-import com.salesmanager.connection.Connect;
+import com.salesmanager.recommender.connection.Connect;
 
 public class RatingDAO extends AbstractDao implements EventDAO {
 	private transient volatile EventCollectionDAO eventCache;

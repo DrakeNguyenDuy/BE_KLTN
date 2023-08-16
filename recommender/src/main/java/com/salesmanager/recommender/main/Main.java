@@ -1,4 +1,4 @@
-package com.salesmanager.main;
+package com.salesmanager.recommender.main;
 
 import java.util.List;
 import java.util.Scanner;
@@ -11,11 +11,10 @@ import org.lenskit.api.Recommender;
 import org.lenskit.data.dao.EventDAO;
 import org.lenskit.data.dao.ItemDAO;
 import org.lenskit.data.dao.UserDAO;
-import org.springframework.stereotype.Component;
 
-import com.salesmanager.dao.ItemDao;
-import com.salesmanager.dao.RatingDAO;
-import com.salesmanager.dao.UserDao;
+import com.salesmanager.recommender.dao.ItemDao;
+import com.salesmanager.recommender.dao.RatingDAO;
+import com.salesmanager.recommender.dao.UserDao;
 
 public class Main {
 	

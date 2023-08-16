@@ -1,4 +1,4 @@
-package com.salesmanager.main;
+package com.salesmanager.recommender.main;
 
 import java.io.Serializable;
 import java.util.Map;

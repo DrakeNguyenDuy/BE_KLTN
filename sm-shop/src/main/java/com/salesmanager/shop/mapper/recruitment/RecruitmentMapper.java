@@ -33,7 +33,7 @@ public class RecruitmentMapper {
 		}
 
 		List<Product> jobs = productRepository.findBySku(codeJob);
-		if (jobs.size()==0) {
+		if (jobs.size() == 0) {
 			throw new NullPointerException("Can not found job when apply");
 		}
 
@@ -58,6 +58,10 @@ public class RecruitmentMapper {
 		destination.setCvId(recruitment.getAlumnus().getCvs().get(0).getId());
 		destination.setIdJob(recruitment.getJob().getId());
 		destination.setCodeJob(recruitment.getJob().getSku());
+		destination.setJobPosition(recruitment.getJob().getPositionDescriptions().iterator().next().getName());
+		if (recruitment.getAlumnus().getAvatar() != null) {
+			destination.setAvartarAlumnus("/api/v1/profile/avatar/" + recruitment.getAlumnus().getNick());
+		}
 		destination
 				.setNameAlumnus(recruitment.getAlumnus().getLastName() + " " + recruitment.getAlumnus().getFirstName());
 		if (!Objects.isNull(recruitment.getJob().getMerchantStore().getStorename())) {

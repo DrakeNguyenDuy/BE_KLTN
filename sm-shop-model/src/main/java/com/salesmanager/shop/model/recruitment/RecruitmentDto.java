@@ -10,6 +10,8 @@ public class RecruitmentDto {
 	private String cvId;
 	private String status;
 	private String applyDate;
+	private String jobPosition;
+	private String avartarAlumnus;
 
 	public String getId() {
 		return id;
@@ -81,6 +83,22 @@ public class RecruitmentDto {
 
 	public void setCodeJob(String codeJob) {
 		this.codeJob = codeJob;
+	}
+
+	public String getJobPosition() {
+		return jobPosition;
+	}
+
+	public void setJobPosition(String jobPosition) {
+		this.jobPosition = jobPosition;
+	}
+
+	public String getAvartarAlumnus() {
+		return avartarAlumnus;
+	}
+
+	public void setAvartarAlumnus(String avartarAlumnus) {
+		this.avartarAlumnus = avartarAlumnus;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.salesmanager.dao;
+package com.salesmanager.recommender.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.lenskit.data.dao.UserDAO;
 
-import com.salesmanager.beans.UserBean;
-import com.salesmanager.connection.Connect;
+import com.salesmanager.recommender.beans.UserBean;
+import com.salesmanager.recommender.connection.Connect;
 
 import contants.SystemConstants;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
