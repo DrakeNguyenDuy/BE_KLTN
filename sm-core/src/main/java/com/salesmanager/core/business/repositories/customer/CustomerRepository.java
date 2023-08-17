@@ -3,11 +3,12 @@ package com.salesmanager.core.business.repositories.customer;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.salesmanager.core.model.customer.Customer;
 
-public interface CustomerRepository extends JpaRepository<Customer, Long>, CustomerRepositoryCustom {
+public interface CustomerRepository extends JpaRepository<Customer, Long>, CustomerRepositoryCustom, JpaSpecificationExecutor<Customer> {
 
 	
 //	Long hide some lines here(20/5/20

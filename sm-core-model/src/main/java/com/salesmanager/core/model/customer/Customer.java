@@ -214,6 +214,8 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	@Column(name = "avatar")
 	private byte[] avatar;
 
+	@Column(name = "active")
+	private boolean active = true;
 	// end
 
 	public Customer() {
@@ -488,6 +490,14 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 
 	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 //	end

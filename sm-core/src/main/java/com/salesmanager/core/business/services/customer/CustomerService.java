@@ -1,9 +1,9 @@
 package com.salesmanager.core.business.services.customer;
 
-
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
 
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.common.generic.SalesManagerEntityService;
@@ -13,9 +13,7 @@ import com.salesmanager.core.model.customer.CustomerCriteria;
 import com.salesmanager.core.model.customer.CustomerList;
 import com.salesmanager.core.model.merchant.MerchantStore;
 
-
-
-public interface CustomerService  extends SalesManagerEntityService<Long, Customer> {
+public interface CustomerService extends SalesManagerEntityService<Long, Customer> {
 
 	List<Customer> getByName(String firstName);
 
@@ -23,15 +21,17 @@ public interface CustomerService  extends SalesManagerEntityService<Long, Custom
 
 	Customer getByNick(String nick);
 
-	void saveOrUpdate(Customer customer) throws ServiceException ;
+	void saveOrUpdate(Customer customer) throws ServiceException;
 
 	CustomerList getListByStore(MerchantStore store, CustomerCriteria criteria);
 
 	Customer getByNick(String nick, int storeId);
+
 	Customer getByNick(String nick, String code);
-	
+
 	/**
 	 * Password reset token
+	 * 
 	 * @param storeCode
 	 * @param token
 	 * @return
@@ -39,16 +39,19 @@ public interface CustomerService  extends SalesManagerEntityService<Long, Custom
 	Customer getByPasswordResetToken(String storeCode, String token);
 
 	/**
-	 * Return an {@link com.salesmanager.core.business.common.model.Address} object from the client IP address. Uses underlying GeoLocation module
+	 * Return an {@link com.salesmanager.core.business.common.model.Address} object
+	 * from the client IP address. Uses underlying GeoLocation module
+	 * 
 	 * @param store
 	 * @param ipAddress
 	 * @return
 	 * @throws ServiceException
 	 */
-	Address getCustomerAddress(MerchantStore store, String ipAddress)
-			throws ServiceException;
+	Address getCustomerAddress(MerchantStore store, String ipAddress) throws ServiceException;
 
-	public void uploadAvatar(String username,byte[] avatar);
-	
+	public void uploadAvatar(String username, byte[] avatar);
+
 	byte[] getAvatar(String username);
+
+	Page<Customer> findAll(Integer page, Integer size, Map<String, String> map);
 }

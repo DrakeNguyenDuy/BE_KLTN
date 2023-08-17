@@ -24,6 +24,8 @@ public class PersistableCustomer extends CustomerEntity {
 //	Long add some lines here(20/5/2023)
 	private String lastName;
 	private String firstName;
+	private String status;
+	private String avatar;
 //	end
 	
 	
@@ -66,4 +68,16 @@ public class PersistableCustomer extends CustomerEntity {
 		this.firstName = firstName;
 	}
 //	end
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
 }

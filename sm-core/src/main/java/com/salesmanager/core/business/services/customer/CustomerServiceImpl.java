@@ -1,17 +1,24 @@
 package com.salesmanager.core.business.services.customer;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.customer.CustomerRepository;
 import com.salesmanager.core.business.services.common.generic.SalesManagerEntityServiceImpl;
 import com.salesmanager.core.business.services.customer.attribute.CustomerAttributeService;
+import com.salesmanager.core.business.specifications.AlumnusSpecification;
 import com.salesmanager.core.model.common.Address;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.CustomerCriteria;
@@ -31,6 +38,9 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 
 	@Inject
 	private GeoLocation geoLocation;
+
+	@Autowired
+	private AlumnusSpecification alumnusSpecification;
 
 	@Inject
 	public CustomerServiceImpl(CustomerRepository customerRepository) {
@@ -136,6 +146,13 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 			throw new NullPointerException("Can not found alumnus");
 		}
 		return alumnus.getAvatar();
+	}
+
+	@Override
+	public Page<Customer> findAll(Integer page, Integer size, Map<String, String> map) {
+		Pageable paging = PageRequest.of(page, size);
+		Specification<Customer> specification = alumnusSpecification.query(map);
+		return customerRepository.findAll(specification, paging);
 	}
 
 }
