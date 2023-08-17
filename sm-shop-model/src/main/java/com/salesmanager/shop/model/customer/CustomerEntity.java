@@ -29,11 +29,15 @@ public class CustomerEntity extends Customer implements Serializable {
 	private Address delivery;
 	@ApiModelProperty(notes = "Customer gender M | F")
 	private String gender;
+	private String codeGender;
 
 	@ApiModelProperty(notes = "2 letters language code en | fr | ...")
 	private String language;
 	private String firstName;
 	private String lastName;
+	
+	private String avartar;
+	private boolean isActive;
 	
 	private String provider;//online, facebook ...
 
@@ -149,8 +153,32 @@ public class CustomerEntity extends Customer implements Serializable {
 		this.provider = provider;
 	}
 
+	public String getCodeGender() {
+		return codeGender;
+	}
 
+	public void setCodeGender(String codeGender) {
+		this.codeGender = codeGender;
+	}
 
-    
+	public String getAvartar() {
+		return avartar;
+	}
+
+	public void setAvartar(String avartar) {
+		this.avartar = avartar;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 }

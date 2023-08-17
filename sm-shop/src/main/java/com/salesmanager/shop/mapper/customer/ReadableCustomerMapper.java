@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.salesmanager.core.model.customer.Customer;
+import com.salesmanager.core.model.customer.CustomerGender;
 import com.salesmanager.core.model.customer.attribute.CustomerAttribute;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -29,10 +30,9 @@ public class ReadableCustomerMapper implements Mapper<Customer, ReadableCustomer
 	}
 
 	@Override
-	public ReadableCustomer merge(Customer source, ReadableCustomer target, MerchantStore store,
-			Language language) {
+	public ReadableCustomer merge(Customer source, ReadableCustomer target, MerchantStore store, Language language) {
 
-		if(source.getId()!=null && source.getId()>0) {
+		if (source.getId() != null && source.getId() > 0) {
 			target.setId(source.getId());
 		}
 		target.setEmailAddress(source.getEmailAddress());
@@ -47,7 +47,7 @@ public class ReadableCustomerMapper implements Mapper<Customer, ReadableCustomer
 //		}
 //		end
 
-		if (source.getGender()!= null) {
+		if (source.getGender() != null) {
 			target.setGender(source.getGender().name());
 		}
 
@@ -82,11 +82,11 @@ public class ReadableCustomerMapper implements Mapper<Customer, ReadableCustomer
 //		}
 //		end
 
-		if(source.getCustomerReviewAvg() != null) {
+		if (source.getCustomerReviewAvg() != null) {
 			target.setRating(source.getCustomerReviewAvg().doubleValue());
 		}
 
-		if(source.getCustomerReviewCount() != null) {
+		if (source.getCustomerReviewCount() != null) {
 			target.setRatingCount(source.getCustomerReviewCount().intValue());
 		}
 
@@ -147,20 +147,32 @@ public class ReadableCustomerMapper implements Mapper<Customer, ReadableCustomer
 //			}
 //		end
 
-			if(source.getGroups() != null) {
-				for(Group group : source.getGroups()) {
-					ReadableGroup readableGroup = new ReadableGroup();
-					readableGroup.setId(group.getId().longValue());
-					readableGroup.setName(group.getGroupName());
-					readableGroup.setType(group.getGroupType().name());
-					target.getGroups().add(
-							readableGroup
-					);
-				}
+		if (source.getGroups() != null) {
+			for (Group group : source.getGroups()) {
+				ReadableGroup readableGroup = new ReadableGroup();
+				readableGroup.setId(group.getId().longValue());
+				readableGroup.setName(group.getGroupName());
+				readableGroup.setType(group.getGroupType().name());
+				target.getGroups().add(readableGroup);
 			}
+		}
 //		}
-		
+
 		return target;
 	}
 
+	public ReadableCustomer convertToDto(Customer source) {
+		ReadableCustomer target = new ReadableCustomer();
+		target.setFirstName(source.getFirstName());
+		target.setLastName(source.getLastName());
+		if(source.getGender()!=null) {
+			target.setGender(source.getGender() == (CustomerGender.M) ? "Nam" : "Nữ");
+			target.setCodeGender(source.getGender().name());
+		}
+		target.setEmailAddress(source.getEmailAddress());
+		target.setUserName(source.getNick());
+		target.setAvartar("/api/v1/profile/avatar/" + source.getNick());
+		target.setActive(source.isActive());
+		return target;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -138,8 +139,10 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 
 			destination.setDateAvailable(new Date());
 
-			destination.setStatus(
-					JobStatus.valueOf(source.getStatus()) == JobStatus.ACTIVE ? JobStatus.ACTIVE : JobStatus.INACTIVE);
+			if(Objects.nonNull(source.getStatus())) {
+				destination.setStatus(
+						JobStatus.valueOf(source.getStatus()) == JobStatus.ACTIVE ? JobStatus.ACTIVE : JobStatus.INACTIVE);	
+			}
 
 			if (source.getId() != null && source.getId().longValue() == 0) {
 				destination.setId(null);
