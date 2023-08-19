@@ -111,6 +111,7 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 		return this.merge(source, product, store, language);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Product merge(PersistableProductDefinition source, Product destination, MerchantStore store,
 			Language language) {
@@ -139,9 +140,9 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 
 			destination.setDateAvailable(new Date());
 
-			if(Objects.nonNull(source.getStatus())) {
-				destination.setStatus(
-						JobStatus.valueOf(source.getStatus()) == JobStatus.ACTIVE ? JobStatus.ACTIVE : JobStatus.INACTIVE);	
+			if (Objects.nonNull(source.getStatus())) {
+				destination.setStatus(JobStatus.valueOf(source.getStatus()) == JobStatus.ACTIVE ? JobStatus.ACTIVE
+						: JobStatus.INACTIVE);
 			}
 
 			if (source.getId() != null && source.getId().longValue() == 0) {
@@ -367,7 +368,15 @@ public class PersistableProductDefinitionMapper implements Mapper<PersistablePro
 
 //			Long add some lines here(5/5/2023)
 			destination.setGender(source.getGender());
-			destination.setDateExperience(DateUtil.getDate(source.getDateExperience()));
+			Date dateExperience = DateUtil.getDate(source.getDateExperience());
+			destination.setDateExperience(dateExperience);
+			Date now = new Date();
+			if ((dateExperience.getMonth() == now.getMonth() && dateExperience.getYear() == now.getYear()
+					&& dateExperience.getDate() == now.getDate()) || dateExperience.after(now)) {
+				destination.setStatus(JobStatus.ACTIVE);
+			} else {
+				destination.setStatus(JobStatus.OUTOFDATE);
+			}
 
 //			Long hide some lines here(14/5/2023)
 //			// position (by product group)
