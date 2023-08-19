@@ -46,5 +46,5 @@ public interface UserService extends SalesManagerEntityService<Long, User> {
 
 	Optional<User> getByEmail(String email);
 
-	String isBlock(String userName);
+	boolean isBlock(String userName);
 }

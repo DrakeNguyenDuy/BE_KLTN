@@ -1,6 +1,7 @@
 package com.salesmanager.shop.store.controller.store.facade;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,7 +39,7 @@ public interface StoreFacade {
 	MerchantStore get(String code);
 
 	MerchantStore getByCode(String code);
-	
+
 	List<Language> supportedLanguages(MerchantStore store);
 
 	ReadableMerchantStore getByCode(String code, String lang);
@@ -77,7 +78,7 @@ public interface StoreFacade {
 	 * @param store
 	 * @throws Exception
 	 */
-	//ReadableMerchantStore create(PersistableMerchantStore store);
+	// ReadableMerchantStore create(PersistableMerchantStore store);
 	void create(PersistableMerchantStore store);
 
 	/**
@@ -86,7 +87,7 @@ public interface StoreFacade {
 	 * @param store
 	 * @throws Exception
 	 */
-	//ReadableMerchantStore update(PersistableMerchantStore store);
+	// ReadableMerchantStore update(PersistableMerchantStore store);
 	void update(PersistableMerchantStore store);
 
 	/**
@@ -124,7 +125,7 @@ public interface StoreFacade {
 	 * @param cmsContentImage
 	 */
 	void addStoreLogo(String code, InputContentFile cmsContentImage);
-	
+
 //	Long add some lines here(21/5/2023)
 	/**
 	 * Add MerchantStore logo
@@ -132,8 +133,9 @@ public interface StoreFacade {
 	 * @param code
 	 * @param cmsContentImage
 	 */
-	void addStoreLogo(String code,MultipartFile file) ;
-	byte[] getStoreLogo(String code) ;
+	void addStoreLogo(String code, MultipartFile file);
+
+	byte[] getStoreLogo(String code);
 //	end
 
 	/**
@@ -142,14 +144,16 @@ public interface StoreFacade {
 	 * @return
 	 */
 	List<ReadableMerchantStore> getMerchantStoreNames(MerchantStoreCriteria criteria);
-	
+
 	List<ReadableEmployer> topEmployer();
 
 	EmployerDetailDto getDetailEmployer(String code);
-	
-	byte[] getBackground(String code) ;
-	
+
+	byte[] getBackground(String code);
+
 	String edtitEmployer(String storeCode, EmployerDetailDto employerDetailDto);
-	
+
 	void addBackground(String code, MultipartFile cmsContentImage);
+
+	ReadableMerchantStoreList findAll(Integer page, Integer count, Map<String, String> map);
 }

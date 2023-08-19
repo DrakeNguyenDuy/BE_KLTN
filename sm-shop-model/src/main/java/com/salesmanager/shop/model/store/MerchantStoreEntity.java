@@ -32,6 +32,7 @@ public class MerchantStoreEntity implements Serializable {
 	private boolean useCache;
 	private boolean currencyFormatNational;
 	private boolean retailer;
+	private boolean isActive;
 	private MeasureUnit dimension;
 	private WeightUnit weight;
 	
@@ -146,6 +147,14 @@ public class MerchantStoreEntity implements Serializable {
 
 	public void setRetailer(boolean retailer) {
 		this.retailer = retailer;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 
