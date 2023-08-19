@@ -2,6 +2,7 @@ package com.salesmanager.core.business.services.customer;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -153,6 +154,28 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 		Pageable paging = PageRequest.of(page, size);
 		Specification<Customer> specification = alumnusSpecification.query(map);
 		return customerRepository.findAll(specification, paging);
+	}
+
+	@Override
+	public boolean checkIfActive(String userName) {
+		return customerRepository.existsByNickAndActive(userName, true);
+	}
+
+	@Override
+	public String unlockOrBlock(String userName) {
+		Customer alumnus = customerRepository.findByNick(userName);
+		if (Objects.nonNull(alumnus)) {
+			boolean newStatus = !alumnus.isActive();
+			alumnus.setActive(newStatus);
+			customerRepository.save(alumnus);
+			return "Update Success";
+		}
+		return "Alumnus not found";
+	}
+
+	@Override
+	public boolean existsByEmailAddress(String mail) {
+		return customerRepository.existsByEmailAddress(mail);
 	}
 
 }

@@ -165,13 +165,14 @@ public class ReadableCustomerMapper implements Mapper<Customer, ReadableCustomer
 		ReadableCustomer target = new ReadableCustomer();
 		target.setFirstName(source.getFirstName());
 		target.setLastName(source.getLastName());
-		if(source.getGender()!=null) {
+		target.setId(source.getId());
+		if (source.getGender() != null) {
 			target.setGender(source.getGender() == (CustomerGender.M) ? "Nam" : "Nữ");
 			target.setCodeGender(source.getGender().name());
 		}
 		target.setEmailAddress(source.getEmailAddress());
 		target.setUserName(source.getNick());
-		target.setAvartar("/api/v1/profile/avatar/" + source.getNick());
+		target.setAvartar(source.getAvatar() != null ? "/api/v1/profile/avatar/" + source.getNick() : null);
 		target.setActive(source.isActive());
 		return target;
 	}
