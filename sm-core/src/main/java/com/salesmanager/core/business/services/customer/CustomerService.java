@@ -54,4 +54,10 @@ public interface CustomerService extends SalesManagerEntityService<Long, Custome
 	byte[] getAvatar(String username);
 
 	Page<Customer> findAll(Integer page, Integer size, Map<String, String> map);
+	
+	public boolean checkIfActive(String userName);
+	
+	public String unlockOrBlock(String userName);
+	
+	boolean existsByEmailAddress(String mail);
 }

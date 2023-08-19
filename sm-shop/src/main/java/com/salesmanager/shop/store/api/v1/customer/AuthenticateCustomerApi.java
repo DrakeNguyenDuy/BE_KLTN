@@ -32,6 +32,7 @@ import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.model.customer.PersistableCustomer;
 import com.salesmanager.shop.store.api.exception.GenericRuntimeException;
 import com.salesmanager.shop.store.api.exception.ResourceNotFoundException;
+import com.salesmanager.shop.store.api.exception.RestApiException;
 import com.salesmanager.shop.store.controller.customer.facade.CustomerFacade;
 import com.salesmanager.shop.store.controller.store.facade.StoreFacade;
 import com.salesmanager.shop.store.controller.user.facade.UserFacade;
@@ -210,7 +211,9 @@ public class AuthenticateCustomerApi {
     @ApiOperation(httpMethod = "POST", value = "Authenticates a customer to the application", notes = "Customer can authenticate after registration, request is {\"username\":\"admin\",\"password\":\"password\"}",response = ResponseEntity.class)
     @ResponseBody
     public ResponseEntity<?> authenticate(@RequestBody @Valid AuthenticationRequest authenticationRequest) throws AuthenticationException {
-
+    	if(customerFacade.checkIfActive(authenticationRequest.getUsername())==false) {
+    		 throw new RestApiException("USER_WAS_BLOCKED", "Tài khoản của bạn đã bị khóa");
+		}
     	//TODO SET STORE in flow
         // Perform the security
         Authentication authentication = null;

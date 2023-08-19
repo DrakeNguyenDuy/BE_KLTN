@@ -1,5 +1,6 @@
 package com.salesmanager.shop.store.controller.search.facade;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -71,7 +72,7 @@ public class SearchFacadeImpl implements SearchFacade {
 	@Override
 	@Async
 	public void indexAllData(MerchantStore store) throws Exception {
-		Page<Product> productPage = productService.listByStore(store, 0, 10, null);
+		Page<Product> productPage = productService.listByStore(store, 0, 10, new HashMap<String, String>());
 		List<Product> products = productPage.getContent();
 		products.stream().forEach(p -> {
 			try {

@@ -125,4 +125,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, Custo
 	@Query("select distinct c from Customer c where c.customerReviewCount=?1 ")
 	List<Customer> findByStore(int storeId);
 //	end
+	
+	boolean existsByNickAndActive(String userName, boolean active );
+	
+	public boolean existsByEmailAddress(String mail);
 }

@@ -215,4 +215,13 @@ public interface CustomerFacade {
 	void changePassword(Customer customer, String newPassword);
 	
 	public Customer getCustomerByUserName(final String userName);
+	
+	public boolean checkIfActive( String userName);
+	
+	public String unlockOrBlock(String userName);
+	
+	public PersistableCustomer updateAlumnusByAdmin(PersistableCustomer alumnus) throws Exception;
+	
+	public boolean checkIfUserExists(final String userName) throws Exception;
+	
 }

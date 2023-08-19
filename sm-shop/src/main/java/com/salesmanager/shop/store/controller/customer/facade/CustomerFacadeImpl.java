@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,7 @@ import com.salesmanager.core.business.services.user.PermissionService;
 import com.salesmanager.core.business.utils.CoreConfiguration;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.customer.CustomerCriteria;
+import com.salesmanager.core.model.customer.CustomerGender;
 import com.salesmanager.core.model.customer.CustomerList;
 import com.salesmanager.core.model.customer.review.CustomerReview;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -355,6 +357,8 @@ public class CustomerFacadeImpl implements CustomerFacade {
 		LOG.info("Returning customer data to controller..");
 		// return customerEntityPoulator(customerModel,merchantStore);
 		customer.setId(customerModel.getId());
+		customer.setPassword(null);
+		customer.setRepeatPassword(null);
 		return customer;
 	}
 
@@ -1097,17 +1101,59 @@ public class CustomerFacadeImpl implements CustomerFacade {
 		if (StringUtils.isBlank(customerModel.getPassword()) && !StringUtils.isBlank(customer.getPassword())) {
 			customerModel.setPassword(customer.getPassword());
 		}
-		// set groups
-		if (!StringUtils.isBlank(customerModel.getPassword()) && !StringUtils.isBlank(customerModel.getNick())) {
-//			customerModel.setPassword(passwordEncoder.encode(customer.getPassword()));
-//			setCustomerModelDefaultProperties(customerModel, merchantStore);
-		}
-
 		return customerModel;
 	}
 
 	@Override
 	public Customer getCustomerByUserName(String userName) {
 		return customerService.getByNick(userName);
+	}
+
+	@Override
+	public boolean checkIfActive(String userName) {
+		return customerService.checkIfActive(userName);
+	}
+
+	@Override
+	public String unlockOrBlock(String userName) {
+		return customerService.unlockOrBlock(userName);
+	}
+
+	@Override
+	@Transactional
+	public PersistableCustomer updateAlumnusByAdmin(PersistableCustomer alumnus) throws Exception {
+		Customer customer = customerService.getById(alumnus.getId());
+		customer.setLastName(alumnus.getLastName());
+		customer.setFirstName(alumnus.getFirstName());
+		customer.setGender(CustomerGender.valueOf(alumnus.getGender()));
+		if (customerService.existsByEmailAddress(alumnus.getEmailAddress())
+				&& !alumnus.getEmailAddress().equals(customer.getEmailAddress())) {
+			throw new Exception("Email đã được sử dụng");
+		} else {
+			customer.setEmailAddress(alumnus.getEmailAddress());
+		}
+		String passNew = passwordEncoder.encode(alumnus.getPassword());
+		customer.setPassword(passNew);
+		customerService.save(customer);
+		alumnus.setPassword(null);
+		alumnus.setRepeatPassword(null);
+		return alumnus;
+	}
+
+	@Override
+	public boolean checkIfUserExists(String userName) throws Exception {
+		if (StringUtils.isNotBlank(userName)) {
+			Customer customer = customerService.getByNick(userName);
+			if (customer != null) {
+				LOG.info("Customer with userName {} already exists for store {} ");
+				return true;
+			}
+
+			LOG.info("No customer found with userName {} for store {} ");
+			return false;
+
+		}
+		LOG.info("Either userName is empty or we have not found any value for store");
+		return false;
 	}
 }

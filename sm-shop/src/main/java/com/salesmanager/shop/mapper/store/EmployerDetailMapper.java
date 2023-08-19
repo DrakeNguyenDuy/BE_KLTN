@@ -1,6 +1,7 @@
 package com.salesmanager.shop.mapper.store;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,7 @@ public class EmployerDetailMapper {
 		if (StringUtils.hasText(source.getSologan())) {
 			destination.setSologan(source.getSologan());
 		}
-		Page<Product> jobPage = productService.listByStore(source, 0, 10, null);
+		Page<Product> jobPage = productService.listByStore(source, 0, 10, new HashMap<String, String>());
 		List<Product> jobs = jobPage.getContent();
 		if (jobs.size() > 0) {
 			List<ReadableProduct> readableProducts = jobs.stream().map(p -> jobMapper.convert(p))

@@ -1,6 +1,5 @@
 package com.salesmanager.shop.populator.customer;
 
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import com.salesmanager.core.business.exception.ConversionException;
 import com.salesmanager.core.business.exception.ServiceException;
+import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionValueService;
 import com.salesmanager.core.business.services.reference.country.CountryService;
@@ -40,27 +40,27 @@ import com.salesmanager.shop.model.customer.attribute.PersistableCustomerAttribu
 import com.salesmanager.shop.store.api.exception.ServiceRuntimeException;
 
 @Component
-public class CustomerPopulator extends
-		AbstractDataPopulator<PersistableCustomer, Customer> {
-	
-	protected static final Logger LOG=LoggerFactory.getLogger( CustomerPopulator.class );
-    @Autowired
-	private CountryService countryService;
-    @Autowired
-    private ZoneService zoneService;
-    @Autowired
-    private LanguageService languageService;
-    @Autowired
-	private CustomerOptionService customerOptionService;
-    @Autowired
-    private CustomerOptionValueService customerOptionValueService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    //Long add some lines here 
-    @Autowired
-  	private GroupService groupService;
-    
+public class CustomerPopulator extends AbstractDataPopulator<PersistableCustomer, Customer> {
 
+	protected static final Logger LOG = LoggerFactory.getLogger(CustomerPopulator.class);
+	@Autowired
+	private CountryService countryService;
+	@Autowired
+	private ZoneService zoneService;
+	@Autowired
+	private LanguageService languageService;
+	@Autowired
+	private CustomerOptionService customerOptionService;
+	@Autowired
+	private CustomerOptionValueService customerOptionValueService;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	// Long add some lines here
+	@Autowired
+	private GroupService groupService;
+
+	@Autowired
+	private CustomerService customerService;
 
 	/**
 	 * Creates a Customer entity ready to be saved
@@ -111,15 +111,16 @@ public class CustomerPopulator extends
 //			end
 			
 			if(!StringUtils.isBlank(source.getEmailAddress())) {
-				target.setEmailAddress(source.getEmailAddress());
+				if(customerService.existsByEmailAddress(source.getEmailAddress())) {
+					throw new Exception("Email đã tồn tại");
+				}else {					
+					target.setEmailAddress(source.getEmailAddress());
+				}
 			}
 			
-//			if(source.getGender()!=null && target.getGender()==null) {
-//				target.setGender( com.salesmanager.core.model.customer.CustomerGender.valueOf( source.getGender() ) );
-//			}
-//			if(target.getGender()==null) {
-//				target.setGender( com.salesmanager.core.model.customer.CustomerGender.M);
-//			}
+			if(source.getGender()!=null && target.getGender()==null) {
+				target.setGender( com.salesmanager.core.model.customer.CustomerGender.valueOf( source.getGender() ) );
+			}
 //			Long hide some lines here (24/4/2024)
 //			Map<String,Country> countries = countryService.getCountriesMap(language);
 //			Map<String,Zone> zones = zoneService.getZones(language);
@@ -284,8 +285,8 @@ public class CustomerPopulator extends
 		
 		return target;
 	}
-	
-	//Long add some lines here (2/5/2023)
+
+	// Long add some lines here (2/5/2023)
 	private List<Group> getListOfGroups(GroupType groupType) {
 		try {
 			return groupService.listGroup(groupType);
@@ -294,12 +295,11 @@ public class CustomerPopulator extends
 		}
 
 	}
-	//end
+	// end
 
 	@Override
 	protected Customer createTarget() {
 		return new Customer();
 	}
-
 
 }

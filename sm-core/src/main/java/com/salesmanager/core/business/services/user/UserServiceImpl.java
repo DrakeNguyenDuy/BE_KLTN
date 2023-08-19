@@ -145,4 +145,9 @@ public class UserServiceImpl extends SalesManagerEntityServiceImpl<Long, User> i
 		return userRepository.findByAdminEmail(email);
 	}
 
+	@Override
+	public String isBlock(String userName) {
+		return null;
+	}
+
 }
