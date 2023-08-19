@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.apache.http.auth.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.salesmanager.shop.store.api.exception.RestApiException;
+import com.salesmanager.shop.store.controller.user.facade.UserFacade;
 import com.salesmanager.shop.store.security.AuthenticationRequest;
 import com.salesmanager.shop.store.security.AuthenticationResponse;
 import com.salesmanager.shop.store.security.JWTTokenUtil;
@@ -55,6 +58,9 @@ public class AuthenticateUserApi {
 
     @Inject
     private JWTTokenUtil jwtTokenUtil;
+    
+    @Autowired
+    private UserFacade userFacade;
 
 	/**
 	 * Authenticate a user using username & password
@@ -65,7 +71,9 @@ public class AuthenticateUserApi {
 	 */
     @RequestMapping(value = "/private/login", method = RequestMethod.POST)
     public ResponseEntity<?> authenticate(@RequestBody @Valid AuthenticationRequest authenticationRequest) throws AuthenticationException {
-
+    	if(userFacade.checkIfActive(authenticationRequest.getUsername())) {
+   		 throw new RestApiException("USER_WAS_BLOCKED", "Tài khoản của bạn đã bị khóa");
+		}
     	//TODO SET STORE in flow
         // Perform the security
     	Authentication authentication = null;

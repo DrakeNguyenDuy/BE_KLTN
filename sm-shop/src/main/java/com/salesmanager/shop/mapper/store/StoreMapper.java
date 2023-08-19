@@ -1,5 +1,9 @@
 package com.salesmanager.shop.mapper.store;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.springframework.stereotype.Component;
 
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -25,15 +29,19 @@ public class StoreMapper implements Mapper<SignupStore, PersistableMerchantStore
 		merchantStore.setDefaultLanguage("vn");
 		merchantStore.setDimension(MeasureUnit.CM);
 		merchantStore.setEmail(source.getEmail());
-		merchantStore.setInBusinessSince("2023-05-03T08:05:10.746Z");
+		Date date = new Date(); // Đối tượng Date chứa ngày/giờ hiện tại
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC")); // Đặt múi giờ cho đúng với 'Z' (UTC)
+        String dateString = sdf.format(date);
+		merchantStore.setInBusinessSince(dateString);
 		merchantStore.setName(source.getName());
 		merchantStore.setPhone(source.getPhoneNumber());
 		merchantStore.setRetailer(true);
 		merchantStore.setUseCache(true);
 		merchantStore.setWeight(WeightUnit.JOB);
 		PersistableAddress persistableAddress = new PersistableAddress();
-		persistableAddress.setAddress("chưa biết");
-		persistableAddress.setCity("Ho Chi Minh City");
+		persistableAddress.setAddress(source.getAddress());
+		persistableAddress.setCity(source.getCity());
 		persistableAddress.setCountry("CA");
 		persistableAddress.setPostalCode("84");
 		persistableAddress.setStateProvince("QC");
@@ -53,5 +61,6 @@ public class StoreMapper implements Mapper<SignupStore, PersistableMerchantStore
 		merchantStore.setCode(source.getCode());
 		return merchantStore;
 	}
+	
 	
 }

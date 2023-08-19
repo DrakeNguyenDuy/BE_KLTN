@@ -18,11 +18,13 @@ import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.business.services.reference.zone.ZoneService;
+import com.salesmanager.core.business.services.user.UserService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.country.Country;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.reference.zone.Zone;
+import com.salesmanager.core.model.user.User;
 import com.salesmanager.shop.model.content.ReadableImage;
 import com.salesmanager.shop.model.entity.ReadableAudit;
 import com.salesmanager.shop.model.references.MeasureUnit;
@@ -48,6 +50,9 @@ public class ReadableMerchantStorePopulator extends AbstractDataPopulator<Mercha
 	private CountryService countryService;
 	@Autowired
 	private ZoneService zoneService;
+
+	@Autowired
+	private UserService userService;
 	@Autowired
 	@Qualifier("img")
 	private ImageFilePath filePath;
@@ -176,6 +181,107 @@ public class ReadableMerchantStorePopulator extends AbstractDataPopulator<Mercha
 				audit.setModified(DateUtil.formatDate(source.getAuditSection().getDateCreated()));
 			}
 			audit.setUser(source.getAuditSection().getModifiedBy());
+			target.setReadableAudit(audit);
+		}
+
+		return target;
+	}
+
+	public ReadableMerchantStore populate(MerchantStore source, ReadableMerchantStore target)
+			throws ConversionException {
+		Validate.notNull(countryService, "Must use setter for countryService");
+		Validate.notNull(zoneService, "Must use setter for zoneService");
+
+		if (target == null) {
+			target = new ReadableMerchantStore();
+		}
+
+		target.setId(source.getId());
+		target.setCode(source.getCode());
+		if (source.getDefaultLanguage() != null) {
+			target.setDefaultLanguage(source.getDefaultLanguage().getCode());
+		}
+
+		target.setCurrency(source.getCurrency().getCode());
+		target.setPhone(source.getStorephone());
+
+		ReadableAddress address = new ReadableAddress();
+		address.setAddress(source.getStoreaddress());
+		address.setCity(source.getStorecity());
+		if (source.getCountry() != null) {
+			address.setCountry(source.getCountry().getIsoCode());
+		}
+
+		if (target.getParent() == null) {
+			target.setRetailer(true);
+		} else {
+//			target.setRetailer(source.isRetailer() != null ? source.isRetailer().booleanValue() : false);
+		}
+
+		target.setDimension(MeasureUnit.valueOf(source.getSeizeunitcode()));
+		target.setWeight(WeightUnit.valueOf(source.getWeightunitcode()));
+
+		if (!StringUtils.isBlank(source.getStorestateprovince())) {
+			address.setStateProvince(source.getStorestateprovince());
+		}
+
+		if (source.getStoreLogo() != null) {
+			ReadableImage image = new ReadableImage();
+			image.setName(source.getCode());
+			image.setPath("/api/v1/store/" + source.getCode() + "/marketing/logo");
+			target.setLogo(image);
+		}
+
+		address.setPostalCode(source.getStorepostalcode());
+
+		target.setAddress(address);
+
+		target.setCurrencyFormatNational(source.isCurrencyFormatNational());
+		target.setEmail(source.getStoreEmailAddress());
+		target.setName(source.getStorename());
+		target.setId(source.getId());
+		target.setInBusinessSince(DateUtil.formatDate(source.getInBusinessSince()));
+		target.setUseCache(source.isUseCache());
+
+		if (!CollectionUtils.isEmpty(source.getLanguages())) {
+			List<ReadableLanguage> supported = new ArrayList<ReadableLanguage>();
+			for (Language lang : source.getLanguages()) {
+				try {
+					Language langObject = languageService.getLanguagesMap().get(lang.getCode());
+					if (langObject != null) {
+						ReadableLanguage l = new ReadableLanguage();
+						l.setId(langObject.getId());
+						l.setCode(langObject.getCode());
+						supported.add(l);
+					}
+
+				} catch (ServiceException e) {
+					logger.error("Cannot get Language [" + lang.getId() + "]");
+				}
+
+			}
+			target.setSupportedLanguages(supported);
+		}
+
+		if (source.getAuditSection() != null) {
+			ReadableAudit audit = new ReadableAudit();
+			if (source.getAuditSection().getDateCreated() != null) {
+				audit.setCreated(DateUtil.formatDate(source.getAuditSection().getDateCreated()));
+			}
+			if (source.getAuditSection().getDateModified() != null) {
+				audit.setModified(DateUtil.formatDate(source.getAuditSection().getDateCreated()));
+			}
+			List<User> employerAccounts;
+			try {
+				employerAccounts = userService.listByStore(source);
+				audit.setFirstName(employerAccounts.get(0).getFirstName());
+				audit.setLastName(employerAccounts.get(0).getLastName());
+				audit.setUser(employerAccounts.get(0).getAdminEmail());
+				audit.setIdUser(employerAccounts.get(0).getId());
+				target.setActive(employerAccounts.get(0).isActive());
+			} catch (ServiceException e) {
+				e.printStackTrace();
+			}
 			target.setReadableAudit(audit);
 		}
 

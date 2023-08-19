@@ -29,8 +29,13 @@ public class UserMapper implements Mapper<SignupStore, PersistableUser>{
 		persistableUser.setUserName(source.getEmail());
 		List<PersistableGroup> groups = new ArrayList<PersistableGroup>();
 		PersistableGroup persistableGroup = new PersistableGroup();
-		persistableGroup.setName("ADMIN");
-		persistableGroup.setType("ADMIN");
+		if(source.isSuperAdmin()) {
+			persistableGroup.setName("SUPERADMIN");
+			persistableGroup.setType("ADMIN");
+		}else {
+			persistableGroup.setName("ADMIN");
+			persistableGroup.setType("ADMIN");	
+		}
 		groups.add(persistableGroup);
 		persistableUser.setGroups(groups);
 		return persistableUser;

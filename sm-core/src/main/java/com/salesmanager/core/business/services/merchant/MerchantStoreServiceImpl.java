@@ -1,6 +1,7 @@
 package com.salesmanager.core.business.services.merchant;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.core.business.exception.ServiceException;
@@ -17,6 +19,7 @@ import com.salesmanager.core.business.repositories.merchant.MerchantRepository;
 import com.salesmanager.core.business.repositories.merchant.PageableMerchantRepository;
 import com.salesmanager.core.business.services.catalog.product.type.ProductTypeService;
 import com.salesmanager.core.business.services.common.generic.SalesManagerEntityServiceImpl;
+import com.salesmanager.core.business.specifications.MerchantStoreSpecification;
 import com.salesmanager.core.model.common.GenericEntityList;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.merchant.MerchantStoreCriteria;
@@ -32,6 +35,9 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	private PageableMerchantRepository pageableMerchantRepository;
 
 	private MerchantRepository merchantRepository;
+	
+	@Autowired
+	private MerchantStoreSpecification merchantStoreSpecification;
 
 	@Inject
 	public MerchantStoreServiceImpl(MerchantRepository merchantRepository) {
@@ -179,6 +185,13 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 			return new  byte[0];
 		}
 		return merchantStore.getBackGround();
+	}
+
+	@Override
+	public Page<MerchantStore> findAll(Integer page, Integer size, Map<String, String> map) {
+		Specification<MerchantStore> specification = merchantStoreSpecification.query(map);
+		Pageable paging = PageRequest.of(page, size);
+		return merchantRepository.findAll(specification, paging);
 	}
 
 }

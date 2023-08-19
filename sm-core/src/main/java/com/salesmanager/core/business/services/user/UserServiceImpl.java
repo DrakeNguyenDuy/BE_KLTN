@@ -146,8 +146,9 @@ public class UserServiceImpl extends SalesManagerEntityServiceImpl<Long, User> i
 	}
 
 	@Override
-	public String isBlock(String userName) {
-		return null;
+	public boolean isBlock(String userName) {
+		//active is false then block is true and reversed
+		return userRepository.existsByAdminNameAndActive(userName, false);
 	}
 
 }

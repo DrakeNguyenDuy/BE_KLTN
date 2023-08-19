@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -91,7 +92,7 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Autowired
 	private Employer employerMapper;
-	
+
 	@Autowired
 	private EmployerDetailMapper employerDetailMapper;
 
@@ -163,6 +164,20 @@ public class StoreFacadeImpl implements StoreFacade {
 		 */
 		try {
 			readableMerchantStorePopulator.populate(store, readable, store, language);
+		} catch (Exception e) {
+			throw new ConversionRuntimeException("Error while populating MerchantStore " + e.getMessage());
+		}
+		return readable;
+	}
+
+	private ReadableMerchantStore convertMerchantStoreToReadableMerchantStore(MerchantStore store) {
+		ReadableMerchantStore readable = new ReadableMerchantStore();
+
+		/**
+		 * Language is not important for this conversion using default language
+		 */
+		try {
+			readableMerchantStorePopulator.populate(store, readable);
 		} catch (Exception e) {
 			throw new ConversionRuntimeException("Error while populating MerchantStore " + e.getMessage());
 		}
@@ -646,12 +661,13 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	@Override
 	public List<ReadableEmployer> topEmployer() {
-		return merchantStoreService.topEmployer().stream().map(item -> employerMapper.convertToDto(item)).collect(Collectors.toList());
+		return merchantStoreService.topEmployer().stream().map(item -> employerMapper.convertToDto(item))
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public EmployerDetailDto getDetailEmployer(String code) {
-		MerchantStore employer=null;
+		MerchantStore employer = null;
 		try {
 			employer = merchantStoreService.getByCode(code);
 		} catch (ServiceException e) {
@@ -692,6 +708,26 @@ public class StoreFacadeImpl implements StoreFacade {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public ReadableMerchantStoreList findAll(Integer page, Integer count, Map<String, String> map) {
+		Page<MerchantStore> stores = null;
+		List<ReadableMerchantStore> readableStores = new ArrayList<ReadableMerchantStore>();
+		ReadableMerchantStoreList readableList = new ReadableMerchantStoreList();
+
+		stores = merchantStoreService.findAll(page, count, map);
+
+		if (!CollectionUtils.isEmpty(stores.getContent())) {
+			for (MerchantStore store : stores)
+				readableStores.add(convertMerchantStoreToReadableMerchantStore(store));
+		}
+		readableList.setData(readableStores);
+		readableList.setRecordsTotal(stores.getTotalElements());
+		readableList.setTotalPages(stores.getTotalPages());
+		readableList.setNumber(stores.getSize());
+		readableList.setRecordsFiltered(stores.getSize());
+		return readableList;
 	}
 
 }

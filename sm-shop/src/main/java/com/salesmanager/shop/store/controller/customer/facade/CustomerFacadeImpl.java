@@ -1132,8 +1132,6 @@ public class CustomerFacadeImpl implements CustomerFacade {
 		} else {
 			customer.setEmailAddress(alumnus.getEmailAddress());
 		}
-		String passNew = passwordEncoder.encode(alumnus.getPassword());
-		customer.setPassword(passNew);
 		customerService.save(customer);
 		alumnus.setPassword(null);
 		alumnus.setRepeatPassword(null);

@@ -39,4 +39,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	User findByResetPasswordToken(String token, String store);
 	
 	Optional<User> findByAdminEmail(String mail);
+	
+	public boolean existsByAdminNameAndActive(String mail, boolean isActive);
 }

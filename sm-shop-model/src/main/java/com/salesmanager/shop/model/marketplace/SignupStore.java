@@ -37,6 +37,8 @@ public class SignupStore implements Serializable {
 	@NotEmpty
 	private String country;
 	
+	private boolean isSuperAdmin;
+	
 	@NotEmpty
 	private String returnUrl;
 	
@@ -131,5 +133,12 @@ public class SignupStore implements Serializable {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	public boolean isSuperAdmin() {
+		return isSuperAdmin;
+	}
+	public void setSuperAdmin(boolean isSuperAdmin) {
+		this.isSuperAdmin = isSuperAdmin;
+	}
+	
 //	end
 }

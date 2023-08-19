@@ -62,7 +62,6 @@ public class UserApi {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserApi.class);
 
-
 	@Inject
 	private UserFacade userFacade;
 
@@ -91,7 +90,9 @@ public class UserApi {
 			throw new UnauthorizedException();
 		}
 		// only admin and superadmin allowed
-		userFacade.authorizedGroup(authenticatedUser, Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL).collect(Collectors.toList()));
+		userFacade.authorizedGroup(authenticatedUser,
+				Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL)
+						.collect(Collectors.toList()));
 
 		return userFacade.findById(id, merchantStore, language);
 	}
@@ -104,13 +105,11 @@ public class UserApi {
 	 * @return
 	 */
 	@ResponseStatus(HttpStatus.OK)
-	@PostMapping(value = { "/private/user/" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = { "/private/user" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "POST", value = "Creates a new user", notes = "", response = ReadableUser.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public ReadableUser create(
-			@ApiIgnore MerchantStore merchantStore, 
-			@ApiIgnore Language language,
+	public ReadableUser create(@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
 			@Valid @RequestBody PersistableUser user, HttpServletRequest request) {
 		/** Must be superadmin or admin */
 		String authenticatedUser = userFacade.authenticatedUser();
@@ -118,8 +117,12 @@ public class UserApi {
 			throw new UnauthorizedException();
 		}
 		// only admin and superadmin allowed
-		userFacade.authorizedGroup(authenticatedUser, Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL).collect(Collectors.toList()));
-
+//		userFacade.authorizedGroup(authenticatedUser,
+//				Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL)
+//						.collect(Collectors.toList()));
+		userFacade.authorizedGroup(authenticatedUser,
+				Stream.of(Constants.GROUP_SUPERADMIN).collect(Collectors.toList()));
+		user.setUserName(user.getEmailAddress());
 		/** if user is admin, user must be in that store */
 		if (!userFacade.userInRoles(authenticatedUser, Arrays.asList(Constants.GROUP_SUPERADMIN))) {
 			if (!userFacade.authorizedStore(authenticatedUser, merchantStore.getCode())) {
@@ -166,12 +169,9 @@ public class UserApi {
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = { "/private/users" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "Get list of user", notes = "", response = ReadableUserList.class)
-	@ApiImplicitParams({ 
-		@ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
-		@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public ReadableUserList list(
-			@ApiIgnore MerchantStore merchantStore, 
-			@ApiIgnore Language language,
+	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+	public ReadableUserList list(@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
 			@RequestParam(value = "count", required = false, defaultValue = "20") Integer count,
 			@RequestParam(value = "emailAddress", required = false) String emailAddress) {
@@ -182,10 +182,10 @@ public class UserApi {
 		}
 
 		UserCriteria criteria = new UserCriteria();
-		if(!StringUtils.isBlank(emailAddress)) {
+		if (!StringUtils.isBlank(emailAddress)) {
 			criteria.setAdminEmail(emailAddress);
 		}
-		
+
 		criteria.setStoreCode(merchantStore.getCode());
 
 		if (!userFacade.userInRoles(authenticatedUser, Arrays.asList(Constants.GROUP_SUPERADMIN))) {
@@ -195,28 +195,44 @@ public class UserApi {
 			}
 		}
 
-		userFacade.authorizedGroup(authenticatedUser, Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL).collect(Collectors.toList()));
+		userFacade.authorizedGroup(authenticatedUser,
+				Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL)
+						.collect(Collectors.toList()));
 		return userFacade.listByCriteria(criteria, page, count, language);
 	}
-	
-	@PatchMapping(value = "/private/user/{id}/enabled", produces = { APPLICATION_JSON_VALUE })
-	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "string", defaultValue = "DEFAULT") })
-	public void updateEnabled(
-			@PathVariable Long id, 
-			@Valid @RequestBody PersistableUser user,
-			@ApiIgnore MerchantStore merchantStore
-			) {
-		
+
+//	@PatchMapping(value = "/private/user/{id}/enabled", produces = { APPLICATION_JSON_VALUE })
+//	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "string", defaultValue = "DEFAULT") })
+//	public void updateEnabled(
+//			@PathVariable Long id, 
+//			@Valid @RequestBody PersistableUser user,
+//			@ApiIgnore MerchantStore merchantStore
+//			) {
+//		
+//		// superadmin, admin and retail_admin
+//		String authenticatedUser = userFacade.authenticatedUser();
+//		if (authenticatedUser == null) {
+//			throw new UnauthorizedException();
+//		}
+//
+//		userFacade.authorizedGroup(authenticatedUser, Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL).collect(Collectors.toList()));
+//
+//		user.setId(id);
+//		userFacade.updateEnabled(merchantStore, user);
+//	}
+
+	@PutMapping(value = "/private/user/{user_name}/enabled", produces = { APPLICATION_JSON_VALUE })
+	public ResponseEntity<String> updateEnabled(@PathVariable(name = "user_name") String userName) {
+
 		// superadmin, admin and retail_admin
 		String authenticatedUser = userFacade.authenticatedUser();
 		if (authenticatedUser == null) {
 			throw new UnauthorizedException();
 		}
 
-		userFacade.authorizedGroup(authenticatedUser, Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL).collect(Collectors.toList()));
-
-		user.setId(id);
-		userFacade.updateEnabled(merchantStore, user);
+		userFacade.authorizedGroup(authenticatedUser,
+				Stream.of(Constants.GROUP_SUPERADMIN).collect(Collectors.toList()));
+		return ResponseEntity.ok(userFacade.updateEnabled(userName));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -237,7 +253,9 @@ public class UserApi {
 			userFacade.authorizedStore(authenticatedUser, merchantStore.getCode());
 		}
 
-		userFacade.authorizedGroup(authenticatedUser, Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL).collect(Collectors.toList()));
+		userFacade.authorizedGroup(authenticatedUser,
+				Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL)
+						.collect(Collectors.toList()));
 
 		userFacade.delete(id, merchantStore.getCode());
 	}

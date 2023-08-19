@@ -47,6 +47,7 @@ import com.salesmanager.core.model.user.User;
 import com.salesmanager.core.model.user.UserCriteria;
 import com.salesmanager.shop.constants.Constants;
 import com.salesmanager.shop.constants.EmailConstants;
+import com.salesmanager.shop.model.marketplace.SignupStore;
 import com.salesmanager.shop.model.security.PersistableGroup;
 import com.salesmanager.shop.model.security.ReadableGroup;
 import com.salesmanager.shop.model.security.ReadablePermission;
@@ -69,6 +70,8 @@ import com.salesmanager.shop.utils.EmailUtils;
 import com.salesmanager.shop.utils.FilePathUtils;
 import com.salesmanager.shop.utils.ImageFilePath;
 import com.salesmanager.shop.utils.LabelUtils;
+
+import javassist.NotFoundException;
 
 @Service("userFacade")
 public class UserFacadeImpl implements UserFacade {
@@ -122,6 +125,9 @@ public class UserFacadeImpl implements UserFacade {
 
 	@Inject
 	private PasswordEncoder passwordEncoder;
+//	
+//	@Autowired
+//	private ReadableUserPopulator readableUserPopulator;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserFacadeImpl.class);
 
@@ -316,12 +322,13 @@ public class UserFacadeImpl implements UserFacade {
 				throw new ServiceRuntimeException(
 						"User [" + user.getUserName() + "] already exists for store [" + store.getCode() + "]");
 			}
-			
+
 			/**
 			 * validate password
 			 */
 			if (!securityFacade.matchRawPasswords(user.getPassword(), user.getRepeatPassword())) {
-				throw new ServiceRuntimeException("Passwords dos not match, make sure password and repeat password are equals");
+				throw new ServiceRuntimeException(
+						"Passwords dos not match, make sure password and repeat password are equals");
 			}
 
 			/**
@@ -424,8 +431,8 @@ public class UserFacadeImpl implements UserFacade {
 
 			// changing store ?
 			/**
-			 * Can't change self store Only admin and superadmin can change
-			 * another user store
+			 * Can't change self store Only admin and superadmin can change another user
+			 * store
 			 */
 
 			// i'm i editing my own profile ?
@@ -497,13 +504,13 @@ public class UserFacadeImpl implements UserFacade {
 //			Long hide some lines here
 //			User userModel = userService.getById(userId);
 //			end
-			Optional<User> userOpt =userService.getByEmail(authenticatedUser);
+			Optional<User> userOpt = userService.getByEmail(authenticatedUser);
 //			Long hide some lines here(25/7/2023)
 //			if (userModel == null) {
 //				throw new ServiceRuntimeException("Cannot find user [" + authenticatedUser + "]");
 //			}
 //			end
-			
+
 			if (!userOpt.isPresent()) {
 				throw new ServiceRuntimeException("Cannot find user [" + authenticatedUser + "]");
 			}
@@ -514,7 +521,8 @@ public class UserFacadeImpl implements UserFacade {
 
 			User userModel = userOpt.get();
 			if (!securityFacade.matchPassword(userModel.getAdminPassword(), changePassword.getPassword())) {
-				throw new ServiceRuntimeException("Actual password does not match for user [" + authenticatedUser + "]");
+				throw new ServiceRuntimeException(
+						"Actual password does not match for user [" + authenticatedUser + "]");
 			}
 
 			/**
@@ -657,28 +665,26 @@ public class UserFacadeImpl implements UserFacade {
 
 	@Override
 	public boolean authorizeStore(MerchantStore store, String path) {
-		
-		if(store == null) {
+
+		if (store == null) {
 			throw new ResourceNotFoundException("MerchantStore is not found");
 		}
 
-
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
 
 		if (!StringUtils.isBlank(path) && path.contains(PRIVATE_PATH)) {
-			
+
 			Validate.notNull(authentication, "Don't call ths method if a user is not authenticated");
 
 			try {
-				
 
 				String currentPrincipalName = authentication.getName();
 
 				LOGGER.info("Principal " + currentPrincipalName);
 
 				ReadableUser readableUser = findByUserName(currentPrincipalName, languageService.defaultLanguage());
-				//ReadableUser readableUser =	  findByUserName(currentPrincipalName, store.getCode(), store.getDefaultLanguage());
+				// ReadableUser readableUser = findByUserName(currentPrincipalName,
+				// store.getCode(), store.getDefaultLanguage());
 				if (readableUser == null) {
 					return false;
 				}
@@ -686,13 +692,14 @@ public class UserFacadeImpl implements UserFacade {
 				// current user match;
 				String merchant = readableUser.getMerchant();
 
-				//user store is store request param
+				// user store is store request param
 				if (store.getCode().equalsIgnoreCase(merchant)) {
 					return true;
 				}
 
-				//Set<String> roles = authentication.getAuthorities().stream().map(r -> r.getAuthority())
-				//		.collect(Collectors.toSet());
+				// Set<String> roles = authentication.getAuthorities().stream().map(r ->
+				// r.getAuthority())
+				// .collect(Collectors.toSet());
 
 				// is superadmin
 				for (ReadableGroup group : readableUser.getGroups()) {
@@ -707,9 +714,9 @@ public class UserFacadeImpl implements UserFacade {
 				// get parent
 				// TODO CACHE
 				MerchantStore parent = null;
-						
-				if(store.getParent()!=null) {
-					parent=merchantStoreService.getParent(merchant);
+
+				if (store.getParent() != null) {
+					parent = merchantStoreService.getParent(merchant);
 				}
 
 				// user can be in parent
@@ -773,8 +780,8 @@ public class UserFacadeImpl implements UserFacade {
 		 * 
 		 * UserNameEntity will be the following { userName: "test@test.com" }
 		 * 
-		 * The system retrieves user using userName (username is unique) if user
-		 * exists, system sends an email with reset password link
+		 * The system retrieves user using userName (username is unique) if user exists,
+		 * system sends an email with reset password link
 		 * 
 		 * How to retrieve a User from userName
 		 * 
@@ -804,10 +811,10 @@ public class UserFacadeImpl implements UserFacade {
 
 	@Override
 	public void requestPasswordReset(String userName, String userContextPath, MerchantStore store, Language language) {
-		
+
 		Validate.notNull(userName, "Username cannot be empty");
 		Validate.notNull(userContextPath, "Return url cannot be empty");
-		
+
 		try {
 			// get user by user name
 			User user = userService.getByUserName(userName, store.getCode());
@@ -831,15 +838,14 @@ public class UserFacadeImpl implements UserFacade {
 
 			// reset password link
 			// this will build http | https ://domain/contextPath
-			String baseUrl = userContextPath; 
-			if(!filePathUtils.isValidURL(baseUrl)) {
+			String baseUrl = userContextPath;
+			if (!filePathUtils.isValidURL(baseUrl)) {
 				throw new ServiceRuntimeException("Request url [" + baseUrl + "] is invalid");
 			}
 
 			// need to add link to controller receiving user reset password
 			// request
-			String customerResetLink = new StringBuilder().append(baseUrl)
-					.append(Constants.SLASH)
+			String customerResetLink = new StringBuilder().append(baseUrl).append(Constants.SLASH)
 					.append(String.format(resetUserLink, store.getCode(), token)).toString();
 
 			resetPasswordRequest(user, customerResetLink, store, lamguageService.toLocale(language, store));
@@ -867,15 +873,15 @@ public class UserFacadeImpl implements UserFacade {
 
 		User user = verifyUserLink(token, store);// reverify
 		user.setAdminPassword(passwordEncoder.encode(password));
-		
+
 		try {
 			userService.save(user);
 		} catch (ServiceException e) {
-			throw new ServiceRuntimeException("Error while saving user",e);
+			throw new ServiceRuntimeException("Error while saving user", e);
 		}
 
 	}
-	
+
 	private User verifyUserLink(String token, String store) {
 
 		User user = null;
@@ -903,13 +909,11 @@ public class UserFacadeImpl implements UserFacade {
 		return user;
 
 	}
-	
 
 	@Async
 	private void resetPasswordRequest(User user, String resetLink, MerchantStore store, Locale locale)
 			throws Exception {
 		try {
-
 
 			Map<String, String> templateTokens = emailUtils.createEmailObjectsMap(imageUtils.getContextPath(), store,
 					messages, locale);
@@ -921,7 +925,6 @@ public class UserFacadeImpl implements UserFacade {
 			templateTokens.put(EmailConstants.LABEL_LINK_TITLE,
 					messages.getMessage("email.link.reset.password.title", locale));
 			templateTokens.put(EmailConstants.LABEL_LINK, messages.getMessage("email.link", locale));
-
 
 			Email email = new Email();
 			email.setFrom(store.getStorename());
@@ -938,5 +941,131 @@ public class UserFacadeImpl implements UserFacade {
 		}
 	}
 
+	@Override
+	public String updateEnabled(String userName) {
 
+		try {
+			User modelUser = userService.getByUserName(userName);
+
+			if (modelUser == null) {
+				throw new ResourceNotFoundException("User with user name [" + userName + "] not found");
+			}
+			boolean newStatus = !modelUser.isActive();
+			modelUser.setActive(newStatus);
+			userService.saveOrUpdate(modelUser);
+			return "Update success";
+		} catch (ServiceException e) {
+			e.printStackTrace();
+			return "Update fail";
+		}
+
+	}
+
+	@Override
+	public ReadableUser update(PersistableUser user) throws Exception {
+		try {
+			User alumnus = userService.getByUserName(user.getUserName());
+			if (alumnus == null) {
+				throw new NotFoundException("Not found user");
+			}
+
+			if (user.getRepeatPassword().equals(user.getPassword())) {
+				String passNew = passwordEncoder.encode(user.getPassword());
+				alumnus.setAdminPassword(passNew);
+			} else {
+				throw new Exception("Password not match");
+			}
+			alumnus.setActive(true);
+			alumnus.setFirstName(user.getFirstName());
+			alumnus.setLastName(user.getLastName());
+			alumnus.setAdminEmail(user.getEmailAddress());
+			userService.save(alumnus);
+//			return readableUserPopulator.populate(alumnus);
+			return null;
+		} catch (ServiceException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	@Transactional
+	public String update(Long idUser, SignupStore store) throws Exception {
+		MerchantStore storeAlumnus = null;
+		try {
+			User alumnus = userService.getById(idUser);
+			storeAlumnus = alumnus.getMerchantStore();
+			if (alumnus == null) {
+				throw new NotFoundException("Not found user");
+			}
+
+			alumnus.setActive(true);
+			alumnus.setFirstName(store.getFirstName());
+			alumnus.setLastName(store.getLastName());
+			alumnus.setAdminEmail(store.getEmail());
+			userService.save(alumnus);
+			storeAlumnus.setStorename(store.getName());
+			storeAlumnus.setStoreEmailAddress(store.getEmail());
+			storeAlumnus.setStorecity(store.getCity());
+			storeAlumnus.setStorephone(store.getPhoneNumber());
+			storeAlumnus.setStoreaddress(store.getAddress());
+			merchantStoreService.save(storeAlumnus);
+			return "Update success";
+		} catch (ServiceException e) {
+			e.printStackTrace();
+			return "Update fail";
+		}
+	}
+
+	@Override
+	public boolean checkIfActive(String userName) {
+		return userService.isBlock(userName);
+	}
+
+	@Override
+	public ReadableUser create(PersistableUser user) {
+		Validate.notNull(user, "User must not be null");
+		Validate.notNull(user.getUserName(), "Username must not be null");
+
+		try {
+			// check if user exists
+			User tempUser = userService.getByUserName(user.getUserName());
+			if (tempUser != null) {
+				throw new ServiceRuntimeException(
+						"User [" + user.getUserName() + "] already exists ");
+			}
+
+			/**
+			 * validate password
+			 */
+			if (!securityFacade.matchRawPasswords(user.getPassword(), user.getRepeatPassword())) {
+				throw new ServiceRuntimeException(
+						"Passwords dos not match, make sure password and repeat password are equals");
+			}
+
+			/**
+			 * Validate new password
+			 */
+			if (!securityFacade.validateUserPassword(user.getPassword())) {
+				throw new ServiceRuntimeException("New password does not apply to format policy");
+			}
+
+			String newPasswordEncoded = securityFacade.encodePassword(user.getPassword());
+
+			User userModel = new User();
+//			userModel
+			if (CollectionUtils.isEmpty(userModel.getGroups())) {
+				throw new ServiceRuntimeException("No valid group groups associated with user " + user.getUserName());
+			}
+			userModel.setAdminPassword(newPasswordEncoded);
+			userService.saveOrUpdate(userModel);
+			// now build returned object
+			User createdUser = userService.getById(userModel.getId());
+			return convertUserToReadableUser(createdUser.getDefaultLanguage(), createdUser);
+		} catch (ServiceException e) {
+//			throw new ServiceRuntimeException(
+//					"Cannot create user " + user.getUserName() + " for store " + store.getCode(), e);
+			return null;
+		}
+	}
 }

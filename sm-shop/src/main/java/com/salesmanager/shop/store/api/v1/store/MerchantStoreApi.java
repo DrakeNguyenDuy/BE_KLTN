@@ -124,11 +124,42 @@ public class MerchantStoreApi {
 		return storeFacade.getChildStores(language, code, page, count);
 	}
 
+//	@ResponseStatus(HttpStatus.OK)
+//	@GetMapping(value = { "/private/stores" }, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ApiOperation(httpMethod = "GET", value = "Get list of stores. Returns all retailers and stores. If superadmin everything is returned, else only retailer and child stores.", notes = "", response = ReadableMerchantStore.class)
+//	@ApiImplicitParams({ @ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+//	public ReadableMerchantStoreList get(@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
+//			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+//			@RequestParam(value = "count", required = false, defaultValue = "10") Integer count,
+//			HttpServletRequest request) {
+//
+//		String authenticatedUser = userFacade.authenticatedUser();
+//		if (authenticatedUser == null) {
+//			throw new UnauthorizedException();
+//		}
+//
+//		// requires superadmin, admin and admin retail to see all
+//		userFacade.authorizedGroup(authenticatedUser,
+//				Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL)
+//						.collect(Collectors.toList()));
+//
+//		MerchantStoreCriteria criteria = createMerchantStoreCriteria(request);
+//
+//		if (userFacade.userInRoles(authenticatedUser, Arrays.asList(Constants.GROUP_SUPERADMIN))) {
+//			criteria.setStoreCode(null);
+//		} else {
+//			criteria.setStoreCode(merchantStore.getCode());
+//		}
+//
+//		// return storeFacade.findAll(criteria, language, page, count);
+//		ReadableMerchantStoreList readable = storeFacade.findAll(criteria, language, page, count);
+//		return readable;
+//	}
+
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = { "/private/stores" }, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "GET", value = "Get list of stores. Returns all retailers and stores. If superadmin everything is returned, else only retailer and child stores.", notes = "", response = ReadableMerchantStore.class)
-	@ApiImplicitParams({ @ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
-	public ReadableMerchantStoreList get(@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language,
+	@ApiOperation(httpMethod = "GET", value = "Get list of stores. ", notes = "", response = ReadableMerchantStore.class)
+	public ReadableMerchantStoreList get(@RequestParam Map<String, String> map,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
 			@RequestParam(value = "count", required = false, defaultValue = "10") Integer count,
 			HttpServletRequest request) {
@@ -143,16 +174,8 @@ public class MerchantStoreApi {
 				Stream.of(Constants.GROUP_SUPERADMIN, Constants.GROUP_ADMIN, Constants.GROUP_ADMIN_RETAIL)
 						.collect(Collectors.toList()));
 
-		MerchantStoreCriteria criteria = createMerchantStoreCriteria(request);
-
-		if (userFacade.userInRoles(authenticatedUser, Arrays.asList(Constants.GROUP_SUPERADMIN))) {
-			criteria.setStoreCode(null);
-		} else {
-			criteria.setStoreCode(merchantStore.getCode());
-		}
-
 		// return storeFacade.findAll(criteria, language, page, count);
-		ReadableMerchantStoreList readable = storeFacade.findAll(criteria, language, page, count);
+		ReadableMerchantStoreList readable = storeFacade.findAll(page, count, map);
 		return readable;
 	}
 
@@ -338,7 +361,7 @@ public class MerchantStoreApi {
 		byte image[] = storeFacade.getBackground(codeStore);
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(image);
 	}
-	
+
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = { "/private/store/{code}/background" })
 	@ApiOperation(httpMethod = "POST", value = "Add store logo", notes = "")

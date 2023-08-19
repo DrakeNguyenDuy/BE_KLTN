@@ -40,6 +40,7 @@ import com.salesmanager.core.model.reference.country.Country;
 import com.salesmanager.core.model.reference.currency.Currency;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.reference.zone.Zone;
+import com.salesmanager.core.model.user.User;
 import com.salesmanager.core.utils.CloneUtils;
 
 @Entity
@@ -206,6 +207,9 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 	
 	@Column(name = "NUM_OF_EMPLOYEE")
 	private Integer numOfEmployee;
+	
+	@OneToMany(mappedBy = "merchantStore")
+	private List<User> users;
 
 	public MerchantStore() {
 	}
