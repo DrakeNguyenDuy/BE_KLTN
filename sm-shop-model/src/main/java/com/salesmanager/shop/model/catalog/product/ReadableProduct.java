@@ -71,6 +71,7 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 
 //	Long add some lines here(13/05/2023)
 	private String nameCompany;
+	private String codeCompany;
 //	end
 
 	// Long hide some lines here (21/4/2023)
@@ -299,6 +300,14 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getCodeCompany() {
+		return codeCompany;
+	}
+
+	public void setCodeCompany(String codeCompany) {
+		this.codeCompany = codeCompany;
 	}
 
 //	end

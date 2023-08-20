@@ -598,6 +598,7 @@ public class ReadableProductMapper implements Mapper<Product, ReadableProduct> {
 		destination.setLogo("/api/v1/store/" + source.getMerchantStore().getCode() + "/marketing/logo");
 		if (source.getMerchantStore() != null) {
 			destination.setNameCompany(source.getMerchantStore().getStorename());
+			destination.setCodeCompany(source.getMerchantStore().getCode());
 		}
 
 		// Long hide some lines here(17/6/2023)
