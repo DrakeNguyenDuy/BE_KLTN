@@ -30,6 +30,7 @@
 		<module>sm-shop-model</module>
 		<module>sm-shop</module>
 		<module>recommender</module>
+		<module>job-recommend-system</module>
 	</modules>
 
 	<properties>
