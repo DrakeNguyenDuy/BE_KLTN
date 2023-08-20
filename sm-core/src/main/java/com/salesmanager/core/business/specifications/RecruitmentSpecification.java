@@ -38,14 +38,12 @@ public class RecruitmentSpecification {
 			String email = map.get("email");
 			List<Predicate> predicates = new ArrayList<Predicate>();
 
-			Join<Recruitment, Customer> alumnus = root.join("alumnus");
-			
 			if (status != null) {
 				StatusProcess statusProcess = StatusProcess.valueOf(status);
 				predicates.add(criteriaBuilder.equal(root.get("statusProcess"), statusProcess));
 			}
 			if (email != null) {
-				predicates.add(criteriaBuilder.equal(alumnus.get("alumnus"), email));
+				predicates.add(criteriaBuilder.equal(root.get("job").get("merchantStore").get("storeEmailAddress"), email));
 			}
 			query.orderBy(criteriaBuilder.desc(root.get("applyDate")));
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

@@ -54,7 +54,8 @@ public class RecruitmentApi {
 			@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size,
 			HttpServletRequest request) {
 		try {
-			return recruitmentFacade.findAlumnusByEmployer(null, page, size, map);
+			String email = request.getUserPrincipal().getName();// is nick name of customer
+			return recruitmentFacade.findAlumnusByEmployer(email, page, size, map);
 		} catch (NullPointerException e) {
 			throw new RestApiException(e.getMessage());
 		}
