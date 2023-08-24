@@ -1,19 +1,25 @@
 package com.salesmanager.shop.store.facade.system;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import com.salesmanager.core.business.services.catalog.product.ProductService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.utils.SystemService;
+import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.system.SystemNotification;
+import com.salesmanager.shop.mapper.catalog.product.ReadableProductMapper;
 import com.salesmanager.shop.mapper.customer.ReadableCustomerMapper;
 import com.salesmanager.shop.mapper.system.SystemMapper;
+import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.shop.model.customer.ReadableCustomer;
 import com.salesmanager.shop.populator.customer.ReadableCustomerList;
 import com.salesmanager.shop.util.NotificationDto;
@@ -28,6 +34,12 @@ public class SystemFacadeImpl implements SystemFacade {
 
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private ReadableProductMapper readableProductMapper;
 
 	@Autowired
 	private ReadableCustomerMapper readableCustomerMapper;
@@ -68,4 +80,14 @@ public class SystemFacadeImpl implements SystemFacade {
 		return result;
 	}
 
+	@Override
+	public List<ReadableProduct> getProductsRecommender(List<Long> idJob) {
+		List<ReadableProduct> list = new ArrayList<ReadableProduct>();
+		List<Product> jobRecommender = productService.getProductsRecommender(idJob);
+		if (!Objects.isNull(jobRecommender)) {
+			list = jobRecommender.stream().map(item -> readableProductMapper.convert(item))
+					.collect(Collectors.toList());
+		}
+		return list;
+	}
 }

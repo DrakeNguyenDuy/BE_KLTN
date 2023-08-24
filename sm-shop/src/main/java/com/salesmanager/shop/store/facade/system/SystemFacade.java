@@ -3,6 +3,8 @@ package com.salesmanager.shop.store.facade.system;
 import java.util.List;
 import java.util.Map;
 
+import com.salesmanager.shop.model.catalog.product.ReadableProduct;
+import com.salesmanager.shop.model.catalog.product.ReadableProductList;
 import com.salesmanager.shop.populator.customer.ReadableCustomerList;
 import com.salesmanager.shop.util.NotificationDto;
 
@@ -16,4 +18,6 @@ public interface SystemFacade {
 	String changeIsOpenedEmployer(String storeCode);
 
 	ReadableCustomerList getAlumnus(Integer page, Integer size, Map<String, String> map);
+	
+	List<ReadableProduct> getProductsRecommender(List<Long> idJob);
 }

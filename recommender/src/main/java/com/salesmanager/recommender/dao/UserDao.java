@@ -73,7 +73,7 @@ public class UserDao extends AbstractDao implements UserDAO {
 		}
 	}
 
-	@Override
+//	@Override
 	public LongSet getUserIds() {
 		return userFeatures.keySet();
 	}

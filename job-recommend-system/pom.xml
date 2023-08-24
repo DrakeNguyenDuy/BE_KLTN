@@ -6,4 +6,21 @@
     <version>3.2.5</version>
   </parent>
   <artifactId>job-recommend-system</artifactId>
+  <packaging>jar</packaging>
+  <dependencies>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<!-- lenskit-->
+		<dependency>
+			<groupId>org.grouplens.lenskit</groupId>
+			<artifactId>lenskit-all</artifactId>
+			<version>3.0-T1</version>
+		</dependency>
+
+
+	</dependencies>
 </project>

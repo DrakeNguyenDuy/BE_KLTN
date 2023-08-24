@@ -34,5 +34,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 	
 	List<Product> findByDateExperienceLessThan(Date now);
 	// end
-
+	@Query("SELECT p FROM Product p where p.id in (:idJob)")
+	List<Product> getProductsRecommender(List<Long> idJob);
 }

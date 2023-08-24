@@ -83,7 +83,7 @@ public class ItemDao extends AbstractDao implements ItemDAO {
 	}
 
 	// get all id of item
-	@Override
+//	@Override
 	public LongSet getItemIds() {
 		loadFeaturesCache();
 		return featuresCache.keySet();

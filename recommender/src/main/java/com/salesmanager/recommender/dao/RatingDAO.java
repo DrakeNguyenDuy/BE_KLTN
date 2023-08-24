@@ -37,19 +37,19 @@ public class RatingDAO extends AbstractDao implements EventDAO {
 		}
 	}
 
-	@Override
+//	@Override
 	public ObjectStream<Event> streamEvents() {
 		loadEvent();
 		return eventCache.streamEvents();
 	}
 
-	@Override
+//	@Override
 	public <E extends Event> ObjectStream<E> streamEvents(Class<E> type) {
 		loadEvent();
 		return eventCache.streamEvents(type);
 	}
 
-	@Override
+//	@Override
 	public <E extends Event> ObjectStream<E> streamEvents(Class<E> type, SortOrder order) {
 		loadEvent();
 		return eventCache.streamEvents(type, order);
