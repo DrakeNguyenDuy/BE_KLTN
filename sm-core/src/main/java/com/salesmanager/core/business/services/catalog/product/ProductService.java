@@ -110,4 +110,6 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
 	void updateOutOfDate();
 
 	public String updateStatus(String jobCode, String status);
+	
+	List<Product> getProductsRecommender(List<Long> idJob);
 }

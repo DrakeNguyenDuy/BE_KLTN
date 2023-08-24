@@ -15,8 +15,10 @@ public class Connect {
 			String username = "root";
 			String pass = "1234";
 			connection = DriverManager.getConnection(url, username, pass);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (SQLException e) {
+			// TODO: handle exception
 		}
 	}
 

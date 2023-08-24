@@ -501,4 +501,8 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		return "Cannot update because not found out job";
 	}
 
+	@Override
+	public List<Product> getProductsRecommender(List<Long> idJob) {
+		return productRepository.getProductsRecommender(idJob);
+	}
 }

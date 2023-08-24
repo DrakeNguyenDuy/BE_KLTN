@@ -1,6 +1,6 @@
 package com.salesmanager.shop.store.api.v2.system;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +29,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.model.merchant.MerchantStore;
-import com.salesmanager.core.model.reference.language.Language;
+import com.salesmanager.recommender.main.Main;
 import com.salesmanager.shop.constants.Constants;
 import com.salesmanager.shop.mapper.store.StoreMapper;
 import com.salesmanager.shop.mapper.user.UserMapper;
+import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.shop.model.customer.PersistableCustomer;
 import com.salesmanager.shop.model.marketplace.SignupStore;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
-import com.salesmanager.shop.model.store.ReadableMerchantStoreList;
 import com.salesmanager.shop.model.user.PersistableUser;
 import com.salesmanager.shop.model.user.ReadableUser;
 import com.salesmanager.shop.populator.customer.ReadableCustomerList;
@@ -51,10 +50,7 @@ import com.salesmanager.shop.store.facade.customer.profile.ProfileFacade;
 import com.salesmanager.shop.store.facade.system.SystemFacade;
 import com.salesmanager.shop.util.NotificationDto;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -268,5 +264,12 @@ public class SystemApi {
 						.collect(Collectors.toList()));
 
 		return userFacade.create(user);
+	}
+	
+	@GetMapping("/auth/recommender/job/{idAlumnus}")
+	public ResponseEntity<List<ReadableProduct>> a(@PathVariable Long idAlumnus) {
+		List<Long> idJob = Main.rs(idAlumnus);
+		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+				.body(facade.getProductsRecommender(idJob));
 	}
 }
