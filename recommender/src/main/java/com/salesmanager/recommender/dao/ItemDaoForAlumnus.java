@@ -13,6 +13,7 @@ import org.lenskit.data.dao.ItemDAO;
 
 import com.google.common.collect.ImmutableSet;
 import com.salesmanager.recommender.beans.Item;
+import com.salesmanager.recommender.beans.UserBean;
 import com.salesmanager.recommender.connection.Connect;
 
 import contants.SystemConstants;
@@ -20,7 +21,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
-public class ItemDao extends AbstractDao implements ItemDAO {
+public class ItemDaoForAlumnus extends AbstractDao implements ItemDAO {
 	private transient volatile Long2ObjectMap<List<String>> featuresCache;// id item map to a list feature of item
 	private transient volatile Set<String> allFeatures;
 
@@ -31,50 +32,45 @@ public class ItemDao extends AbstractDao implements ItemDAO {
 					featuresCache = new Long2ObjectOpenHashMap<List<String>>();
 					ImmutableSet.Builder<String> featuresSetBuilder = ImmutableSet.builder();
 					Connection connect = Connect.getInstance().getConnection();
-					String sql = "select p.product_id, group_concat(distinct s.name) as skill, group_concat(distinct w.name) as ward,\r\n"
-							+ "group_concat(distinct d.name) as district, group_concat(distinct pd.name) as province\r\n"
-							+ "from product p join skill_product_entry spr on p.PRODUCT_ID=spr.PRODUCT_ID\r\n"
-							+ "join skill_description s on s.id_skill = spr.ID_SKILL join location_product_entry lpe on lpe.PRODUCT_ID=p.PRODUCT_ID\r\n"
-							+ "join location_description l on l.ID_LOCATION=lpe.ID_LOCATION join ward_description w on l.ID_WARD=w.ID_WARD\r\n"
-							+ "join district_description d on d.ID_DISTRICT=l.ID_DISTRICT join province_description pd on pd.id_province= l.id_province\r\n"
-							+ "group by p.PRODUCT_ID";
+					String sql="select c.customer_id, group_concat(distinct s.name) as skill, group_concat(distinct dd.name) as district from customer c \r\n"
+							+ "join profile p on c.customer_id=p.customer_id\r\n"
+							+ "join profile_skill_entry pse on pse.profile_id=p.id \r\n"
+							+ "join skill_description s on s.id_skill=pse.skill_id\r\n"
+							+ "join profile_area_work_entry pawe on pawe.profiles_ID = p.id \r\n"
+							+ "join district_description dd on pawe.districts_ID_DISTRICT=dd.ID_DISTRICT\r\n"
+							+ "group by c.customer_id";
 					PreparedStatement ps;
-					List<Item> items = new ArrayList<Item>();
+					List<UserBean> users = new ArrayList<UserBean>();
 					try {
 						ps = connect.prepareStatement(sql);
 						ResultSet rs = ps.executeQuery();
 						while (rs.next()) {
-							Item item = new Item();
-							item.setId(rs.getLong("product_id"));
-							item.setSkill(rs.getString("skill"));
-							item.setWard(rs.getString("ward"));
-							item.setDistinct (rs.getString("district"));
-							item.setProvince(rs.getString("province"));
-							items.add(item);
+							UserBean user = new UserBean();
+							user.setId(rs.getLong("customer_id"));
+							user.setSkill(rs.getString("skill"));
+							user.setDistinct(rs.getString("district"));
+							users.add(user);
 						}
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					for (Item i : items) {
-						long jobID = i.getId();
-						List<String> features = featuresCache.get(jobID);
+					for (UserBean ub : users) {
+						long userId = ub.getId(); 
+						List<String> features = featuresCache.get(userId);
 						
 						if (features == null) {// nếu tại vị trí đó chưa có dữ liệu thì khởi tạo array list, dành cho
 												// lần lặp đầu tiên
 							features = new ArrayList<String>();
-							featuresCache.put(jobID, features);
+							featuresCache.put(userId, features);
 						}
-						if(i.getSkill()!=null) {
-							String[] featureSkills = i.getSkill().split(SystemConstants.COMMA);
-							features.addAll(Arrays.asList(featureSkills));
-							featuresSetBuilder.addAll(Arrays.asList(featureSkills));
-						}
-						if(i.getDistinct()!=null) {
-							String [] featureDistrict = i.getDistinct().split(SystemConstants.COMMA);
-							features.addAll(Arrays.asList(featureDistrict));
-							featuresSetBuilder.addAll(Arrays.asList(featureDistrict));	
-						}
+						
+						String[] featureSkills = ub.getSkill().split(SystemConstants.COMMA);
+						String [] featureDistrict = ub.getDistinct().split(SystemConstants.COMMA);
+						features.addAll(Arrays.asList(featureSkills));
+						features.addAll(Arrays.asList(featureDistrict));
+						featuresSetBuilder.addAll(Arrays.asList(featureSkills));
+						featuresSetBuilder.addAll(Arrays.asList(featureDistrict));
 					}
 					allFeatures = featuresSetBuilder.build();
 				}

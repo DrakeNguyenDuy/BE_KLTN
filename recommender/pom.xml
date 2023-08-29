@@ -2,12 +2,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-
 	<groupId>com.shopizer</groupId>
 	<artifactId>recommender</artifactId>
-	<version>3.2.5</version>
 	<packaging>jar</packaging>
+	<version>3.2.5</version>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -17,9 +15,10 @@
 			<version>8.0.21</version>
 		</dependency>
 		<dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>27.1-jre</version> <!-- Phiên bản bạn muốn sử dụng -->
-        </dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>27.1-jre</version> <!-- Phiên bản bạn muốn sử dụng -->
+		</dependency>
 	</dependencies>
+
 </project>

@@ -178,4 +178,8 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 		return customerRepository.existsByEmailAddress(mail);
 	}
 
+	@Override
+	public List<Customer> getIds(List<Long> idALumnuss) {
+		return customerRepository.getByIds(idALumnuss);
+	}
 }

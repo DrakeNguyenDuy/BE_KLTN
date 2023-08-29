@@ -1,9 +1,6 @@
 package com.salesmanager.recommender.main;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,23 +13,24 @@ import org.grouplens.lenskit.vectors.VectorEntry;
 import org.lenskit.inject.Transient;
 
 import com.salesmanager.recommender.dao.ItemDao;
+import com.salesmanager.recommender.dao.ItemDaoForAlumnus;
 import com.salesmanager.utils.ScoreUtils;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
-public class TFIDFBuilderModel implements Provider<TFIDFModel> {
-	private ItemDao itemDao;
+public class TFIDFBuilderModelForAlumnus implements Provider<TFIDFModelForAlmunus> {
+	private ItemDaoForAlumnus itemDao;
 	private Map<String, Long> idMapFeature;
 
 	@Inject
-	public TFIDFBuilderModel(@Transient ItemDao itemDao) {
+	public TFIDFBuilderModelForAlumnus(@Transient ItemDaoForAlumnus itemDao) {
 		// TODO Auto-generated constructor stub
 		this.itemDao = itemDao;
 	}
 
 //	@Override
-	public TFIDFModel get() {
+	public TFIDFModelForAlmunus get() {
 		// Create a map contain id map to each feature
 		idMapFeature = createFeaturesIdMap();
 		// Tạo một vector đề lưu trữ tần xuất xuất hiện của mỗi đặc trưng đối với tất cả
@@ -90,10 +88,10 @@ public class TFIDFBuilderModel implements Provider<TFIDFModel> {
 		for (VectorEntry ve : vectorDF) {
 			double df = ve.getValue();// Lấy DF của đặc trưng
 			double idf = Math.log(numOfItems / df);// Tính IDF
-			if (Double.isInfinite(idf)) {
+			if(Double.isInfinite(idf)) {
 				vectorDF.set(ve.getKey(), 0);
-			} else {
-				vectorDF.set(ve.getKey(), idf);// Put lại vào trong vector DF
+			}else {
+				vectorDF.set(ve.getKey(), idf);// Put lại vào trong vector DF	
 			}
 		}
 		// Tính TF-IDF chỗ mỗi đặc trưng của item (Công việc)
@@ -102,39 +100,19 @@ public class TFIDFBuilderModel implements Provider<TFIDFModel> {
 		Set<Map.Entry<Long, MutableSparseVector>> setVectorTFItem = itemVectors.entrySet();
 		for (Map.Entry<Long, MutableSparseVector> veEntry : setVectorTFItem) {
 			MutableSparseVector vectorTfItemTemp = veEntry.getValue();
-//			List<Long> indexIdFeature = new ArrayList<Long>(idMapFeature.size());
-			Long[] indexIdFeature = new Long[idMapFeature.size()];
-			System.out.println(idMapFeature.size());
-			Map<Long, Double> idToValue = new HashMap<Long, Double>();
 			for (VectorEntry entry : vectorTfItemTemp) {
 				long idFeature = entry.getKey();
 				int countSpecificFeature = itemDao.getFeatureByIdItem(veEntry.getKey()).size();
 				double tf = entry.getValue() / countSpecificFeature;
-				double idf = vectorDF.get(idFeature);	
-				double tfidf = tf * idf;
+				double idf = vectorDF.get(idFeature);
+				double tfidf= tf * idf;
 //				System.out.println(idf*tf);
-//				indexIdFeature.set((int) idFeature, idFeature);
-//				indexIdFeature[(int) idFeature-1]=idFeature;
-//				idToValue.put(idFeature, tfidf);
 				vectorTfItemTemp.add(idFeature, tfidf);
 			}
-//			for (int i = 0; i < indexIdFeature.length; i++) {
-//				if (indexIdFeature[i] != null) {
-//					vectorTfItemTemp.add((long)i, idToValue.get(indexIdFeature));
-//				} else {
-//					vectorTfItemTemp.add((long)i, 0.0);
-//				}
-//			}
 			modelData.put(veEntry.getKey(), vectorTfItemTemp);
 		}
-//		List<Long> idFeature = new ArrayList<Long>(modelData.keySet());
-//		Collections.sort(idFeature);
-//		Map<Long, MutableSparseVector> modelDataSorted = new HashMap<Long, MutableSparseVector>();
-//		for (Long long1 : idFeature) {
-//			modelDataSorted.put(long1, modelData.get(long1));
-//		}
 		Map<Long, Double> idToDFMap = createIDToDFMap();
-		return new TFIDFModel(idMapFeature, modelData, idToDFMap);
+		return new TFIDFModelForAlmunus(idMapFeature, modelData, idToDFMap);
 	}
 
 	// Tạo map feature -> id feature
@@ -165,7 +143,7 @@ public class TFIDFBuilderModel implements Provider<TFIDFModel> {
 		}
 		return result;
 	}
-
+	
 //	private Map<Long, MutableSparseVector> normalizerMatrixItem(){
 //		
 //	}

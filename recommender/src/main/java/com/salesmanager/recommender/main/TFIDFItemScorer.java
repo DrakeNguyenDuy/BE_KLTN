@@ -47,6 +47,9 @@ public class TFIDFItemScorer extends AbstractItemScorer {
 			SparseVector vectorItem = model.getVectorItem(idItem);
 //			System.out.println(vectorItem);
 			double similar = cvs.similarity(userVector, vectorItem);
+//			if(similar>0) {				
+//				list.add(new BasicResult(idItem, similar));
+//			}
 			list.add(new BasicResult(idItem, similar));
 		}
 
@@ -54,51 +57,58 @@ public class TFIDFItemScorer extends AbstractItemScorer {
 	}
 
 	private SparseVector makeUserVector(long user) {
+		return createVectorUserFromFeatures(user);
 //		SparseVector userVector = null;
-		List<Rating> userRatings = dao.getEventsForUser(user, Rating.class);
-		if (userRatings == null) {
-			return createVectorUserFromFeatures(user);
-		}
-
-		// Create a new vector over tags to accumulate the user profile
-		MutableSparseVector profile = model.createVectorFeatures();
-		// Fill it with 0's initially - they don't like anything
-		profile.fill(0);
-		// Iterate over the user's ratings to build their profile
-		double ratingSum = 0;
-		int counter = 0;
-		for (Rating r : userRatings) {
-			// 1. calculate the user rating
-            counter++;
-            ratingSum += r.getValue();
-		}
-		double avgRating = ratingSum/counter;
-		for(Rating r: userRatings){
-            double ratingValue = r.getValue();
-            double multiplier = ratingValue - avgRating;
-
-            long itemId = r.getItemId();
-            SparseVector itemVector = this.model.getVectorItem(itemId);
-            for(VectorEntry v: itemVector.fast()){
-                long vKey = v.getKey();
-                double vValue = v.getValue();
-//                double sum = vValue * multiplier + profile.get(vKey);
-                double sum = ratingValue*vValue + profile.get(vKey);
-                profile.set(vKey, sum);
-            }
-
-        }
-//		return userVector;
-		 return profile.freeze();
+//		List<Rating> userRatings = dao.getEventsForUser(user, Rating.class);
+//		if (userRatings == null) {
+//			return createVectorUserFromFeatures(user);
+//		}
+//
+//		// Create a new vector over tags to accumulate the user profile
+//		MutableSparseVector profile = model.createVectorFeatures();
+//		// Fill it with 0's initially - they don't like anything
+//		profile.fill(0);
+//		// Iterate over the user's ratings to build their profile
+//		double ratingSum = 0;
+//		int counter = 0;
+//		for (Rating r : userRatings) {
+//			// 1. calculate the user rating
+//            counter++;
+//            ratingSum += r.getValue();
+//		}
+//		double avgRating = ratingSum/counter;
+//		for(Rating r: userRatings){
+//            double ratingValue = r.getValue();
+//            double multiplier = ratingValue - avgRating;
+//
+//            long itemId = r.getItemId();
+//            SparseVector itemVector = this.model.getVectorItem(itemId);
+//            for(VectorEntry v: itemVector.fast()){
+//                long vKey = v.getKey();
+//                double vValue = v.getValue();
+////                double sum = vValue * multiplier + profile.get(vKey);
+//                double sum = ratingValue*vValue + profile.get(vKey);
+//                profile.set(vKey, sum);
+//            }
+//
+//        }
+////		return userVector;
+//		 return profile.freeze();
 	}
 
 	// Create user vector from feature user like skills, address,...
 	// Used to create user vector when user not like any item
 	private SparseVector createVectorUserFromFeatures(long idUser) {
 		List<String> featureUser = userDao.getFeatureUser(idUser);
+
 		// vector profile user
 		MutableSparseVector userVector = model.createVectorFeatures();
 		userVector.fill(0.0);
+		System.out.println(userVector.keyDomain());
+		System.out.println("========");
+		System.out.println(userVector.keysByValue());
+		System.out.println("========");
+		System.out.println(model.getFeatures());
 		// Compute TF-IDF all features in profile user
 
 		// get map id feature -> name feature
@@ -106,8 +116,10 @@ public class TFIDFItemScorer extends AbstractItemScorer {
 		for (int i = 0; i < featureUser.size(); i++) {
 			// get name feature
 			String nameFeature = featureUser.get(i);
+			System.out.println("Name feature of customer: " + nameFeature);
 			// get id feature
 			Long idFeature = idToFeatureMap.get(nameFeature);
+			System.out.println("Index feature: " + idFeature);
 //			try {
 //				userVector.set(idFeature, userVector.get(idFeature) + 1);
 //			} catch (IllegalArgumentException e) {
@@ -118,7 +130,8 @@ public class TFIDFItemScorer extends AbstractItemScorer {
 			}
 		}
 		// get number of features of user specific
-		int numOfFeatureUserSpec = ScoreUtils.countFeatureSpecific(userVector);
+//		int numOfFeatureUserSpec = ScoreUtils.countFeatureSpecific(userVector);
+		int numOfFeatureUserSpec = featureUser.size();
 		System.out.println("số " + numOfFeatureUserSpec);
 		// compute TF-IDF in user vector
 		long index = 1;

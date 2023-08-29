@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.shop.model.catalog.product.ReadableProductList;
+import com.salesmanager.shop.model.customer.ReadableCustomer;
+import com.salesmanager.shop.model.recruitment.RecruitmentDto;
 import com.salesmanager.shop.populator.customer.ReadableCustomerList;
 import com.salesmanager.shop.util.NotificationDto;
 
@@ -20,4 +22,6 @@ public interface SystemFacade {
 	ReadableCustomerList getAlumnus(Integer page, Integer size, Map<String, String> map);
 	
 	List<ReadableProduct> getProductsRecommender(List<Long> idJob);
+	
+	List<RecruitmentDto> getAlumnusRecommender(List<Long> idAlumnus);
 }

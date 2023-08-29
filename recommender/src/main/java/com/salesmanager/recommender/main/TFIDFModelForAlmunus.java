@@ -12,8 +12,8 @@ import org.lenskit.inject.Shareable;
 //LensKit models are annotated with @Shareable so they can be serialized and reused
 @Shareable
 //This model class will be built by the model builder
-@DefaultProvider(TFIDFBuilderModel.class)
-public class TFIDFModel implements Serializable {
+@DefaultProvider(TFIDFBuilderModelForAlumnus.class)
+public class TFIDFModelForAlmunus implements Serializable {
 
 	/**
 	 * 
@@ -23,7 +23,7 @@ public class TFIDFModel implements Serializable {
 	private Map<Long, MutableSparseVector> itemVectorsMap = null;
 	private Map<Long, Double> idToDFMap = null;
 
-	public TFIDFModel(Map<String, Long> features, Map<Long, MutableSparseVector> itemVectorsMap,
+	public TFIDFModelForAlmunus(Map<String, Long> features, Map<Long, MutableSparseVector> itemVectorsMap,
 			Map<Long, Double> idToDFMap) {
 		// TODO Auto-generated constructor stub
 		this.features = features;
@@ -52,33 +52,5 @@ public class TFIDFModel implements Serializable {
 	// compute IDF of feature specific
 	public double weightDF(long idFeature) {
 		return idToDFMap.get(idFeature);
-	}
-
-	public Map<String, Long> getFeatures() {
-		return features;
-	}
-
-	public void setFeatures(Map<String, Long> features) {
-		this.features = features;
-	}
-
-	public Map<Long, MutableSparseVector> getItemVectorsMap() {
-		return itemVectorsMap;
-	}
-
-	public void setItemVectorsMap(Map<Long, MutableSparseVector> itemVectorsMap) {
-		this.itemVectorsMap = itemVectorsMap;
-	}
-
-	public Map<Long, Double> getIdToDFMap() {
-		return idToDFMap;
-	}
-
-	public void setIdToDFMap(Map<Long, Double> idToDFMap) {
-		this.idToDFMap = idToDFMap;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }
