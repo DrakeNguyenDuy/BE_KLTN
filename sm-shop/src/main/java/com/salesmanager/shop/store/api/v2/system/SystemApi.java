@@ -30,12 +30,14 @@ import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.recommender.main.Main;
+import com.salesmanager.recommender.main.MainForAlumnus;
 import com.salesmanager.shop.constants.Constants;
 import com.salesmanager.shop.mapper.store.StoreMapper;
 import com.salesmanager.shop.mapper.user.UserMapper;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.shop.model.customer.PersistableCustomer;
 import com.salesmanager.shop.model.marketplace.SignupStore;
+import com.salesmanager.shop.model.recruitment.RecruitmentDto;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.user.PersistableUser;
 import com.salesmanager.shop.model.user.ReadableUser;
@@ -271,5 +273,11 @@ public class SystemApi {
 		List<Long> idJob = Main.rs(idAlumnus);
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
 				.body(facade.getProductsRecommender(idJob));
+	}
+	@GetMapping("/auth/recommender/alumnus/{idJob}")
+	public ResponseEntity<List<RecruitmentDto>> rsAlumnus(@PathVariable Long idJob) {
+		List<Long> idAlumnus = MainForAlumnus.rs(idJob);
+		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+				.body(facade.getAlumnusRecommender(idAlumnus));
 	}
 }

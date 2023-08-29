@@ -12,19 +12,19 @@ import org.lenskit.data.dao.ItemDAO;
 import org.lenskit.data.dao.UserDAO;
 
 import com.salesmanager.recommender.dao.ItemDao;
+import com.salesmanager.recommender.dao.ItemDaoForAlumnus;
 import com.salesmanager.recommender.dao.RatingDAO;
 import com.salesmanager.recommender.dao.UserDao;
+import com.salesmanager.recommender.dao.UserDaoForAlmnus;
 
-public class Main {
+public class MainForAlumnus {
 
 	public static List<Long> rs(Long id) {
 		LenskitConfiguration config = configureRecommender();
 		System.out.println("Starting build recommnder");
 		Recommender rec = LenskitRecommender.build(config);
-		// we automatically get a useful recommender since we have a scorer
 		ItemRecommender irec = rec.getItemRecommender();
-
-		System.out.println("searching for recommendations for user " + id);
+		System.out.println("searching for recommendations for job " + id);
 		List<Long> recs = irec.recommend(id, 5);
 		return recs;
 	}
@@ -32,15 +32,15 @@ public class Main {
 	private static LenskitConfiguration configureRecommender() {
 		LenskitConfiguration config = new LenskitConfiguration();
 		// use the TF-IDF scorer you will implement to score items
-		config.bind(ItemScorer.class).to(TFIDFItemScorer.class);
+		config.bind(ItemScorer.class).to(TFIDFItemScorerForAlmnus.class);
 		// configure the rating data source
 		config.bind(EventDAO.class).to(RatingDAO.class);
 		// use custom item and user DAOs
 		// specify item DAO implementation with features includes: skills, address,..
 
-		config.bind(ItemDAO.class).to(ItemDao.class);
+		config.bind(ItemDAO.class).to(ItemDaoForAlumnus.class);
 		// our user DAO can look up by user name
-		config.bind(UserDAO.class).to(UserDao.class);
+		config.bind(UserDAO.class).to(UserDaoForAlmnus.class);
 		return config;
 	}
 }

@@ -30,7 +30,6 @@
 		<module>sm-shop-model</module>
 		<module>sm-shop</module>
 		<module>recommender</module>
-		<module>job-recommend-system</module>
 	</modules>
 
 	<properties>
@@ -601,7 +600,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
+				<version>1.8</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>

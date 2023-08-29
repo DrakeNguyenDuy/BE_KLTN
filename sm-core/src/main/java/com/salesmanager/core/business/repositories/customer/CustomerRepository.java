@@ -129,4 +129,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, Custo
 	boolean existsByNickAndActive(String userName, boolean active );
 	
 	public boolean existsByEmailAddress(String mail);
+	
+	@Query("select c from Customer c where id in (:ids) ")
+	List<Customer> getByIds(List<Long> ids);
 }

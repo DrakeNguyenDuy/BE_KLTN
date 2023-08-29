@@ -1,5 +1,7 @@
 package com.salesmanager.shop.model.recruitment;
 
+import java.util.List;
+
 public class RecruitmentDto {
 	private String id;
 	private Long idJob;
@@ -12,6 +14,8 @@ public class RecruitmentDto {
 	private String applyDate;
 	private String jobPosition;
 	private String avartarAlumnus;
+	private List<String> skills;
+	private List<String> locations;
 
 	public String getId() {
 		return id;
@@ -99,6 +103,22 @@ public class RecruitmentDto {
 
 	public void setAvartarAlumnus(String avartarAlumnus) {
 		this.avartarAlumnus = avartarAlumnus;
+	}
+
+	public List<String> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<String> skills) {
+		this.skills = skills;
+	}
+
+	public List<String> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(List<String> locations) {
+		this.locations = locations;
 	}
 
 }

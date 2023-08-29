@@ -60,4 +60,6 @@ public interface CustomerService extends SalesManagerEntityService<Long, Custome
 	public String unlockOrBlock(String userName);
 	
 	boolean existsByEmailAddress(String mail);
+	
+	List<Customer> getIds(List<Long> idALumnuss);
 }
