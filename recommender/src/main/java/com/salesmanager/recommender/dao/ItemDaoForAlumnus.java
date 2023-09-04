@@ -39,6 +39,7 @@ public class ItemDaoForAlumnus extends AbstractDao implements ItemDAO {
 							+ "join profile_area_work_entry pawe on pawe.profiles_ID = p.id \r\n"
 							+ "join district_description dd on pawe.districts_ID_DISTRICT=dd.ID_DISTRICT\r\n"
 							+ "group by c.customer_id";
+					sql=sql.toUpperCase();
 					PreparedStatement ps;
 					List<UserBean> users = new ArrayList<UserBean>();
 					try {

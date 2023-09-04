@@ -7,7 +7,7 @@ join location_description l on l.ID_LOCATION=lpe.ID_LOCATION join ward_descripti
 join district_description d on d.ID_DISTRICT=l.ID_DISTRICT join province_description pd on pd.id_province= l.id_province
 group by p.PRODUCT_ID;
 -- get all user with feature(location and skill)
-select c.customer_id, group_concat(distinct s.name) as skill, group_concat(distinct dd.name) as district from customer c 
+select c.customer_id, group_concat(distinct s.name) as skill, group_concat(distinct dd.name) as district from CUSTOMER c 
 join profile p on c.customer_id=p.customer_id
 join profile_skill_entry pse on pse.profile_id=p.id 
 join skill_description s on s.id_skill=pse.skill_id
