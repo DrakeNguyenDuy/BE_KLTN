@@ -38,6 +38,7 @@ public class ItemDao extends AbstractDao implements ItemDAO {
 							+ "join location_description l on l.ID_LOCATION=lpe.ID_LOCATION join ward_description w on l.ID_WARD=w.ID_WARD\r\n"
 							+ "join district_description d on d.ID_DISTRICT=l.ID_DISTRICT join province_description pd on pd.id_province= l.id_province\r\n"
 							+ "group by p.PRODUCT_ID";
+					sql=sql.toUpperCase();
 					PreparedStatement ps;
 					List<Item> items = new ArrayList<Item>();
 					try {

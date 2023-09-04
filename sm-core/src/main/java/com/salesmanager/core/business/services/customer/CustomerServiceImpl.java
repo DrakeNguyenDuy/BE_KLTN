@@ -3,6 +3,7 @@ package com.salesmanager.core.business.services.customer;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -158,7 +159,8 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 
 	@Override
 	public boolean checkIfActive(String userName) {
-		return customerRepository.existsByNickAndActive(userName, true);
+		Optional<Customer> customerOpt = customerRepository.findByNickAndActive(userName, true);
+		return customerOpt.isPresent();
 	}
 
 	@Override
