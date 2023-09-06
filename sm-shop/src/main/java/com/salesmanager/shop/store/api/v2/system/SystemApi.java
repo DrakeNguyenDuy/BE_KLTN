@@ -274,7 +274,7 @@ public class SystemApi {
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
 				.body(facade.getProductsRecommender(idJob));
 	}
-	@GetMapping("/auth/recommender/alumnus/{idJob}")
+	@GetMapping("/private/recommender/alumnus/{idJob}")
 	public ResponseEntity<List<RecruitmentDto>> rsAlumnus(@PathVariable Long idJob) {
 		List<Long> idAlumnus = MainForAlumnus.rs(idJob);
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
