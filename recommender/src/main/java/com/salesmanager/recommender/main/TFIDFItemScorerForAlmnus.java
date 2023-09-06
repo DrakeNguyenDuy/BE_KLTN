@@ -47,7 +47,10 @@ public class TFIDFItemScorerForAlmnus extends AbstractItemScorer {
 		for (Long idItem : items) {
 			SparseVector vectorItem = model.getVectorItem(idItem);
 			double similar = cvs.similarity(userVector, vectorItem);
-			list.add(new BasicResult(idItem, similar));
+			if(similar>0) {				
+				list.add(new BasicResult(idItem, similar));
+			}
+//			list.add(new BasicResult(idItem, similar));
 		}
 
 		return new BasicResultMap(list);

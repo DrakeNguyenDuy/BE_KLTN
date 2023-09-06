@@ -26,6 +26,7 @@ public class MainForAlumnus {
 		ItemRecommender irec = rec.getItemRecommender();
 		System.out.println("searching for recommendations for job " + id);
 		List<Long> recs = irec.recommend(id, 5);
+		rec.close();
 		return recs;
 	}
 

@@ -25,6 +25,14 @@ public class Connect {
 	public static Connect getInstance() {
 		if (instance == null)
 			instance = new Connect();
+		try {
+			if (instance.getConnection().isClosed()) {
+				instance = new Connect();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return instance;
 	}
 

@@ -52,6 +52,8 @@ public class ItemDaoForAlumnus extends AbstractDao implements ItemDAO {
 							user.setDistinct(rs.getString("district"));
 							users.add(user);
 						}
+						rs.close();
+                        ps.close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

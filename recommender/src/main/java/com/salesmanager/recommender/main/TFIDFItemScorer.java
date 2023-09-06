@@ -22,6 +22,9 @@ import org.lenskit.results.BasicResultMap;
 import com.salesmanager.recommender.dao.UserDao;
 import com.salesmanager.utils.ScoreUtils;
 
+import it.unimi.dsi.fastutil.doubles.DoubleCollection;
+import it.unimi.dsi.fastutil.longs.LongSortedSet;
+
 public class TFIDFItemScorer extends AbstractItemScorer {
 	private UserEventDAO dao;
 	private TFIDFModel model;
@@ -46,11 +49,14 @@ public class TFIDFItemScorer extends AbstractItemScorer {
 		for (Long idItem : items) {
 			SparseVector vectorItem = model.getVectorItem(idItem);
 //			System.out.println(vectorItem);
+			LongSortedSet longSortedSet = vectorItem.keyDomain();
+			DoubleCollection doubleCollection=  vectorItem.values();
+			
 			double similar = cvs.similarity(userVector, vectorItem);
-//			if(similar>0) {				
-//				list.add(new BasicResult(idItem, similar));
-//			}
-			list.add(new BasicResult(idItem, similar));
+			if(similar>0) {				
+				list.add(new BasicResult(idItem, similar));
+			}
+//			list.add(new BasicResult(idItem, similar));
 		}
 
 		return new BasicResultMap(list);
