@@ -55,6 +55,8 @@ public class UserDaoForAlmnus extends AbstractDao implements UserDAO {
 							item.setProvince(rs.getString("province"));
 							items.add(item);
 						}
+						rs.close();
+                        ps.close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

@@ -26,6 +26,7 @@ public class Main {
 
 		System.out.println("searching for recommendations for user " + id);
 		List<Long> recs = irec.recommend(id, 5);
+		rec.close();
 		return recs;
 	}
 

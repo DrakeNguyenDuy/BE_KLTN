@@ -50,6 +50,8 @@ public class UserDao extends AbstractDao implements UserDAO {
 							user.setDistinct(rs.getString("district"));
 							users.add(user);
 						}
+						rs.close();
+                        ps.close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
