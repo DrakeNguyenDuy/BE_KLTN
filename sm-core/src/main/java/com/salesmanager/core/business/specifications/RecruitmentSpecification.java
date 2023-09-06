@@ -28,6 +28,7 @@ import com.salesmanager.core.model.location.LocationDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.recruitment.Recruitment;
 import com.salesmanager.core.model.recruitment.StatusProcess;
+import com.salesmanager.core.model.user.User;
 
 @Component
 public class RecruitmentSpecification {
@@ -37,13 +38,18 @@ public class RecruitmentSpecification {
 			String status = map.get("status");
 			String email = map.get("email");
 			List<Predicate> predicates = new ArrayList<Predicate>();
+			
 
+			Join<Product, Recruitment> jobs = root.join("job");
+			Join<MerchantStore, Product> store = jobs.join("merchantStore");
+			Join<User, MerchantStore> user = store.join("users");
+			
 			if (status != null) {
 				StatusProcess statusProcess = StatusProcess.valueOf(status);
 				predicates.add(criteriaBuilder.equal(root.get("statusProcess"), statusProcess));
 			}
 			if (email != null) {
-				predicates.add(criteriaBuilder.equal(root.get("job").get("merchantStore").get("storeEmailAddress"), email));
+				predicates.add(criteriaBuilder.equal(user.get("adminEmail"), email));
 			}
 			query.orderBy(criteriaBuilder.desc(root.get("applyDate")));
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

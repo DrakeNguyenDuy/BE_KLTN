@@ -27,6 +27,7 @@ import com.salesmanager.shop.model.user.PersistableUser;
 import com.salesmanager.shop.model.user.ReadableUser;
 import com.salesmanager.shop.store.api.exception.OperationNotAllowedException;
 import com.salesmanager.shop.store.api.exception.ResourceNotFoundException;
+import com.salesmanager.shop.store.api.exception.RestApiException;
 import com.salesmanager.shop.store.controller.marketplace.facade.MarketPlaceFacade;
 import com.salesmanager.shop.store.controller.store.facade.StoreFacade;
 import com.salesmanager.shop.store.controller.user.facade.UserFacade;
@@ -90,16 +91,14 @@ public class MarketPlaceApi {
 		}
 
 		if (user != null) {
-//			throw new OperationNotAllowedException(
-//					"User [" + store.getEmail() + "] already exist and cannot be registered");
-			return "Email đã được sử dụng";
+			throw new RestApiException(
+					"Email exits");
 		}
 
 		// check if store exists
 		if (storeFacade.existByCode(store.getCode())) {
-//			throw new OperationNotAllowedException(
-//					"Store [" + store.getCode() + "] already exist and cannot be registered");
-			return "Mã nhà hàng(code) đã tồn tại";
+			throw new RestApiException(
+				"Store code exits");
 		}
 		
 		// create store
